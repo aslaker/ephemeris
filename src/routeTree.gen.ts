@@ -11,6 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as McpRouteImport } from './routes/mcp'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as IssIndexRouteImport } from './routes/iss/index'
+import { Route as IssMapRouteImport } from './routes/iss/map'
+import { Route as IssCrewRouteImport } from './routes/iss/crew'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
 import { Route as DemoTableRouteImport } from './routes/demo/table'
 import { Route as DemoStoreRouteImport } from './routes/demo/store'
@@ -38,6 +41,21 @@ const McpRoute = McpRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IssIndexRoute = IssIndexRouteImport.update({
+  id: '/iss/',
+  path: '/iss/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IssMapRoute = IssMapRouteImport.update({
+  id: '/iss/map',
+  path: '/iss/map',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IssCrewRoute = IssCrewRouteImport.update({
+  id: '/iss/crew',
+  path: '/iss/crew',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
@@ -140,6 +158,9 @@ export interface FileRoutesByFullPath {
   '/demo/store': typeof DemoStoreRoute
   '/demo/table': typeof DemoTableRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/iss/crew': typeof IssCrewRoute
+  '/iss/map': typeof IssMapRoute
+  '/iss': typeof IssIndexRoute
   '/demo/api/mcp-todos': typeof DemoApiMcpTodosRoute
   '/demo/api/names': typeof DemoApiNamesRoute
   '/demo/api/tq-todos': typeof DemoApiTqTodosRoute
@@ -162,6 +183,9 @@ export interface FileRoutesByTo {
   '/demo/store': typeof DemoStoreRoute
   '/demo/table': typeof DemoTableRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/iss/crew': typeof IssCrewRoute
+  '/iss/map': typeof IssMapRoute
+  '/iss': typeof IssIndexRoute
   '/demo/api/mcp-todos': typeof DemoApiMcpTodosRoute
   '/demo/api/names': typeof DemoApiNamesRoute
   '/demo/api/tq-todos': typeof DemoApiTqTodosRoute
@@ -185,6 +209,9 @@ export interface FileRoutesById {
   '/demo/store': typeof DemoStoreRoute
   '/demo/table': typeof DemoTableRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/iss/crew': typeof IssCrewRoute
+  '/iss/map': typeof IssMapRoute
+  '/iss/': typeof IssIndexRoute
   '/demo/api/mcp-todos': typeof DemoApiMcpTodosRoute
   '/demo/api/names': typeof DemoApiNamesRoute
   '/demo/api/tq-todos': typeof DemoApiTqTodosRoute
@@ -209,6 +236,9 @@ export interface FileRouteTypes {
     | '/demo/store'
     | '/demo/table'
     | '/demo/tanstack-query'
+    | '/iss/crew'
+    | '/iss/map'
+    | '/iss'
     | '/demo/api/mcp-todos'
     | '/demo/api/names'
     | '/demo/api/tq-todos'
@@ -231,6 +261,9 @@ export interface FileRouteTypes {
     | '/demo/store'
     | '/demo/table'
     | '/demo/tanstack-query'
+    | '/iss/crew'
+    | '/iss/map'
+    | '/iss'
     | '/demo/api/mcp-todos'
     | '/demo/api/names'
     | '/demo/api/tq-todos'
@@ -253,6 +286,9 @@ export interface FileRouteTypes {
     | '/demo/store'
     | '/demo/table'
     | '/demo/tanstack-query'
+    | '/iss/crew'
+    | '/iss/map'
+    | '/iss/'
     | '/demo/api/mcp-todos'
     | '/demo/api/names'
     | '/demo/api/tq-todos'
@@ -276,6 +312,9 @@ export interface RootRouteChildren {
   DemoStoreRoute: typeof DemoStoreRoute
   DemoTableRoute: typeof DemoTableRoute
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
+  IssCrewRoute: typeof IssCrewRoute
+  IssMapRoute: typeof IssMapRoute
+  IssIndexRoute: typeof IssIndexRoute
   DemoApiMcpTodosRoute: typeof DemoApiMcpTodosRoute
   DemoApiNamesRoute: typeof DemoApiNamesRoute
   DemoApiTqTodosRoute: typeof DemoApiTqTodosRoute
@@ -304,6 +343,27 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/iss/': {
+      id: '/iss/'
+      path: '/iss'
+      fullPath: '/iss'
+      preLoaderRoute: typeof IssIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/iss/map': {
+      id: '/iss/map'
+      path: '/iss/map'
+      fullPath: '/iss/map'
+      preLoaderRoute: typeof IssMapRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/iss/crew': {
+      id: '/iss/crew'
+      path: '/iss/crew'
+      fullPath: '/iss/crew'
+      preLoaderRoute: typeof IssCrewRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/demo/tanstack-query': {
@@ -444,6 +504,9 @@ const rootRouteChildren: RootRouteChildren = {
   DemoStoreRoute: DemoStoreRoute,
   DemoTableRoute: DemoTableRoute,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
+  IssCrewRoute: IssCrewRoute,
+  IssMapRoute: IssMapRoute,
+  IssIndexRoute: IssIndexRoute,
   DemoApiMcpTodosRoute: DemoApiMcpTodosRoute,
   DemoApiNamesRoute: DemoApiNamesRoute,
   DemoApiTqTodosRoute: DemoApiTqTodosRoute,

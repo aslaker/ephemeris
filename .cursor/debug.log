@@ -1,6 +1,0 @@
-{"location":"instrument.server.mjs:4","message":"Sentry DSN value check","data":{"dsn":"UNDEFINED","hasSentryDsn":false,"hasViteSentryDsn":false},"timestamp":1765652943604,"sessionId":"debug-session","hypothesisId":"H1-H2"}
-{"location":"instrument.server.mjs:19","message":"Sentry init completed","data":{"success":true},"timestamp":1765652943637,"sessionId":"debug-session","hypothesisId":"H1"}
-{"location":"instrument.server.mjs:4","message":"Sentry DSN value check","data":{"dsn":"SET","hasSentryDsn":false,"hasViteSentryDsn":true},"timestamp":1765652945473,"sessionId":"debug-session","hypothesisId":"H1-H2"}
-{"location":"instrument.server.mjs:19","message":"Sentry init completed","data":{"success":true},"timestamp":1765652945513,"sessionId":"debug-session","hypothesisId":"H1"}
-{"location":"instrument.server.mjs:4","message":"Sentry DSN value check","data":{"dsn":"SET","hasSentryDsn":false,"hasViteSentryDsn":true},"timestamp":1765652945489,"sessionId":"debug-session","hypothesisId":"H1-H2"}
-{"location":"instrument.server.mjs:19","message":"Sentry init completed","data":{"success":true},"timestamp":1765652945523,"sessionId":"debug-session","hypothesisId":"H1"}

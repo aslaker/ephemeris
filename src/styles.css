@@ -136,3 +136,155 @@ code {
     @apply bg-background text-foreground;
   }
 }
+
+/* =============================================================================
+   ISS TRACKER - MATRIX THEME
+   ============================================================================= */
+
+/* ISS Matrix Theme Variables */
+.iss-theme {
+  --matrix-bg: #0a0a0a;
+  --matrix-dark: #050505;
+  --matrix-text: #00ff41;
+  --matrix-dim: #004d14;
+  --matrix-alert: #ff3333;
+  font-family: 'Share Tech Mono', monospace;
+}
+
+/* Extend theme inline with Matrix colors */
+@theme inline {
+  --color-matrix-bg: #0a0a0a;
+  --color-matrix-dark: #050505;
+  --color-matrix-text: #00ff41;
+  --color-matrix-dim: #004d14;
+  --color-matrix-alert: #ff3333;
+}
+
+/* ISS Matrix Animations */
+@keyframes scanlines {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 4px; }
+}
+
+@keyframes crt-flicker {
+  0%, 100% { opacity: 0.03; }
+  50% { opacity: 0.05; }
+}
+
+@keyframes pulse-fast {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes crt-on {
+  0% { transform: scaleY(0.01); filter: brightness(3); }
+  50% { transform: scaleY(1); filter: brightness(1.5); }
+  100% { transform: scaleY(1); filter: brightness(1); }
+}
+
+@keyframes glitch-1 {
+  0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+  20% { clip-path: inset(20% 0 60% 0); transform: translate(-2px, 2px); }
+  40% { clip-path: inset(40% 0 40% 0); transform: translate(2px, -2px); }
+  60% { clip-path: inset(60% 0 20% 0); transform: translate(-1px, 1px); }
+}
+
+@keyframes glitch-2 {
+  0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+  20% { clip-path: inset(60% 0 20% 0); transform: translate(2px, -2px); }
+  40% { clip-path: inset(20% 0 60% 0); transform: translate(-2px, 2px); }
+  60% { clip-path: inset(40% 0 40% 0); transform: translate(1px, -1px); }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(300%); }
+}
+
+/* Scanlines overlay */
+.scanlines {
+  background-image: repeating-linear-gradient(
+    transparent 0px,
+    transparent 2px,
+    rgba(0, 0, 0, 0.3) 2px,
+    rgba(0, 0, 0, 0.3) 4px
+  );
+  animation: scanlines 0.5s linear infinite;
+}
+
+.crt-flicker {
+  animation: crt-flicker 0.1s infinite;
+}
+
+.crt-turn-on {
+  animation: crt-on 0.5s ease-out forwards;
+}
+
+/* Glitch text effect */
+.glitch-text {
+  position: relative;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glitch-text::before {
+  animation: glitch-1 0.3s infinite;
+  color: #00ff41;
+  z-index: -1;
+}
+
+.glitch-text::after {
+  animation: glitch-2 0.3s infinite;
+  color: #ff0000;
+  z-index: -2;
+}
+
+/* Animation utility classes */
+.animate-pulse-fast {
+  animation: pulse-fast 1s ease-in-out infinite;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 8s linear infinite;
+}
+
+/* Custom scrollbar for ISS theme */
+.iss-theme .custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.iss-theme .custom-scrollbar::-webkit-scrollbar-track {
+  background: #050505;
+}
+
+.iss-theme .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #004d14;
+  border-radius: 0;
+}
+
+.iss-theme .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #00ff41;
+}
+
+/* Matrix color utility classes for use within .iss-theme */
+.iss-theme .bg-matrix-bg { background-color: #0a0a0a; }
+.iss-theme .bg-matrix-dark { background-color: #050505; }
+.iss-theme .text-matrix-text { color: #00ff41; }
+.iss-theme .text-matrix-dim { color: #004d14; }
+.iss-theme .text-matrix-alert { color: #ff3333; }
+.iss-theme .border-matrix-text { border-color: #00ff41; }
+.iss-theme .border-matrix-dim { border-color: #004d14; }
+.iss-theme .border-matrix-alert { border-color: #ff3333; }

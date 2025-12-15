@@ -10,8 +10,7 @@
     "format": "biome format",
     "lint": "biome lint",
     "check": "biome check",
-    "deploy": "wrangler deploy",
-    "start": "node --import ./dist/server/instrument.server.mjs dist/server/index.mjs"
+    "deploy": "wrangler deploy"
   },
   "dependencies": {
     "@cloudflare/vite-plugin": "^1.13.8",

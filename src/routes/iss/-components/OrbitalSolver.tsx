@@ -81,9 +81,11 @@ export const OrbitalSolver = ({ tle, onClose }: OrbitalSolverProps) => {
 						<div className="text-[10px] text-matrix-dim mb-2 font-mono opacity-70">
 							----------------------------------------
 							<br />
-							// CALCULATING KEPLERIAN ELEMENTS
+							{/* CALCULATING KEPLERIAN ELEMENTS */}
+							CALCULATING KEPLERIAN ELEMENTS
 							<br />
-							// REF FRAME: J2000 EPOCH
+							{/* REF FRAME: J2000 EPOCH */}
+							REF FRAME: J2000 EPOCH
 							<br />
 							----------------------------------------
 						</div>

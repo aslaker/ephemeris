@@ -16,7 +16,7 @@ export const FlyoverControl = () => {
 		if (!nextPass) return;
 
 		const timer = setInterval(() => {
-			const now = new Date().getTime();
+			const now = Date.now();
 			const start = nextPass.startTime.getTime();
 			const diff = start - now;
 

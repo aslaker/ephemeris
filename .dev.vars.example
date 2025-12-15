@@ -1,0 +1,24 @@
+# Cloudflare Workers Local Development Variables
+# Copy this file to .dev.vars and fill in your values
+# .dev.vars is gitignored and will not be committed
+
+# ===========================================
+# CLIENT-SIDE VARIABLES (VITE_ prefix)
+# These are embedded at build time
+# ===========================================
+
+# Sentry DSN for client-side error tracking
+# Get this from your Sentry project settings
+VITE_SENTRY_DSN=
+
+# Application title (optional)
+VITE_APP_TITLE=ISS Tracker
+
+# ===========================================
+# SERVER-SIDE VARIABLES
+# These are available via Cloudflare Workers env bindings
+# For production, use: npx wrangler secret put <NAME>
+# ===========================================
+
+# Example server-side secret (if needed)
+# SERVER_SECRET=your-secret-here

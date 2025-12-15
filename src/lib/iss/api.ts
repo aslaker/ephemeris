@@ -45,27 +45,22 @@ export const fetchISSPosition = async (): Promise<ISSPosition> => {
 				velocity: data.velocity,
 				visibility: data.visibility,
 			};
-		} catch (primaryError) {
-			// Fallback to legacy API via proxy
-			try {
-				const url = `${PROXY_URL}${encodeURIComponent(POSITION_API_LEGACY)}`;
-				const response = await fetch(url);
-				if (!response.ok) throw new Error("Legacy Proxy Error");
-				const data = await response.json();
-				if (!data.iss_position) throw new Error("Invalid legacy structure");
+		} catch (_primaryError) {
+			const url = `${PROXY_URL}${encodeURIComponent(POSITION_API_LEGACY)}`;
+			const response = await fetch(url);
+			if (!response.ok) throw new Error("Legacy Proxy Error");
+			const data = await response.json();
+			if (!data.iss_position) throw new Error("Invalid legacy structure");
 
-				return {
-					id: generateEntityId.position(data.timestamp),
-					latitude: Number.parseFloat(data.iss_position.latitude),
-					longitude: Number.parseFloat(data.iss_position.longitude),
-					timestamp: data.timestamp,
-					altitude: 417.5, // Average altitude
-					velocity: 27600, // Average velocity km/h
-					visibility: "orbiting",
-				};
-			} catch (fallbackError) {
-				throw fallbackError;
-			}
+			return {
+				id: generateEntityId.position(data.timestamp),
+				latitude: Number.parseFloat(data.iss_position.latitude),
+				longitude: Number.parseFloat(data.iss_position.longitude),
+				timestamp: data.timestamp,
+				altitude: 417.5, // Average altitude
+				velocity: 27600, // Average velocity km/h
+				visibility: "orbiting",
+			};
 		}
 	});
 };

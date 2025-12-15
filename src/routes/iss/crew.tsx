@@ -35,7 +35,7 @@ function CrewManifest() {
 						</h2>
 						<p className="text-matrix-dim text-sm uppercase flex items-center gap-2">
 							<span className="w-2 h-2 bg-matrix-dim rounded-full animate-pulse" />
-							Live Uplink // Open Notify API
+							Live Uplink | Open Notify API
 						</p>
 					</div>
 					<div className="flex gap-8 text-right bg-matrix-dark/50 p-2 border border-matrix-dim/30">
@@ -77,7 +77,7 @@ function CrewManifest() {
 					<div className="text-center py-12">
 						<p className="text-matrix-alert text-lg">CREW_DATA_UNAVAILABLE</p>
 						<p className="text-matrix-dim text-sm mt-2">
-							// Unable to fetch personnel manifest
+							Unable to fetch personnel manifest
 						</p>
 					</div>
 				)}
@@ -96,7 +96,7 @@ function CrewManifest() {
 					<div className="text-center py-12">
 						<p className="text-matrix-dim text-lg">NO_CREW_DATA</p>
 						<p className="text-matrix-dim/50 text-sm mt-2">
-							// Awaiting personnel data stream
+							Awaiting personnel data stream
 						</p>
 					</div>
 				)}
@@ -110,7 +110,7 @@ function CrewManifest() {
 					</div>
 					<div className="text-right opacity-50">
 						<p>PERSONNEL_TRACKING_SYSTEM</p>
-						<p>SECURE_LINK // TERMINAL_V2</p>
+						<p>SECURE_LINK | TERMINAL_V2</p>
 					</div>
 				</div>
 			</div>

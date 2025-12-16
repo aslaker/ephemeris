@@ -5,7 +5,6 @@
  * These interfaces define the public API for storage operations.
  */
 
-import type { z } from "zod";
 
 // =============================================================================
 // SCHEMA TYPES (Reference - actual schemas in src/lib/iss/schemas.ts)

@@ -9,6 +9,24 @@ import { findMissionProfile } from "./mission-db";
 import type { Astronaut, ISSPosition, TLEData } from "./types";
 import { generateEntityId } from "./types";
 
+// API Response Types
+interface WTIAResponse {
+	latitude: number;
+	longitude: number;
+	timestamp: number;
+	altitude: number;
+	velocity: number;
+	visibility: string;
+}
+
+interface LegacyPositionResponse {
+	iss_position: {
+		latitude: string;
+		longitude: string;
+	};
+	timestamp: number;
+}
+
 // API Endpoints
 const WTIA_API = "https://api.wheretheiss.at/v1/satellites/25544";
 const POSITION_API_LEGACY = "http://api.open-notify.org/iss-now.json";
@@ -35,7 +53,7 @@ export const fetchISSPosition = async (): Promise<ISSPosition> => {
 		try {
 			const response = await fetch(WTIA_API);
 			if (!response.ok) throw new Error(`WTIA API Error: ${response.status}`);
-			const data = await response.json();
+			const data = (await response.json()) as WTIAResponse;
 
 			return {
 				id: generateEntityId.position(data.timestamp),
@@ -50,7 +68,7 @@ export const fetchISSPosition = async (): Promise<ISSPosition> => {
 			const url = `${PROXY_URL}${encodeURIComponent(POSITION_API_LEGACY)}`;
 			const response = await fetch(url);
 			if (!response.ok) throw new Error("Legacy Proxy Error");
-			const data = await response.json();
+			const data = (await response.json()) as LegacyPositionResponse;
 			if (!data.iss_position) throw new Error("Invalid legacy structure");
 
 			return {

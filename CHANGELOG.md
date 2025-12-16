@@ -48,3 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Removed demo chat components (chat-area, messages, useChat hook)
 - Removed demo chat routes and API (db-chat, db-chat-api)
+- Removed demo form components and hooks (FormComponents, form-context, form hooks)
+- Removed demo data files (table-data, punk-songs)
+- Removed demo store and devtools
+- Removed demo routes (form, store, table, SSR demos, server functions, API demos, MCP todos, Sentry testing, TanStack Query demos)

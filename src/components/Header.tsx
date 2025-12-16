@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Home, Map, Menu, Satellite, Users, X } from "lucide-react";
+import { Home, Map as MapIcon, Menu, Satellite, Users, X } from "lucide-react";
 import { useState } from "react";
 
 export default function Header() {
@@ -74,7 +74,7 @@ export default function Header() {
 								"flex items-center gap-3 p-3 rounded-lg bg-cyan-600 hover:bg-cyan-700 transition-colors mb-2",
 						}}
 					>
-						<Map size={20} />
+						<MapIcon size={20} />
 						<span className="font-medium">ISS Map</span>
 					</Link>
 

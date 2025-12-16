@@ -33,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Fixed Header navigation with broken demo route links causing TypeScript errors in CI
 - Fixed 91+ lint/format issues across 43+ files
 - Added explicit `type="button"` to all non-submit buttons for accessibility
 - Added `aria-hidden` and `aria-label` to decorative SVGs

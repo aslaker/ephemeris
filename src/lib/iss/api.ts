@@ -4,6 +4,7 @@
  */
 
 import * as Sentry from "@sentry/tanstackstart-react";
+import { createServerFn } from "@tanstack/react-start";
 import { findMissionProfile } from "./mission-db";
 import type { Astronaut, ISSPosition, TLEData } from "./types";
 import { generateEntityId } from "./types";
@@ -112,42 +113,78 @@ const parseTLELines = (text: string): TLEData => {
 };
 
 /**
+ * Open Notify API response type
+ */
+interface OpenNotifyAstrosResponse {
+	message: "success" | "error";
+	number: number;
+	people: Array<{ name: string; craft: string }>;
+}
+
+/**
+ * Validate Open Notify API response structure
+ */
+const validateOpenNotifyResponse = (
+	data: unknown,
+): data is OpenNotifyAstrosResponse => {
+	if (typeof data !== "object" || data === null) return false;
+	const obj = data as Record<string, unknown>;
+	return (
+		obj.message === "success" &&
+		Array.isArray(obj.people) &&
+		obj.people.every(
+			(p: unknown) =>
+				typeof p === "object" &&
+				p !== null &&
+				typeof (p as Record<string, unknown>).name === "string" &&
+				typeof (p as Record<string, unknown>).craft === "string",
+		)
+	);
+};
+
+/**
+ * Server function to fetch crew data from Open Notify API
+ * Bypasses CORS by making the request server-side
+ */
+const fetchCrewFromApi = createServerFn({ method: "GET" }).handler(
+	async (): Promise<OpenNotifyAstrosResponse> => {
+		const response = await fetch(CREW_API);
+		if (!response.ok) {
+			throw new Error(`Open Notify API Error: ${response.status}`);
+		}
+		const data = await response.json();
+		if (!validateOpenNotifyResponse(data)) {
+			throw new Error("Invalid API response structure");
+		}
+		return data;
+	},
+);
+
+/**
  * Fetch ISS crew data with enrichment from mission database
+ * Errors propagate to TanStack Query for proper error state handling
  */
 export const fetchCrewData = async (): Promise<Astronaut[]> => {
 	return Sentry.startSpan({ name: "Fetching Crew Data" }, async () => {
-		try {
-			const basicResponse = await fetch(
-				`${PROXY_URL}${encodeURIComponent(CREW_API)}`,
-			);
-			if (!basicResponse.ok) throw new Error("Crew fetch failed");
-			const basicData = await basicResponse.json();
+		const basicData = await fetchCrewFromApi();
 
-			const issCrew = (basicData.people || []).filter(
-				(p: { craft: string }) => p.craft === "ISS",
-			);
+		const issCrew = basicData.people.filter((p) => p.craft === "ISS");
 
-			const enrichedCrew: Astronaut[] = issCrew.map(
-				(basicAstronaut: { name: string; craft: string }) => {
-					const dbData = findMissionProfile(basicAstronaut.name);
+		const enrichedCrew: Astronaut[] = issCrew.map((basicAstronaut) => {
+			const dbData = findMissionProfile(basicAstronaut.name);
 
-					return {
-						id: generateEntityId.astronaut(basicAstronaut.name),
-						name: basicAstronaut.name,
-						craft: basicAstronaut.craft,
-						image: dbData?.image,
-						role: dbData?.role || "Astronaut",
-						agency: dbData?.agency || "Unknown",
-						launchDate: dbData?.start,
-						endDate: dbData?.end,
-					};
-				},
-			);
+			return {
+				id: generateEntityId.astronaut(basicAstronaut.name),
+				name: basicAstronaut.name,
+				craft: basicAstronaut.craft,
+				image: dbData?.image,
+				role: dbData?.role || "Astronaut",
+				agency: dbData?.agency || "Unknown",
+				launchDate: dbData?.start,
+				endDate: dbData?.end,
+			};
+		});
 
-			return enrichedCrew;
-		} catch (e) {
-			console.warn("Crew data fetch failed:", e);
-			return [];
-		}
+		return enrichedCrew;
 	});
 };

@@ -24,17 +24,14 @@ const normalizeLongitude = (lon: number): number =>
 const radiansToDegrees = (radians: number): number => radians * (180 / Math.PI);
 
 /**
- * Get satellite.js library safely (handles various import scenarios)
+ * Get satellite.js library safely
  */
 const getSatelliteLib = () => {
-	const lib =
-		(satellite as unknown as { default?: typeof satellite }).default ||
-		satellite;
-	if (!lib || !lib.twoline2satrec) {
-		console.warn("Satellite.js library not loaded correctly", lib);
+	if (!satellite || !satellite.twoline2satrec) {
+		console.warn("Satellite.js library not loaded correctly", satellite);
 		throw new Error("ORBITAL_LIB_ERROR");
 	}
-	return lib;
+	return satellite;
 };
 
 /**

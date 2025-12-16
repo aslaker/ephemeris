@@ -31,3 +31,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Replaced `any` types with proper type definitions in table component
 - Fixed JSX comment syntax issues in ISS crew and orbital solver components
 - Resolved unused variable warnings in API error handling
+- Fixed vitest configuration to exclude Cloudflare plugin during tests (resolves CommonJS module errors)
+- Fixed satellite.js import issue by removing unnecessary default export check
+- Refactored ISS crew API to use TanStack Start server functions instead of CORS proxy

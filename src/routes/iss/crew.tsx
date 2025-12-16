@@ -1,6 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { issQueries } from "@/lib/iss/queries";
+import { useISSCrew } from "@/hooks/iss/useISSData";
 import { CrewCard } from "./-components/CrewCard";
 import { ISSLayout } from "./-components/ISSLayout";
 
@@ -17,7 +16,8 @@ function CrewPage() {
 }
 
 function CrewManifest() {
-	const { data: crew, isLoading, isError } = useQuery(issQueries.crew());
+	const { data: crew, isLoading, error } = useISSCrew();
+	const isError = !!error;
 
 	const crewCount = crew?.length || 0;
 

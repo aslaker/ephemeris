@@ -5,6 +5,8 @@ Auto-generated from all feature plans. Last updated: 2025-12-13
 ## Active Technologies
 - TypeScript 5.7, React 19, Node.js (via Workers `nodejs_compat`) + TanStack Start 1.132.0, @cloudflare/vite-plugin 1.13.8, Wrangler 4.40.3 (002-cloudflare-deploy)
 - N/A (no persistent storage for this feature) (002-cloudflare-deploy)
+- TypeScript 5.x + TanStack Start (React 19), TanStack Query, TanStack Router (003-fix-crew-render)
+- N/A (external API data only, local mission database for enrichment) (003-fix-crew-render)
 
 - TypeScript 5.7+, React 19 + TanStack Start, TanStack Query, TanStack Router, react-globe.gl, satellite.js, three.js, lucide-reac (001-iss-tracker-migration)
 
@@ -24,6 +26,7 @@ npm test && npm run lint
 TypeScript 5.7+, React 19: Follow standard conventions
 
 ## Recent Changes
+- 003-fix-crew-render: Added TypeScript 5.x + TanStack Start (React 19), TanStack Query, TanStack Router
 - 002-cloudflare-deploy: Added TypeScript 5.7, React 19, Node.js (via Workers `nodejs_compat`) + TanStack Start 1.132.0, @cloudflare/vite-plugin 1.13.8, Wrangler 4.40.3
 
 - 001-iss-tracker-migration: Added TypeScript 5.7+, React 19 + TanStack Start, TanStack Query, TanStack Router, react-globe.gl, satellite.js, three.js, lucide-reac

@@ -1,11 +1,15 @@
-import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { Calculator, Minimize, RotateCw } from "lucide-react";
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import type { GlobeMethods } from "react-globe.gl";
+import {
+	useISSPosition,
+	useISSTLE,
+	useStorageCleanup,
+	useWindowFocusRefetch,
+} from "@/hooks/iss/useISSData";
 import { terminalAudio } from "@/lib/iss/audio";
 import { calculateOrbitPath } from "@/lib/iss/orbital";
-import { issQueries } from "@/lib/iss/queries";
 import { FlyoverControl } from "./-components/FlyoverControl";
 import { ISSLayout, useLocationContext } from "./-components/ISSLayout";
 import { OrbitalSolver } from "./-components/OrbitalSolver";
@@ -36,11 +40,16 @@ function ISSTracker() {
 	// Location context for user position and flyover prediction
 	const { userLocation, nextPass } = useLocationContext();
 
-	// Live ISS Position
-	const { data, isLoading, isError } = useQuery(issQueries.currentPosition());
+	// Live ISS Position with cache-first loading
+	const { data, isLoading, error, fromCache } = useISSPosition();
+	const isError = !!error;
 
-	// TLE Data for orbital path calculations
-	const { data: tleData } = useQuery(issQueries.tle());
+	// TLE Data for orbital path calculations with cache-first loading
+	const { data: tleData } = useISSTLE();
+
+	// Initialize storage cleanup scheduler and window focus refetch
+	useStorageCleanup();
+	useWindowFocusRefetch();
 
 	// Handle window resize with delayed initial measurement
 	useEffect(() => {
@@ -252,7 +261,7 @@ function ISSTracker() {
 				{/* Orbital Solver Modal */}
 				{showOrbitalSolver && (
 					<OrbitalSolver
-						tle={tleData}
+						tle={tleData ?? undefined}
 						onClose={() => {
 							terminalAudio.playClick();
 							setShowOrbitalSolver(false);
@@ -353,7 +362,7 @@ function ISSTracker() {
 
 			{/* Stats Panel Sidebar */}
 			<div className="w-full md:w-56 lg:w-72 xl:w-80 flex-none flex flex-col h-[35vh] md:h-auto border-t md:border-t-0 border-matrix-dim overflow-y-auto custom-scrollbar bg-matrix-bg">
-				<StatsPanel data={data} isLoading={isLoading} />
+				<StatsPanel data={data} isLoading={isLoading} fromCache={fromCache} />
 			</div>
 		</div>
 	);

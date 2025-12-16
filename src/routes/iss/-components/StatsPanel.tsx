@@ -51,7 +51,7 @@ const StatBox = ({
  * StatsPanel - Responsive telemetry display panel showing ISS position data
  * Shows more data on larger screens
  */
-export const StatsPanel = ({ data, isLoading }: StatsPanelProps) => {
+export const StatsPanel = ({ data, isLoading, fromCache }: StatsPanelProps) => {
 	// Play sound when data updates
 	useEffect(() => {
 		if (data) {
@@ -155,6 +155,9 @@ export const StatsPanel = ({ data, isLoading }: StatsPanelProps) => {
 					<p className="hidden lg:block">&gt; ENCRYPTION: AES-256</p>
 					<p className="hidden xl:block">&gt; REFRESH_RATE: 5000ms</p>
 					<p className="hidden xl:block">&gt; CONNECTION: STABLE</p>
+					{fromCache && (
+						<p className="text-matrix-text/50">&gt; CACHE_MODE: LOCAL_FIRST</p>
+					)}
 				</div>
 			</div>
 		</div>

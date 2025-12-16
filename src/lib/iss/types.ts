@@ -170,8 +170,10 @@ export type LocationContextType = LocationContextState & LocationContextActions;
 // =============================================================================
 
 export interface StatsPanelProps {
-	data?: ISSPosition;
+	data?: ISSPosition | null;
 	isLoading: boolean;
+	/** Optional: indicates if data came from cache (for debug display) */
+	fromCache?: boolean;
 }
 
 export interface MatrixTextProps {

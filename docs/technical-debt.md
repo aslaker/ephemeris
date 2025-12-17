@@ -19,3 +19,4 @@ This document tracks technical debt identified during development conversations.
 ## Resolved Items
 
 <!-- Move items here when addressed, with resolution date -->
+

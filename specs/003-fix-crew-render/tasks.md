@@ -176,3 +176,4 @@ Task: "Confirm Sentry instrumentation continues to work"
 - The existing UI components, TanStack Query setup, and Sentry integration need no modifications
 - US2 is verification-only - the mission enrichment logic already works once data loads
 - Silent error handling removal is critical - it's the reason error state doesn't show
+

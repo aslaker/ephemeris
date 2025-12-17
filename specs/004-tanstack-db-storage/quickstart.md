@@ -397,3 +397,4 @@ After implementing basic storage:
 4. Remove demo chat code (final cleanup)
 
 See `tasks.md` for detailed implementation tasks.
+

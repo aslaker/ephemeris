@@ -105,3 +105,4 @@ This feature is infrastructure-focused and does not introduce new application da
 ## No Database Entities
 
 This feature does not introduce any persistent data storage or database entities. All configuration is file-based (wrangler.jsonc, deploy.yml) or managed externally (GitHub Secrets, Cloudflare Secrets).
+

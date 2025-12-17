@@ -89,7 +89,7 @@ export interface PageMetadataConfig {
  */
 export function createRouteHeadConfig(
 	config: PageMetadataConfig,
-	baseUrl: string = 'https://ephemeris.observer'
+	_baseUrl: string = 'https://ephemeris.observer'
 ): RouteHeadConfig {
 	const meta: MetaTag[] = [
 		// Basic SEO

@@ -4,6 +4,50 @@ import { CrewCard } from "./-components/CrewCard";
 import { ISSLayout } from "./-components/ISSLayout";
 
 export const Route = createFileRoute("/iss/crew")({
+	head: () => ({
+		meta: [
+			{
+				title: "ISS Crew Manifest - Ephemeris",
+			},
+			{
+				name: "description",
+				content:
+					"View the current International Space Station crew members, their roles, and mission details.",
+			},
+			{
+				property: "og:title",
+				content: "ISS Crew Manifest - Ephemeris",
+			},
+			{
+				property: "og:description",
+				content:
+					"View the current International Space Station crew members, their roles, and mission details.",
+			},
+			{
+				property: "og:url",
+				content: "https://ephemeris.observer/iss/crew",
+			},
+			{
+				name: "twitter:url",
+				content: "https://ephemeris.observer/iss/crew",
+			},
+			{
+				name: "twitter:title",
+				content: "ISS Crew Manifest - Ephemeris",
+			},
+			{
+				name: "twitter:description",
+				content:
+					"View the current International Space Station crew members, their roles, and mission details.",
+			},
+		],
+		links: [
+			{
+				rel: "canonical",
+				href: "https://ephemeris.observer/iss/crew",
+			},
+		],
+	}),
 	component: CrewPage,
 });
 

@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Custom Ephemeris favicon set with multiple sizes (16px, 32px, 48px)
+- Open Graph image for rich social media sharing (og-image.png)
+- Comprehensive SEO meta tags with Open Graph and Twitter Card support
+- Canonical URLs for all routes to improve SEO
+- Page-specific meta tags for ISS tracker, crew manifest, and orbital map pages
+- Logo source files for design assets
+- Specification documents for professional polish feature (005-professional-polish)
 - Cloudflare deployment configuration with wrangler.jsonc
 - GitHub Actions deploy workflow for Cloudflare Workers
 - Environment variables example file (.dev.vars.example)
@@ -23,6 +30,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Updated manifest.json with proper app name ("Ephemeris - ISS Tracker"), description, and dark theme
+- Updated favicon.ico and logo images (logo192.png, logo512.png) with custom Ephemeris branding
+- Enhanced meta tags in root route with Open Graph and Twitter Card support
 - Updated package.json with Cloudflare deployment scripts
 - Improved accessibility across components (button types, SVG aria labels)
 - Enhanced code quality with stricter linting rules

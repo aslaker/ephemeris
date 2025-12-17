@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- GitHub Actions PR check workflow for pre-merge validation (lint, TypeScript, tests, build)
 - Custom Ephemeris favicon set with multiple sizes (16px, 32px, 48px)
 - Open Graph image for rich social media sharing (og-image.png)
 - Comprehensive SEO meta tags with Open Graph and Twitter Card support

@@ -6,7 +6,53 @@ import { terminalAudio } from "@/lib/iss/audio";
 // Storage key for initialization state
 const ISS_INITIALIZED_KEY = "iss_tracker_initialized";
 
-export const Route = createFileRoute("/")({ component: InitializePage });
+export const Route = createFileRoute("/")({
+	head: () => ({
+		meta: [
+			{
+				title: "Ephemeris - ISS Tracker",
+			},
+			{
+				name: "description",
+				content:
+					"Track the International Space Station in real-time. View live ISS position, crew manifest, and orbital map.",
+			},
+			{
+				property: "og:title",
+				content: "Ephemeris - ISS Tracker",
+			},
+			{
+				property: "og:description",
+				content:
+					"Track the International Space Station in real-time. View live ISS position, crew manifest, and orbital map.",
+			},
+			{
+				property: "og:url",
+				content: "https://ephemeris.observer",
+			},
+			{
+				name: "twitter:url",
+				content: "https://ephemeris.observer",
+			},
+			{
+				name: "twitter:title",
+				content: "Ephemeris - ISS Tracker",
+			},
+			{
+				name: "twitter:description",
+				content:
+					"Track the International Space Station in real-time. View live ISS position, crew manifest, and orbital map.",
+			},
+		],
+		links: [
+			{
+				rel: "canonical",
+				href: "https://ephemeris.observer",
+			},
+		],
+	}),
+	component: InitializePage,
+});
 
 function InitializePage() {
 	const navigate = useNavigate();

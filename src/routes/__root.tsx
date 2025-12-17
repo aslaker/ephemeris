@@ -24,13 +24,83 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 				content: "width=device-width, initial-scale=1",
 			},
 			{
-				title: "TanStack Start Starter",
+				title: "Ephemeris - ISS Tracker",
+			},
+			{
+				name: "description",
+				content:
+					"Track the International Space Station in real-time. View live ISS position, crew manifest, and orbital map.",
+			},
+			// Open Graph tags
+			{
+				property: "og:title",
+				content: "Ephemeris - ISS Tracker",
+			},
+			{
+				property: "og:description",
+				content:
+					"Track the International Space Station in real-time. View live ISS position, crew manifest, and orbital map.",
+			},
+			{
+				property: "og:image",
+				content: "https://ephemeris.observer/og-image.png",
+			},
+			{
+				property: "og:url",
+				content: "https://ephemeris.observer",
+			},
+			{
+				property: "og:type",
+				content: "website",
+			},
+			{
+				property: "og:site_name",
+				content: "Ephemeris",
+			},
+			// Twitter Cards
+			{
+				name: "twitter:card",
+				content: "summary_large_image",
+			},
+			{
+				name: "twitter:site",
+				content: "@ephaboratory",
+			},
+			{
+				name: "twitter:url",
+				content: "https://ephemeris.observer",
+			},
+			{
+				name: "twitter:title",
+				content: "Ephemeris - ISS Tracker",
+			},
+			{
+				name: "twitter:description",
+				content:
+					"Track the International Space Station in real-time. View live ISS position, crew manifest, and orbital map.",
+			},
+			{
+				name: "twitter:image",
+				content: "https://ephemeris.observer/og-image.png",
+			},
+			// SEO
+			{
+				name: "robots",
+				content: "index, follow",
 			},
 		],
 		links: [
 			{
 				rel: "stylesheet",
 				href: appCss,
+			},
+			{
+				rel: "icon",
+				href: "/favicon.ico",
+			},
+			{
+				rel: "canonical",
+				href: "https://ephemeris.observer",
 			},
 			{
 				rel: "preconnect",

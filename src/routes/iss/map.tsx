@@ -11,6 +11,50 @@ const MAP_IMAGE_URL =
 	"https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg";
 
 export const Route = createFileRoute("/iss/map")({
+	head: () => ({
+		meta: [
+			{
+				title: "ISS Orbital Map - Ephemeris",
+			},
+			{
+				name: "description",
+				content:
+					"2D orbital map visualization of the International Space Station showing current position, orbital paths, and flyover predictions.",
+			},
+			{
+				property: "og:title",
+				content: "ISS Orbital Map - Ephemeris",
+			},
+			{
+				property: "og:description",
+				content:
+					"2D orbital map visualization of the International Space Station showing current position, orbital paths, and flyover predictions.",
+			},
+			{
+				property: "og:url",
+				content: "https://ephemeris.observer/iss/map",
+			},
+			{
+				name: "twitter:url",
+				content: "https://ephemeris.observer/iss/map",
+			},
+			{
+				name: "twitter:title",
+				content: "ISS Orbital Map - Ephemeris",
+			},
+			{
+				name: "twitter:description",
+				content:
+					"2D orbital map visualization of the International Space Station showing current position, orbital paths, and flyover predictions.",
+			},
+		],
+		links: [
+			{
+				rel: "canonical",
+				href: "https://ephemeris.observer/iss/map",
+			},
+		],
+	}),
 	component: MapPage,
 });
 

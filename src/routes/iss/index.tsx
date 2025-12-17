@@ -19,6 +19,50 @@ import { StatsPanel } from "./-components/StatsPanel";
 const Globe = lazy(() => import("react-globe.gl"));
 
 export const Route = createFileRoute("/iss/")({
+	head: () => ({
+		meta: [
+			{
+				title: "Live ISS Tracker - Ephemeris",
+			},
+			{
+				name: "description",
+				content:
+					"Real-time International Space Station tracking with 3D globe visualization, orbital paths, and live telemetry data.",
+			},
+			{
+				property: "og:title",
+				content: "Live ISS Tracker - Ephemeris",
+			},
+			{
+				property: "og:description",
+				content:
+					"Real-time International Space Station tracking with 3D globe visualization, orbital paths, and live telemetry data.",
+			},
+			{
+				property: "og:url",
+				content: "https://ephemeris.observer/iss",
+			},
+			{
+				name: "twitter:url",
+				content: "https://ephemeris.observer/iss",
+			},
+			{
+				name: "twitter:title",
+				content: "Live ISS Tracker - Ephemeris",
+			},
+			{
+				name: "twitter:description",
+				content:
+					"Real-time International Space Station tracking with 3D globe visualization, orbital paths, and live telemetry data.",
+			},
+		],
+		links: [
+			{
+				rel: "canonical",
+				href: "https://ephemeris.observer/iss",
+			},
+		],
+	}),
 	component: ISSIndexPage,
 });
 

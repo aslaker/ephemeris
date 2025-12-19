@@ -5,7 +5,6 @@
  * Includes Sentry instrumentation per project rules.
  */
 
-// @ts-expect-error
 import { env } from "cloudflare:workers";
 import * as Sentry from "@sentry/tanstackstart-react";
 import { createServerFn } from "@tanstack/react-start";
@@ -206,7 +205,9 @@ export const generateBriefing = createServerFn({ method: "POST" })
 				// When running via 'wrangler pages dev --proxy', this is available in 'env'
 				const ai =
 					(env as Cloudflare.Env)?.AI ||
-					(context.cloudflare?.env as Cloudflare.Env | undefined)?.AI;
+					(context &&
+						(context as unknown as { cloudflare?: { env?: Cloudflare.Env } })
+							.cloudflare?.env?.AI);
 
 				if (!ai) {
 					// Fallback: Return structured data without AI narrative

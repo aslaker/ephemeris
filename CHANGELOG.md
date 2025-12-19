@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- TypeScript type checking phase to pre-commit workflow (`bun run type-check`)
 - AI-powered ISS pass briefings using Cloudflare Workers AI integration
 - New passes route (`/iss/passes`) with comprehensive ISS pass predictions
 - Pass prediction system with orbital mechanics calculations for visible passes
@@ -74,6 +75,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed satellite.js import issue by removing unnecessary default export check
 - Refactored ISS crew API to use TanStack Start server functions instead of CORS proxy
 - Fixed lint/format issues: replaced `any` types with `Cloudflare.Env` in AI client, removed redundant `role="navigation"` from pagination component, organized imports, and fixed formatting across 13 files
+- Fixed TypeScript errors: removed unused `@ts-expect-error` directive and fixed context type handling in AI client
 
 ### Removed
 

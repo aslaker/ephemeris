@@ -10,6 +10,7 @@ import * as Sentry from "@sentry/tanstackstart-react";
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { buildBriefingPrompt, parseAIResponse, SYSTEM_PROMPT } from "./prompt";
+import { ensureSentryInitialized } from "./sentry-init";
 import type {
 	GenerateBriefingResponse,
 	LatLng,
@@ -188,6 +189,7 @@ export const generateBriefing = createServerFn({ method: "POST" })
 		}),
 	)
 	.handler(async ({ data, context }) => {
+		ensureSentryInitialized();
 		return Sentry.startSpan(
 			{ name: "Generate AI Briefing" },
 			async (): Promise<GenerateBriefingResponse> => {
@@ -199,16 +201,25 @@ export const generateBriefing = createServerFn({ method: "POST" })
 					weather = await getWeatherForPass(location, passData.startTime, 2);
 				} catch (e) {
 					const err = e instanceof Error ? e : new Error(String(e));
-					Sentry.captureException(err, {
-						tags: {
-							component: "ai_briefing",
-							operation: "weather_fetch",
-						},
-						extra: {
-							location,
-							passTime: passData.startTime.toISOString(),
-						},
-					});
+					console.log("[AI Briefing] Capturing weather fetch error to Sentry");
+					try {
+						Sentry.captureException(err, {
+							tags: {
+								component: "ai_briefing",
+								operation: "weather_fetch",
+							},
+							extra: {
+								location,
+								passTime: passData.startTime.toISOString(),
+							},
+						});
+						console.log("[AI Briefing] Error captured successfully");
+					} catch (sentryError) {
+						console.error(
+							"[AI Briefing] Failed to capture to Sentry:",
+							sentryError,
+						);
+					}
 					console.warn("Weather fetch failed, continuing without:", err);
 				}
 

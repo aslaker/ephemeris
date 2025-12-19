@@ -62,9 +62,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Switched server-side Sentry to use @sentry/tanstackstart-react (compatible with TanStack Start)
+- Added comprehensive Sentry initialization utility for server-side error tracking in Cloudflare Workers
+- Enhanced Sentry error logging with detailed debug information for production diagnostics
 - Added Sentry instrumentation to weather API calls for better production error tracking
 - Improved error handling in weather fetch functions with detailed error logging
 - Fixed weather unavailable error in production by adding comprehensive error reporting
+- Added weather API caching and rate limiting to prevent 429 errors
 - Fixed accessibility issue in PassesList using semantic `<output>` element instead of `<div role="status">`
 - Fixed Header navigation with broken demo route links causing TypeScript errors in CI
 - Fixed 91+ lint/format issues across 43+ files

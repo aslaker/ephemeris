@@ -146,7 +146,7 @@ code {
   --matrix-bg: #0a0a0a;
   --matrix-dark: #050505;
   --matrix-text: #00ff41;
-  --matrix-dim: #004d14;
+  --matrix-dim: #00aa2b;
   --matrix-alert: #ff3333;
   font-family: 'Share Tech Mono', monospace;
 }
@@ -156,8 +156,20 @@ code {
   --color-matrix-bg: #0a0a0a;
   --color-matrix-dark: #050505;
   --color-matrix-text: #00ff41;
-  --color-matrix-dim: #004d14;
+  --color-matrix-dim: #00aa2b;
   --color-matrix-alert: #ff3333;
+}
+
+/* Reduced Motion Support - Respect user preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* ISS Matrix Animations */
@@ -271,7 +283,7 @@ code {
 }
 
 .iss-theme .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #004d14;
+  background: #00aa2b;
   border-radius: 0;
 }
 
@@ -283,8 +295,8 @@ code {
 .iss-theme .bg-matrix-bg { background-color: #0a0a0a; }
 .iss-theme .bg-matrix-dark { background-color: #050505; }
 .iss-theme .text-matrix-text { color: #00ff41; }
-.iss-theme .text-matrix-dim { color: #004d14; }
+.iss-theme .text-matrix-dim { color: #00aa2b; }
 .iss-theme .text-matrix-alert { color: #ff3333; }
 .iss-theme .border-matrix-text { border-color: #00ff41; }
-.iss-theme .border-matrix-dim { border-color: #004d14; }
+.iss-theme .border-matrix-dim { border-color: #00aa2b; }
 .iss-theme .border-matrix-alert { border-color: #ff3333; }

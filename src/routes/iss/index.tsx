@@ -8,10 +8,12 @@ import {
 	useStorageCleanup,
 	useWindowFocusRefetch,
 } from "@/hooks/iss/useISSData";
+import { useLocation } from "@/hooks/useLocation";
+import { useNextPass } from "@/hooks/useNextPass";
 import { terminalAudio } from "@/lib/iss/audio";
 import { calculateOrbitPath } from "@/lib/iss/orbital";
 import { FlyoverControl } from "./-components/FlyoverControl";
-import { ISSLayout, useLocationContext } from "./-components/ISSLayout";
+import { ISSLayout } from "./-components/ISSLayout";
 import { OrbitalSolver } from "./-components/OrbitalSolver";
 import { StatsPanel } from "./-components/StatsPanel";
 
@@ -67,6 +69,24 @@ export const Route = createFileRoute("/iss/")({
 });
 
 function ISSIndexPage() {
+	const [isClient, setIsClient] = useState(false);
+
+	useEffect(() => {
+		setIsClient(true);
+	}, []);
+
+	if (!isClient) {
+		return (
+			<ISSLayout>
+				<div className="w-full h-full flex items-center justify-center bg-black">
+					<div className="text-matrix-text animate-pulse">
+						INITIALIZING_RENDERER...
+					</div>
+				</div>
+			</ISSLayout>
+		);
+	}
+
 	return (
 		<ISSLayout>
 			<ISSTracker />
@@ -81,8 +101,9 @@ function ISSTracker() {
 	const [dimensions, setDimensions] = useState({ width: 800, height: 600 });
 	const [showOrbitalSolver, setShowOrbitalSolver] = useState(false);
 
-	// Location context for user position and flyover prediction
-	const { userLocation, nextPass } = useLocationContext();
+	// Location from shared store and next pass prediction
+	const { coordinates: userLocation } = useLocation();
+	const { nextPass } = useNextPass();
 
 	// Live ISS Position with cache-first loading
 	const { data, isLoading, error, fromCache } = useISSPosition();

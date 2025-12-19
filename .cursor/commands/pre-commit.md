@@ -39,7 +39,28 @@ You **MUST** consider the user input before proceeding (if not empty).
 - Confirm all tests pass
 - If failures remain, continue fixing until resolved
 
-### Phase 2: Fix Build
+### Phase 2: Fix TypeScript Types
+
+**Run initial type check**
+
+- Execute `bun run type-check`
+- Analyze all TypeScript type errors in the output
+
+**Fix all errors**
+
+- Automatically fix all TypeScript type errors found
+- Address type mismatches
+- Fix import/export type issues
+- Resolve any missing type definitions
+- Continue fixing until type check passes
+
+**Verify type check**
+
+- Run `bun run type-check` again
+- Confirm all type errors are resolved
+- If errors remain, continue fixing until resolved
+
+### Phase 3: Fix Build
 
 **Run initial build**
 
@@ -49,7 +70,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 **Fix all errors**
 
 - Automatically fix all build errors found
-- Address TypeScript errors
+- Address remaining TypeScript errors (if any)
 - Fix import/export issues
 - Resolve any missing dependencies or type issues
 - Continue fixing until build succeeds
@@ -60,7 +81,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 - Confirm build completes successfully
 - If errors remain, continue fixing until resolved
 
-### Phase 3: Fix Wrangler Types
+### Phase 4: Fix Wrangler Types
 
 **Run initial Wrangler check**
 
@@ -81,7 +102,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 - Confirm all errors are resolved
 - If errors remain, continue fixing until resolved
 
-### Phase 4: Fix Lint & Format
+### Phase 5: Fix Lint & Format
 
 **Run initial check**
 
@@ -103,7 +124,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 - Confirm all errors are resolved
 - If issues remain, continue fixing until resolved
 
-### Phase 5: Update Changelog
+### Phase 6: Update Changelog
 
 **Read existing CHANGELOG.md**
 
@@ -153,7 +174,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Stage CHANGELOG.md: `git add CHANGELOG.md`
 
-### Phase 6: Commit Changes
+### Phase 7: Commit Changes
 
 **Check and handle branch safety**
 
@@ -184,9 +205,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Automated fixes:
 - Fixed X test failures
-- Resolved Y build errors
+- Resolved Y TypeScript type errors
+- Fixed Z build errors
 - Fixed W Wrangler type errors
-- Corrected Z lint issues
+- Corrected V lint issues
 ```
 
 - Use conventional commit types: `feat`, `fix`, `chore`, `docs`, etc.
@@ -204,7 +226,7 @@ EOF
 
 - Push to current branch: `git push -u origin $(git branch --show-current)`
 
-### Phase 7: Create/Update PR
+### Phase 8: Create/Update PR
 
 **Check for existing open PR**
 
@@ -229,9 +251,10 @@ EOF
 
 ## Automated Quality Assurance
 - ✅ Tests: [X] failures fixed automatically
-- ✅ Build: [Y] compilation errors resolved
+- ✅ TypeScript: [Y] type errors resolved
+- ✅ Build: [Z] compilation errors resolved
 - ✅ Wrangler: [W] type errors fixed
-- ✅ Lint: [Z] code quality issues corrected
+- ✅ Lint: [V] code quality issues corrected
 
 ## Changes Made
 [List of significant changes from CHANGELOG.md]
@@ -241,6 +264,7 @@ EOF
 
 ## Testing
 - All tests passing
+- TypeScript type check passing
 - Build successful
 - Wrangler types valid
 - Biome checks clean
@@ -262,11 +286,12 @@ EOF
 )"
 ```
 
-### Phase 8: Final Validation
+### Phase 9: Final Validation
 
 **Re-run all checks**
 
 - Run `bun run test` to verify all tests still pass
+- Run `bun run type-check` to verify TypeScript types still valid
 - Run `bun run build` to verify build still succeeds
 - Run `bunx wrangler types` to verify Wrangler types still valid
 - Run `bun run check` to verify Biome checks still clean
@@ -281,19 +306,21 @@ EOF
 
 - Summarize results from all phases:
   - Phase 1: Test fixes (X failures fixed, Y remaining)
-  - Phase 2: Build fixes (X errors fixed, Y remaining)
-  - Phase 3: Wrangler fixes (X errors fixed, Y remaining)
-  - Phase 4: Lint fixes (X issues fixed, Y remaining)
-  - Phase 5: Changelog updated
-  - Phase 6: Changes committed and pushed
-  - Phase 7: PR created/updated
-  - Phase 8: Final validation status
+  - Phase 2: TypeScript type fixes (X errors fixed, Y remaining)
+  - Phase 3: Build fixes (X errors fixed, Y remaining)
+  - Phase 4: Wrangler fixes (X errors fixed, Y remaining)
+  - Phase 5: Lint fixes (X issues fixed, Y remaining)
+  - Phase 6: Changelog updated
+  - Phase 7: Changes committed and pushed
+  - Phase 8: PR created/updated
+  - Phase 9: Final validation status
 - Report any issues that couldn't be automatically fixed
 - Provide actionable next steps if needed
 
 ## Success Criteria
 
 - All tests passing
+- TypeScript type check passing
 - Build successful
 - Wrangler types valid
 - Biome checks clean
@@ -317,48 +344,56 @@ At the end of the workflow, provide a structured report:
 - Remaining: [number]
 - Status: ✅ Success / ⚠️ Partial / ❌ Failed
 
-**Phase 2: Build Fixes**
+**Phase 2: TypeScript Type Fixes**
 
 - Initial Errors: [number]
 - Fixed Automatically: [number]
 - Remaining: [number]
 - Status: ✅ Success / ⚠️ Partial / ❌ Failed
 
-**Phase 3: Wrangler Fixes**
+**Phase 3: Build Fixes**
 
 - Initial Errors: [number]
 - Fixed Automatically: [number]
 - Remaining: [number]
 - Status: ✅ Success / ⚠️ Partial / ❌ Failed
 
-**Phase 4: Lint Fixes**
+**Phase 4: Wrangler Fixes**
+
+- Initial Errors: [number]
+- Fixed Automatically: [number]
+- Remaining: [number]
+- Status: ✅ Success / ⚠️ Partial / ❌ Failed
+
+**Phase 5: Lint Fixes**
 
 - Initial Issues: [number]
 - Fixed Automatically: [number]
 - Remaining: [number]
 - Status: ✅ Success / ⚠️ Partial / ❌ Failed
 
-**Phase 5: Changelog**
+**Phase 6: Changelog**
 
 - Status: ✅ Updated / ✅ Created / ❌ Failed
 - Entries Added: [number]
 
-**Phase 6: Commit**
+**Phase 7: Commit**
 
 - Status: ✅ Committed and Pushed / ❌ Failed
 - Branch: [branch name]
 - Commit Hash: [hash]
 
-**Phase 7: Pull Request**
+**Phase 8: Pull Request**
 
 - Status: ✅ Created / ✅ Updated / ❌ Failed
 - PR Number: #[number]
 - PR URL: [url]
 - Base Branch: main
 
-**Phase 8: Final Validation**
+**Phase 9: Final Validation**
 
 - Tests: ✅ Passing / ❌ Failing
+- TypeScript: ✅ Valid / ❌ Errors
 - Build: ✅ Success / ❌ Failed
 - Wrangler: ✅ Valid / ❌ Errors
 - Lint: ✅ Clean / ❌ Issues

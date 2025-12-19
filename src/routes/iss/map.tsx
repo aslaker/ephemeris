@@ -1,10 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
+import { useLocation } from "@/hooks/useLocation";
+import { useNextPass } from "@/hooks/useNextPass";
 import { calculateOrbitPath } from "@/lib/iss/orbital";
 import { issQueries } from "@/lib/iss/queries";
 import { FlyoverControl } from "./-components/FlyoverControl";
-import { ISSLayout, useLocationContext } from "./-components/ISSLayout";
+import { ISSLayout } from "./-components/ISSLayout";
 import { StatsPanel } from "./-components/StatsPanel";
 
 const MAP_IMAGE_URL =
@@ -126,7 +128,8 @@ const createSafePathSegments = (points: { lat: number; lng: number }[]) => {
 function MapView() {
 	const { data, isLoading } = useQuery(issQueries.currentPosition());
 	const { data: tleData } = useQuery(issQueries.tle());
-	const { userLocation, nextPass } = useLocationContext();
+	const { coordinates: userLocation } = useLocation();
+	const { nextPass } = useNextPass();
 	const [mapError, setMapError] = useState(false);
 
 	// Calculate orbital path segments

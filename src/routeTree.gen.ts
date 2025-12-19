@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as McpRouteImport } from './routes/mcp'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as IssIndexRouteImport } from './routes/iss/index'
+import { Route as IssPassesRouteImport } from './routes/iss/passes'
 import { Route as IssMapRouteImport } from './routes/iss/map'
 import { Route as IssCrewRouteImport } from './routes/iss/crew'
 
@@ -30,6 +31,11 @@ const IssIndexRoute = IssIndexRouteImport.update({
   path: '/iss/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const IssPassesRoute = IssPassesRouteImport.update({
+  id: '/iss/passes',
+  path: '/iss/passes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IssMapRoute = IssMapRouteImport.update({
   id: '/iss/map',
   path: '/iss/map',
@@ -46,6 +52,7 @@ export interface FileRoutesByFullPath {
   '/mcp': typeof McpRoute
   '/iss/crew': typeof IssCrewRoute
   '/iss/map': typeof IssMapRoute
+  '/iss/passes': typeof IssPassesRoute
   '/iss': typeof IssIndexRoute
 }
 export interface FileRoutesByTo {
@@ -53,6 +60,7 @@ export interface FileRoutesByTo {
   '/mcp': typeof McpRoute
   '/iss/crew': typeof IssCrewRoute
   '/iss/map': typeof IssMapRoute
+  '/iss/passes': typeof IssPassesRoute
   '/iss': typeof IssIndexRoute
 }
 export interface FileRoutesById {
@@ -61,14 +69,22 @@ export interface FileRoutesById {
   '/mcp': typeof McpRoute
   '/iss/crew': typeof IssCrewRoute
   '/iss/map': typeof IssMapRoute
+  '/iss/passes': typeof IssPassesRoute
   '/iss/': typeof IssIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/mcp' | '/iss/crew' | '/iss/map' | '/iss'
+  fullPaths: '/' | '/mcp' | '/iss/crew' | '/iss/map' | '/iss/passes' | '/iss'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/mcp' | '/iss/crew' | '/iss/map' | '/iss'
-  id: '__root__' | '/' | '/mcp' | '/iss/crew' | '/iss/map' | '/iss/'
+  to: '/' | '/mcp' | '/iss/crew' | '/iss/map' | '/iss/passes' | '/iss'
+  id:
+    | '__root__'
+    | '/'
+    | '/mcp'
+    | '/iss/crew'
+    | '/iss/map'
+    | '/iss/passes'
+    | '/iss/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -76,6 +92,7 @@ export interface RootRouteChildren {
   McpRoute: typeof McpRoute
   IssCrewRoute: typeof IssCrewRoute
   IssMapRoute: typeof IssMapRoute
+  IssPassesRoute: typeof IssPassesRoute
   IssIndexRoute: typeof IssIndexRoute
 }
 
@@ -102,6 +119,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IssIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/iss/passes': {
+      id: '/iss/passes'
+      path: '/iss/passes'
+      fullPath: '/iss/passes'
+      preLoaderRoute: typeof IssPassesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/iss/map': {
       id: '/iss/map'
       path: '/iss/map'
@@ -124,6 +148,7 @@ const rootRouteChildren: RootRouteChildren = {
   McpRoute: McpRoute,
   IssCrewRoute: IssCrewRoute,
   IssMapRoute: IssMapRoute,
+  IssPassesRoute: IssPassesRoute,
   IssIndexRoute: IssIndexRoute,
 }
 export const routeTree = rootRouteImport

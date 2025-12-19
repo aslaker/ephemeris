@@ -1,11 +1,15 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "tanstack-start-app",
+  "name": "ephemeris",
   "compatibility_date": "2025-12-10",
   "compatibility_flags": ["nodejs_compat"],
   "main": "@tanstack/react-start/server-entry",
   "observability": {
     "enabled": true
+  },
+  "ai": {
+    "binding": "AI",
+    "remote": true
   },
   "routes": [
     { "pattern": "ephemeris.observer", "custom_domain": true },

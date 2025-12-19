@@ -1,14 +1,18 @@
 import { AlertTriangle, MapPin, RefreshCw, Target } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useLocation } from "@/hooks/useLocation";
+import { useNextPass } from "@/hooks/useNextPass";
 import { terminalAudio } from "@/lib/iss/audio";
-import { useLocationContext } from "./ISSLayout";
 
 /**
  * FlyoverControl - Panel for location acquisition and flyover countdown
+ *
+ * Uses useLocation and useNextPass hooks instead of LocationContext.
  */
 export const FlyoverControl = () => {
-	const { userLocation, nextPass, isPredicting, requestLocation, error } =
-		useLocationContext();
+	const { coordinates, requestGeolocation, error, isRequesting } =
+		useLocation();
+	const { nextPass, isPredicting } = useNextPass();
 	const [timeLeft, setTimeLeft] = useState<string>("--:--:--");
 
 	// Countdown timer logic
@@ -43,7 +47,7 @@ export const FlyoverControl = () => {
 
 	const handleRequestLocation = () => {
 		terminalAudio.playClick();
-		requestLocation();
+		requestGeolocation();
 	};
 
 	return (
@@ -57,12 +61,13 @@ export const FlyoverControl = () => {
 							Flyover_Alert
 						</span>
 					</div>
-					{userLocation && (
+					{coordinates && (
 						<button
 							type="button"
 							onClick={handleRequestLocation}
-							className="text-matrix-dim hover:text-matrix-text"
+							className={`text-matrix-dim hover:text-matrix-text ${isRequesting ? "animate-spin" : ""}`}
 							title="Refresh Location"
+							disabled={isRequesting}
 						>
 							<RefreshCw className="w-3 h-3" />
 						</button>
@@ -70,7 +75,7 @@ export const FlyoverControl = () => {
 				</div>
 
 				{/* Content */}
-				{!userLocation ? (
+				{!coordinates ? (
 					// No location - show acquire button
 					<div className="text-center py-2">
 						<p className="text-[10px] text-matrix-dim mb-2 uppercase">
@@ -79,10 +84,11 @@ export const FlyoverControl = () => {
 						<button
 							type="button"
 							onClick={handleRequestLocation}
-							className="w-full border border-matrix-text text-matrix-text hover:bg-matrix-text hover:text-black text-xs py-1 transition-colors uppercase font-bold flex items-center justify-center gap-2"
+							disabled={isRequesting}
+							className="w-full border border-matrix-text text-matrix-text hover:bg-matrix-text hover:text-black text-xs py-1 transition-colors uppercase font-bold flex items-center justify-center gap-2 disabled:opacity-50"
 						>
 							<MapPin className="w-3 h-3" />
-							Acquire Location
+							{isRequesting ? "Acquiring..." : "Acquire Location"}
 						</button>
 						{error && (
 							<div className="text-[9px] text-red-500 mt-2 flex items-center gap-1 justify-center">
@@ -96,8 +102,8 @@ export const FlyoverControl = () => {
 					<div className="space-y-2">
 						{/* Coordinates display */}
 						<div className="flex justify-between items-end text-[10px] text-matrix-dim font-mono">
-							<span>LAT: {userLocation.lat.toFixed(2)}</span>
-							<span>LNG: {userLocation.lng.toFixed(2)}</span>
+							<span>LAT: {coordinates.lat.toFixed(2)}</span>
+							<span>LNG: {coordinates.lng.toFixed(2)}</span>
 						</div>
 
 						{isPredicting ? (

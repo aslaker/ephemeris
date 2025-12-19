@@ -9,6 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- AI-powered ISS pass briefings using Cloudflare Workers AI integration
+- New passes route (`/iss/passes`) with comprehensive ISS pass predictions
+- Pass prediction system with orbital mechanics calculations for visible passes
+- Location management with geolocation support and persistent storage
+- `BriefingCard` component for AI-generated contextual viewing tips
+- `PassCard` component for detailed pass information display
+- `PassesList` component for browsing upcoming ISS passes
+- `LocationSelector` component for setting observation location
+- Custom hooks: `useNextPass`, `useLocation`, `usePasses` for ISS tracking
+- Briefing library (`src/lib/briefing/`) for AI client, weather, and prompt generation
+- Location store (`src/lib/location/`) for persistent user location
+- Cloudflare AI binding for Workers AI access
+- Feature roadmap documentation (`docs/feature_roadmap.md`)
+- Specification documents for AI pass briefing feature (006-ai-pass-briefing)
 - GitHub Actions PR check workflow for pre-merge validation (lint, TypeScript, tests, build)
 - Custom Ephemeris favicon set with multiple sizes (16px, 32px, 48px)
 - Open Graph image for rich social media sharing (og-image.png)
@@ -31,6 +45,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Enhanced orbital calculations with pass visibility predictions
+- Updated ISS types with pass prediction interfaces
+- Refactored ISSLayout and FlyoverControl for improved navigation
 - Updated manifest.json with proper app name ("Ephemeris - ISS Tracker"), description, and dark theme
 - Updated favicon.ico and logo images (logo192.png, logo512.png) with custom Ephemeris branding
 - Enhanced meta tags in root route with Open Graph and Twitter Card support
@@ -44,6 +61,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Fixed accessibility issue in PassesList using semantic `<output>` element instead of `<div role="status">`
 - Fixed Header navigation with broken demo route links causing TypeScript errors in CI
 - Fixed 91+ lint/format issues across 43+ files
 - Added explicit `type="button"` to all non-submit buttons for accessibility

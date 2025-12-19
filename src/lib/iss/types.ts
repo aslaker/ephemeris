@@ -239,7 +239,19 @@ export const generateEntityId = {
 
 	tle: (fetchTimestamp: number): string => `tle-${fetchTimestamp}`,
 
-	pass: (startTime: Date): string => `pass-${startTime.getTime()}`,
+	/**
+	 * Generate a stable pass ID based on date and hour
+	 * Rounds to nearest hour to ensure ID stability even if pass time shifts slightly
+	 * Format: pass-YYYY-MM-DD-HH (e.g., pass-2024-12-19-04)
+	 */
+	pass: (startTime: Date): string => {
+		const date = new Date(startTime);
+		const year = date.getUTCFullYear();
+		const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+		const day = String(date.getUTCDate()).padStart(2, "0");
+		const hour = String(date.getUTCHours()).padStart(2, "0");
+		return `pass-${year}-${month}-${day}-${hour}`;
+	},
 };
 
 /**

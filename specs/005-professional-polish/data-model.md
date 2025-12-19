@@ -256,3 +256,4 @@ export const Route = createFileRoute("/iss/")({
 - Heading hierarchy is proper
 - Alt text is descriptive
 - Metadata is clear and descriptive
+

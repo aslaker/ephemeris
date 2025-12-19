@@ -69,6 +69,24 @@ export const Route = createFileRoute("/iss/")({
 });
 
 function ISSIndexPage() {
+	const [isClient, setIsClient] = useState(false);
+
+	useEffect(() => {
+		setIsClient(true);
+	}, []);
+
+	if (!isClient) {
+		return (
+			<ISSLayout>
+				<div className="w-full h-full flex items-center justify-center bg-black">
+					<div className="text-matrix-text animate-pulse">
+						INITIALIZING_RENDERER...
+					</div>
+				</div>
+			</ISSLayout>
+		);
+	}
+
 	return (
 		<ISSLayout>
 			<ISSTracker />

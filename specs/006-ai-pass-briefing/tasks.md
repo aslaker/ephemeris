@@ -270,3 +270,4 @@ With multiple developers:
 - All server functions must include Sentry instrumentation per project rules
 - Location store eliminates LocationContext - cleaner architecture per research.md
 - **Briefing accuracy** (FR-006, SC-002): T053 validates AI output matches source PassPrediction data
+

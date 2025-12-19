@@ -4,8 +4,21 @@
  * Displays a list of upcoming ISS passes with date range controls.
  */
 
-import { Calendar, RefreshCw, Satellite } from "lucide-react";
-import { useId, useState } from "react";
+import {
+	Calendar,
+	ChevronLeft,
+	ChevronRight,
+	RefreshCw,
+	Satellite,
+} from "lucide-react";
+import { useId, useMemo, useState } from "react";
+import {
+	Pagination,
+	PaginationContent,
+	PaginationEllipsis,
+	PaginationItem,
+	PaginationLink,
+} from "@/components/ui/pagination";
 import { usePasses } from "@/hooks/iss/usePasses";
 import { PassCard } from "./PassCard";
 
@@ -32,6 +45,10 @@ export function PassesList({ className = "" }: PassesListProps) {
 	// Date range controls
 	const [maxDays, setMaxDays] = useState(7);
 
+	// Pagination state
+	const [currentPage, setCurrentPage] = useState(1);
+	const passesPerPage = 5;
+
 	// Increase maxPasses based on maxDays to ensure we can show all passes in range
 	// Roughly 15-16 passes per day for ISS, so scale accordingly
 	const maxPasses = Math.ceil(maxDays * 15);
@@ -41,6 +58,21 @@ export function PassesList({ className = "" }: PassesListProps) {
 		maxPasses,
 		minElevation: 10,
 	});
+
+	// Calculate pagination
+	const totalPages = Math.ceil(passes.length / passesPerPage);
+	const paginatedPasses = useMemo(() => {
+		const startIndex = (currentPage - 1) * passesPerPage;
+		return passes.slice(startIndex, startIndex + passesPerPage);
+	}, [passes, currentPage]);
+
+	// Reset to page 1 when maxDays changes
+	const handleDaysChange = (value: number) => {
+		if (value >= 1 && value <= 14) {
+			setMaxDays(value);
+			setCurrentPage(1);
+		}
+	};
 
 	// =============================================================================
 	// RENDER: NO LOCATION
@@ -121,12 +153,7 @@ export function PassesList({ className = "" }: PassesListProps) {
 						<select
 							id={daysSelectId}
 							value={maxDays}
-							onChange={(e) => {
-								const value = Number(e.target.value);
-								if (value >= 1 && value <= 14) {
-									setMaxDays(value);
-								}
-							}}
+							onChange={(e) => handleDaysChange(Number(e.target.value))}
 							className="bg-black border border-matrix-dim text-matrix-text text-xs px-2 py-1 focus:border-matrix-text focus:ring-1 focus:ring-matrix-text outline-none"
 							aria-label="Select number of days to show passes for (1-14 days)"
 						>
@@ -162,6 +189,7 @@ export function PassesList({ className = "" }: PassesListProps) {
 			>
 				{passes.length} pass{passes.length !== 1 ? "es" : ""} found in next{" "}
 				{maxDays} days
+				{totalPages > 1 && ` • Page ${currentPage} of ${totalPages}`}
 			</p>
 
 			{/* Pass List */}
@@ -178,13 +206,99 @@ export function PassesList({ className = "" }: PassesListProps) {
 					</p>
 				</output>
 			) : (
-				<ul aria-label="List of upcoming ISS passes" className="space-y-2">
-					{passes.map((pass) => (
-						<li key={pass.id}>
-							<PassCard pass={pass} />
-						</li>
-					))}
-				</ul>
+				<>
+					<ul aria-label="List of upcoming ISS passes" className="space-y-2">
+						{paginatedPasses.map((pass) => (
+							<li key={pass.id}>
+								<PassCard pass={pass} />
+							</li>
+						))}
+					</ul>
+
+					{/* Pagination Controls */}
+					{totalPages > 1 && (
+						<Pagination className="mt-4">
+							<PaginationContent>
+								{/* Previous Button */}
+								<PaginationItem>
+									<button
+										type="button"
+										onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+										disabled={currentPage === 1}
+										className="flex items-center gap-1 px-2 py-1 text-xs text-matrix-dim hover:text-matrix-text disabled:opacity-30 disabled:cursor-not-allowed"
+										aria-label="Go to previous page"
+									>
+										<ChevronLeft className="w-4 h-4" />
+										<span className="hidden sm:inline">Prev</span>
+									</button>
+								</PaginationItem>
+
+								{/* Page Numbers */}
+								{(() => {
+									type PageItem =
+										| { type: "page"; value: number }
+										| { type: "ellipsis"; position: "start" | "end" };
+									const pages: PageItem[] = [];
+									if (totalPages <= 5) {
+										for (let i = 1; i <= totalPages; i++)
+											pages.push({ type: "page", value: i });
+									} else {
+										pages.push({ type: "page", value: 1 });
+										if (currentPage > 3)
+											pages.push({ type: "ellipsis", position: "start" });
+										for (
+											let i = Math.max(2, currentPage - 1);
+											i <= Math.min(totalPages - 1, currentPage + 1);
+											i++
+										) {
+											pages.push({ type: "page", value: i });
+										}
+										if (currentPage < totalPages - 2)
+											pages.push({ type: "ellipsis", position: "end" });
+										pages.push({ type: "page", value: totalPages });
+									}
+									return pages.map((item) =>
+										item.type === "ellipsis" ? (
+											<PaginationItem key={`ellipsis-${item.position}`}>
+												<PaginationEllipsis className="text-matrix-dim" />
+											</PaginationItem>
+										) : (
+											<PaginationItem key={item.value}>
+												<PaginationLink
+													onClick={() => setCurrentPage(item.value)}
+													isActive={currentPage === item.value}
+													className={`cursor-pointer text-xs ${
+														currentPage === item.value
+															? "border-matrix-text text-matrix-text"
+															: "text-matrix-dim hover:text-matrix-text border-transparent"
+													}`}
+												>
+													{item.value}
+												</PaginationLink>
+											</PaginationItem>
+										),
+									);
+								})()}
+
+								{/* Next Button */}
+								<PaginationItem>
+									<button
+										type="button"
+										onClick={() =>
+											setCurrentPage((p) => Math.min(totalPages, p + 1))
+										}
+										disabled={currentPage === totalPages}
+										className="flex items-center gap-1 px-2 py-1 text-xs text-matrix-dim hover:text-matrix-text disabled:opacity-30 disabled:cursor-not-allowed"
+										aria-label="Go to next page"
+									>
+										<span className="hidden sm:inline">Next</span>
+										<ChevronRight className="w-4 h-4" />
+									</button>
+								</PaginationItem>
+							</PaginationContent>
+						</Pagination>
+					)}
+				</>
 			)}
 
 			{/* Footer Info */}

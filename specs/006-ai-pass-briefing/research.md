@@ -841,3 +841,4 @@ const chat = useChat({
 | Briefing Cache | TanStack DB + query-db-collection | Reactive queries, TanStack ecosystem alignment |
 | Future Data Layer | Gradual migration via Dexie adapter | Position for agent features |
 | Agent Framework | TanStack AI (when needed) | Ecosystem alignment, type-safe, provider-agnostic |
+

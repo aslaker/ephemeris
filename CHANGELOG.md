@@ -73,6 +73,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed vitest configuration to exclude Cloudflare plugin during tests (resolves CommonJS module errors)
 - Fixed satellite.js import issue by removing unnecessary default export check
 - Refactored ISS crew API to use TanStack Start server functions instead of CORS proxy
+- Fixed lint/format issues: replaced `any` types with `Cloudflare.Env` in AI client, removed redundant `role="navigation"` from pagination component, organized imports, and fixed formatting across 13 files
 
 ### Removed
 

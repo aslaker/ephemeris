@@ -118,6 +118,8 @@ export interface PassPrediction {
 	duration: number;
 	/** Array of points along the flyover arc */
 	path: OrbitalPoint[];
+	/** Pass quality rating based on elevation */
+	quality: "excellent" | "good" | "fair" | "poor";
 }
 
 /**

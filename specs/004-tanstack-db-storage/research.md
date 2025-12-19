@@ -468,3 +468,4 @@ All NEEDS CLARIFICATION items from the spec have been addressed:
 | First-visit experience | "Initialize Uplink" page with pre-fetching |
 | Corruption handling | Detect on read, remove silently, background refresh |
 
+

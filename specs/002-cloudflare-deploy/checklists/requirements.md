@@ -44,3 +44,4 @@
 - Assumptions section documents reasonable defaults made during spec creation
 - All items pass - spec is ready for `/speckit.plan`
 
+

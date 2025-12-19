@@ -5,20 +5,25 @@
  * Includes Sentry instrumentation per project rules.
  */
 
+// @ts-expect-error
+import { env } from "cloudflare:workers";
 import * as Sentry from "@sentry/tanstackstart-react";
 import { createServerFn } from "@tanstack/react-start";
-import type { PassPrediction } from "@/lib/iss/types";
+import { z } from "zod";
 import { buildBriefingPrompt, parseAIResponse, SYSTEM_PROMPT } from "./prompt";
 import type {
 	GenerateBriefingResponse,
 	LatLng,
 	PassBriefing,
+	PassPrediction,
 	WeatherConditions,
 } from "./types";
 import {
 	derivePassQuality,
 	estimateBrightness,
 	getBrightnessDescription,
+	LatLngSchema,
+	PassPredictionSchema,
 } from "./types";
 import { getWeatherForPass } from "./weather";
 
@@ -176,14 +181,14 @@ function validateBriefingAccuracy(
 /**
  * Generate an AI briefing for a pass
  */
-export const generateBriefing = createServerFn({ method: "POST" }).handler(
-	async ({
-		data,
-		context,
-	}: {
-		data: { passData: PassPrediction; location: LatLng };
-		context: { cloudflare?: { env?: { AI?: Ai } } };
-	}) => {
+export const generateBriefing = createServerFn({ method: "POST" })
+	.inputValidator(
+		z.object({
+			passData: PassPredictionSchema,
+			location: LatLngSchema,
+		}),
+	)
+	.handler(async ({ data, context }) => {
 		return Sentry.startSpan(
 			{ name: "Generate AI Briefing" },
 			async (): Promise<GenerateBriefingResponse> => {
@@ -197,12 +202,14 @@ export const generateBriefing = createServerFn({ method: "POST" }).handler(
 					console.warn("Weather fetch failed, continuing without:", e);
 				}
 
-				// Get AI binding from Cloudflare context
-				const ai = (context.cloudflare?.env as { AI?: Ai } | undefined)?.AI;
+				// Get AI binding from Cloudflare environment
+				// When running via 'wrangler pages dev --proxy', this is available in 'env'
+				const ai =
+					(env as Cloudflare.Env)?.AI ||
+					(context.cloudflare?.env as Cloudflare.Env | undefined)?.AI;
 
 				if (!ai) {
 					// Fallback: Return structured data without AI narrative
-					console.log("AI binding not available, using fallback briefing");
 					const fallbackBriefing = createFallbackBriefing(
 						passData,
 						location,
@@ -396,5 +403,4 @@ export const generateBriefing = createServerFn({ method: "POST" }).handler(
 				}
 			},
 		);
-	},
-);
+	});

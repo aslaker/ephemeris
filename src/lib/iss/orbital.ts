@@ -175,6 +175,7 @@ export const predictPasses = (
 			userLoc,
 			searchStart,
 			minElevation,
+			horizonEnd,
 		);
 
 		if (!pass) break;
@@ -196,6 +197,7 @@ export const predictPasses = (
 
 /**
  * Internal helper - predict next pass starting from a specific time
+ * @param horizonEnd - Absolute timestamp (ms) for search boundary
  */
 const predictNextPassFrom = (
 	line1: string,
@@ -203,6 +205,7 @@ const predictNextPassFrom = (
 	userLoc: LatLng,
 	startFrom: Date,
 	minElevation: number,
+	horizonEnd: number,
 ): PassPrediction | null => {
 	try {
 		const satLib = getSatelliteLib();
@@ -216,23 +219,21 @@ const predictNextPassFrom = (
 		};
 
 		const stepSeconds = 20;
-		const maxHorizon = 24 * 60 * 60 * 1000; // 24 hours in ms
-		let t = startFrom.getTime() - Date.now();
-		if (t < 0) t = 0;
+		let currentTime = Math.max(startFrom.getTime(), Date.now());
 
 		let passStart: Date | null = null;
 		let maxEl = 0;
 		let passPath: OrbitalPoint[] = [];
 
-		while (t < maxHorizon) {
-			const time = new Date(Date.now() + t);
+		while (currentTime < horizonEnd) {
+			const time = new Date(currentTime);
 
 			const positionAndVelocity = satLib.propagate(satrec, time);
 			const posEci = positionAndVelocity.position;
 			const gmst = satLib.gstime(time);
 
 			if (!posEci || typeof posEci === "boolean") {
-				t += stepSeconds * 1000;
+				currentTime += stepSeconds * 1000;
 				continue;
 			}
 
@@ -264,10 +265,18 @@ const predictNextPassFrom = (
 					duration: (time.getTime() - passStart.getTime()) / 1000 / 60,
 					maxElevation: maxEl,
 					path: passPath,
+					quality:
+						maxEl >= 60
+							? "excellent"
+							: maxEl >= 40
+								? "good"
+								: maxEl >= 25
+									? "fair"
+									: "poor",
 				};
 			}
 
-			t += stepSeconds * 1000;
+			currentTime += stepSeconds * 1000;
 		}
 
 		return null; // No pass found
@@ -342,6 +351,14 @@ export const predictNextPass = (
 					duration: (time.getTime() - passStart.getTime()) / 1000 / 60,
 					maxElevation: maxEl,
 					path: passPath,
+					quality:
+						maxEl >= 60
+							? "excellent"
+							: maxEl >= 40
+								? "good"
+								: maxEl >= 25
+									? "fair"
+									: "poor",
 				};
 			}
 

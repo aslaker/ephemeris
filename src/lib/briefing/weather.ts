@@ -77,20 +77,6 @@ export async function getWeatherForPass(
 				return null;
 			}
 
-			// Debug: Log first few values to check data quality
-			if (data.hourly.time.length > 0) {
-				console.log("Weather API sample:", {
-					firstTime: data.hourly.time[0],
-					firstCloudCover: data.hourly.cloud_cover[0],
-					firstVisibility: data.hourly.visibility[0],
-					arrayLengths: {
-						time: data.hourly.time.length,
-						cloudCover: data.hourly.cloud_cover.length,
-						visibility: data.hourly.visibility.length,
-					},
-				});
-			}
-
 			return findClosestWeather(data.hourly, passTime);
 		} catch (error) {
 			const err = error instanceof Error ? error : new Error(String(error));
@@ -125,7 +111,11 @@ export async function getWeatherForPass(
  * Find the closest hourly weather data to the pass time
  */
 function findClosestWeather(
-	hourly: { time: string[]; cloud_cover: number[]; visibility: number[] },
+	hourly: {
+		time: string[];
+		cloud_cover: (number | null)[];
+		visibility: (number | null)[];
+	},
 	passTime: Date,
 ): WeatherConditions {
 	const targetTime = passTime.getTime();
@@ -195,14 +185,6 @@ function findClosestWeather(
 			visibility = 10000;
 		}
 	}
-
-	console.log("Weather match:", {
-		passTime: passTime.toISOString(),
-		matchedTime: hourly.time[closestIndex],
-		cloudCover,
-		visibility,
-		timeDiffHours: closestDiff / (1000 * 60 * 60),
-	});
 
 	return {
 		timestamp: new Date(hourly.time[closestIndex]),

@@ -690,3 +690,4 @@ For large date ranges:
 2. Implement pagination (load first 3, then rest on scroll)
 3. Add staleTime to TanStack Query to cache results
 
+

@@ -239,6 +239,7 @@ export const GenerateBriefingRequestSchema = z.object({
 	passId: z.string(),
 	passData: PassPredictionSchema,
 	location: LatLngSchema,
+	weather: WeatherConditionsSchema.nullable().optional(),
 	includeWeather: z.boolean().default(true),
 });
 

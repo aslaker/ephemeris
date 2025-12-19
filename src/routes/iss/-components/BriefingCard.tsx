@@ -21,6 +21,7 @@ import { useLocation } from "@/hooks/useLocation";
 import { generateBriefing } from "@/lib/briefing/ai-client";
 import { getBriefingByPassId, upsertBriefing } from "@/lib/briefing/collection";
 import type { PassBriefing } from "@/lib/briefing/types";
+import { getWeatherForPass } from "@/lib/briefing/weather";
 import type { PassPrediction } from "@/lib/iss/types";
 
 // =============================================================================
@@ -119,10 +120,20 @@ export function BriefingCard({
 		setError(null);
 
 		try {
+			// Fetch weather client-side first to avoid server IP blocking
+			let weather = null;
+			try {
+				weather = await getWeatherForPass(coordinates, pass.startTime);
+			} catch (e) {
+				console.warn("Client-side weather fetch failed:", e);
+				// Continue without weather
+			}
+
 			const response = await generateBriefing({
 				data: {
 					passData: pass,
 					location: coordinates,
+					weather,
 				},
 			});
 

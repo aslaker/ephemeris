@@ -32,6 +32,11 @@ const config = defineConfig(({ mode }) => {
       setupFiles: [],
       passWithNoTests: true,
     },
+    build: {
+      rollupOptions: {
+        external: ['cloudflare:workers'],
+      },
+    },
   }
 })
 

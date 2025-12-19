@@ -62,6 +62,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Resolved Open Meteo 429 rate limit errors by moving weather fetch to client-side
+- Fixed server-side IP blocking issues by leveraging distributed user IPs for weather data
+- Updated `generateBriefing` server function to accept client-provided weather data
+- Updated `BriefingCard` component to fetch weather before generating briefings
 - Switched server-side Sentry to use @sentry/tanstackstart-react (compatible with TanStack Start)
 - Added comprehensive Sentry initialization utility for server-side error tracking in Cloudflare Workers
 - Enhanced Sentry error logging with detailed debug information for production diagnostics

@@ -5,6 +5,7 @@
  * Used to enhance AI briefings with real weather data.
  */
 
+import * as Sentry from "@sentry/tanstackstart-react";
 import type { LatLng, OpenMeteoResponse, WeatherConditions } from "./types";
 import { deriveWeatherFavorability } from "./types";
 
@@ -30,77 +31,119 @@ export async function getWeatherForPass(
 	passTime: Date,
 	maxRetries: number = 2,
 ): Promise<WeatherConditions | null> {
-	for (let attempt = 0; attempt <= maxRetries; attempt++) {
-		try {
-			const url = new URL(OPEN_METEO_URL);
-			url.searchParams.set("latitude", String(location.lat));
-			url.searchParams.set("longitude", String(location.lng));
-			url.searchParams.set("hourly", "cloud_cover,visibility");
-			url.searchParams.set("forecast_days", "7");
-			// Use timezone to ensure accurate time matching
-			url.searchParams.set("timezone", "auto"); // Auto-detect timezone based on location
+	return Sentry.startSpan({ name: "Fetch Weather for Pass" }, async () => {
+		for (let attempt = 0; attempt <= maxRetries; attempt++) {
+			try {
+				const url = new URL(OPEN_METEO_URL);
+				url.searchParams.set("latitude", String(location.lat));
+				url.searchParams.set("longitude", String(location.lng));
+				url.searchParams.set("hourly", "cloud_cover,visibility");
+				url.searchParams.set("forecast_days", "7");
+				// Use timezone to ensure accurate time matching
+				url.searchParams.set("timezone", "auto"); // Auto-detect timezone based on location
 
-			// Create timeout controller for fetch
-			const controller = new AbortController();
-			const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+				// Create timeout controller for fetch
+				const controller = new AbortController();
+				const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
 
-			const response = await fetch(url.toString(), {
-				signal: controller.signal,
-			});
+				const response = await fetch(url.toString(), {
+					signal: controller.signal,
+				});
 
-			clearTimeout(timeoutId);
+				clearTimeout(timeoutId);
 
-			if (!response.ok) {
-				if (attempt < maxRetries && response.status >= 500) {
-					// Retry on server errors
+				if (!response.ok) {
+					const errorMessage = `Weather API returned ${response.status} ${response.statusText}`;
+					Sentry.captureMessage(errorMessage, {
+						level: "warning",
+						tags: {
+							weather_api: "open_meteo",
+							status_code: response.status,
+							attempt: attempt + 1,
+						},
+					});
+
+					if (attempt < maxRetries && response.status >= 500) {
+						// Retry on server errors
+						await new Promise((resolve) =>
+							setTimeout(resolve, 1000 * (attempt + 1)),
+						);
+						continue;
+					}
+					console.warn(errorMessage);
+					return null;
+				}
+
+				const data = (await response.json()) as OpenMeteoResponse;
+
+				if (
+					!data.hourly?.time ||
+					!data.hourly?.cloud_cover ||
+					!data.hourly?.visibility
+				) {
+					const errorMessage = "Weather API response missing required fields";
+					Sentry.captureMessage(errorMessage, {
+						level: "warning",
+						tags: {
+							weather_api: "open_meteo",
+						},
+						extra: {
+							hasTime: !!data.hourly?.time,
+							hasCloudCover: !!data.hourly?.cloud_cover,
+							hasVisibility: !!data.hourly?.visibility,
+						},
+					});
+					console.warn(errorMessage, {
+						hasTime: !!data.hourly?.time,
+						hasCloudCover: !!data.hourly?.cloud_cover,
+						hasVisibility: !!data.hourly?.visibility,
+					});
+					return null;
+				}
+
+				return findClosestWeather(data.hourly, passTime);
+			} catch (error) {
+				const err = error instanceof Error ? error : new Error(String(error));
+
+				// Don't retry on timeout or abort errors
+				if (err.name === "AbortError" || err.name === "TimeoutError") {
+					Sentry.captureMessage("Weather fetch timeout", {
+						level: "warning",
+						tags: {
+							weather_api: "open_meteo",
+							error_type: err.name,
+						},
+					});
+					console.warn("Weather fetch timeout:", err);
+					return null;
+				}
+
+				// Retry on network errors
+				if (attempt < maxRetries) {
 					await new Promise((resolve) =>
 						setTimeout(resolve, 1000 * (attempt + 1)),
 					);
 					continue;
 				}
-				console.warn(`Weather API returned ${response.status}`);
-				return null;
-			}
 
-			const data = (await response.json()) as OpenMeteoResponse;
-
-			if (
-				!data.hourly?.time ||
-				!data.hourly?.cloud_cover ||
-				!data.hourly?.visibility
-			) {
-				console.warn("Weather API response missing required fields", {
-					hasTime: !!data.hourly?.time,
-					hasCloudCover: !!data.hourly?.cloud_cover,
-					hasVisibility: !!data.hourly?.visibility,
+				// Log final failure to Sentry
+				Sentry.captureException(err, {
+					tags: {
+						weather_api: "open_meteo",
+						attempts: attempt + 1,
+					},
+					extra: {
+						location,
+						passTime: passTime.toISOString(),
+					},
 				});
+				console.warn("Weather fetch failed after retries:", err);
 				return null;
 			}
-
-			return findClosestWeather(data.hourly, passTime);
-		} catch (error) {
-			const err = error instanceof Error ? error : new Error(String(error));
-
-			// Don't retry on timeout or abort errors
-			if (err.name === "AbortError" || err.name === "TimeoutError") {
-				console.warn("Weather fetch timeout:", err);
-				return null;
-			}
-
-			// Retry on network errors
-			if (attempt < maxRetries) {
-				await new Promise((resolve) =>
-					setTimeout(resolve, 1000 * (attempt + 1)),
-				);
-				continue;
-			}
-
-			console.warn("Weather fetch failed after retries:", err);
-			return null;
 		}
-	}
 
-	return null;
+		return null;
+	});
 }
 
 // =============================================================================
@@ -208,39 +251,71 @@ export async function getWeatherForecast(
 	location: LatLng,
 	days: number = 7,
 ): Promise<WeatherConditions[] | null> {
-	try {
-		const url = new URL(OPEN_METEO_URL);
-		url.searchParams.set("latitude", String(location.lat));
-		url.searchParams.set("longitude", String(location.lng));
-		url.searchParams.set("hourly", "cloud_cover,visibility");
-		url.searchParams.set("forecast_days", String(Math.min(days, 14)));
-		url.searchParams.set("timezone", "auto"); // Auto-detect timezone based on location
+	return Sentry.startSpan({ name: "Fetch Weather Forecast" }, async () => {
+		try {
+			const url = new URL(OPEN_METEO_URL);
+			url.searchParams.set("latitude", String(location.lat));
+			url.searchParams.set("longitude", String(location.lng));
+			url.searchParams.set("hourly", "cloud_cover,visibility");
+			url.searchParams.set("forecast_days", String(Math.min(days, 14)));
+			url.searchParams.set("timezone", "auto"); // Auto-detect timezone based on location
 
-		const response = await fetch(url.toString());
+			const response = await fetch(url.toString());
 
-		if (!response.ok) {
+			if (!response.ok) {
+				Sentry.captureMessage(
+					`Weather forecast API returned ${response.status} ${response.statusText}`,
+					{
+						level: "warning",
+						tags: {
+							weather_api: "open_meteo",
+							status_code: response.status,
+						},
+					},
+				);
+				return null;
+			}
+
+			const data = (await response.json()) as OpenMeteoResponse;
+
+			if (!data.hourly?.time) {
+				Sentry.captureMessage(
+					"Weather forecast API response missing time data",
+					{
+						level: "warning",
+						tags: {
+							weather_api: "open_meteo",
+						},
+					},
+				);
+				return null;
+			}
+
+			return data.hourly.time.map((time, i) => {
+				const cloudCover = data.hourly.cloud_cover[i] ?? 50;
+				const visibility = data.hourly.visibility[i] ?? 10000;
+
+				return {
+					timestamp: new Date(time),
+					cloudCover,
+					visibility,
+					isFavorable: deriveWeatherFavorability(cloudCover, visibility),
+				};
+			});
+		} catch (error) {
+			const err = error instanceof Error ? error : new Error(String(error));
+			Sentry.captureException(err, {
+				tags: {
+					weather_api: "open_meteo",
+					function: "getWeatherForecast",
+				},
+				extra: {
+					location,
+					days,
+				},
+			});
+			console.warn("Weather forecast fetch failed:", error);
 			return null;
 		}
-
-		const data = (await response.json()) as OpenMeteoResponse;
-
-		if (!data.hourly?.time) {
-			return null;
-		}
-
-		return data.hourly.time.map((time, i) => {
-			const cloudCover = data.hourly.cloud_cover[i] ?? 50;
-			const visibility = data.hourly.visibility[i] ?? 10000;
-
-			return {
-				timestamp: new Date(time),
-				cloudCover,
-				visibility,
-				isFavorable: deriveWeatherFavorability(cloudCover, visibility),
-			};
-		});
-	} catch (error) {
-		console.warn("Weather forecast fetch failed:", error);
-		return null;
-	}
+	});
 }

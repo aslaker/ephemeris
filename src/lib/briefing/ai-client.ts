@@ -198,7 +198,18 @@ export const generateBriefing = createServerFn({ method: "POST" })
 				try {
 					weather = await getWeatherForPass(location, passData.startTime, 2);
 				} catch (e) {
-					console.warn("Weather fetch failed, continuing without:", e);
+					const err = e instanceof Error ? e : new Error(String(e));
+					Sentry.captureException(err, {
+						tags: {
+							component: "ai_briefing",
+							operation: "weather_fetch",
+						},
+						extra: {
+							location,
+							passTime: passData.startTime.toISOString(),
+						},
+					});
+					console.warn("Weather fetch failed, continuing without:", err);
 				}
 
 				// Get AI binding from Cloudflare environment

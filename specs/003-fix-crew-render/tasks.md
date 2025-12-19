@@ -178,3 +178,4 @@ Task: "Confirm Sentry instrumentation continues to work"
 - Silent error handling removal is critical - it's the reason error state doesn't show
 
 
+

@@ -5,7 +5,7 @@
  * Client-side should continue using @sentry/tanstackstart-react.
  */
 
-import { env } from "cloudflare:workers";
+// import { env } from "cloudflare:workers";
 // Use @sentry/tanstackstart-react for server-side as it's designed for TanStack Start
 // @sentry/cloudflare requires withSentry wrapper which doesn't work with TanStack Start's managed entry point
 import * as Sentry from "@sentry/tanstackstart-react";
@@ -23,7 +23,12 @@ export function ensureSentryInitialized(): void {
 
 	// Try to get DSN from various sources
 	// Note: For server-side in Cloudflare Workers, use SENTRY_DSN (runtime)
-	const envObj = env as Cloudflare.Env & { SENTRY_DSN?: string };
+	const envObj = (typeof process !== "undefined"
+		? process.env
+		: {}) as unknown as {
+		SENTRY_DSN?: string;
+		VITE_SENTRY_DSN?: string;
+	};
 	const dsn =
 		// Cloudflare Workers env - prefer SENTRY_DSN for server-side runtime
 		envObj?.SENTRY_DSN ||

@@ -355,3 +355,4 @@ type PassBriefing = z.infer<typeof PassBriefingSchema>;
 type WeatherConditions = z.infer<typeof WeatherConditionsSchema>;
 ```
 
+

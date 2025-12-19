@@ -5,7 +5,7 @@
  * Includes Sentry instrumentation per project rules.
  */
 
-import { env } from "cloudflare:workers";
+// import { env } from "cloudflare:workers";
 import * as Sentry from "@sentry/tanstackstart-react";
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
@@ -24,8 +24,8 @@ import {
 	getBrightnessDescription,
 	LatLngSchema,
 	PassPredictionSchema,
+	WeatherConditionsSchema,
 } from "./types";
-import { getWeatherForPass } from "./weather";
 
 // =============================================================================
 // FALLBACK BRIEFING
@@ -186,6 +186,7 @@ export const generateBriefing = createServerFn({ method: "POST" })
 		z.object({
 			passData: PassPredictionSchema,
 			location: LatLngSchema,
+			weather: WeatherConditionsSchema.nullable().optional(),
 		}),
 	)
 	.handler(async ({ data, context }) => {
@@ -193,43 +194,18 @@ export const generateBriefing = createServerFn({ method: "POST" })
 		return Sentry.startSpan(
 			{ name: "Generate AI Briefing" },
 			async (): Promise<GenerateBriefingResponse> => {
-				const { passData, location } = data;
+				const { passData, location, weather: rawWeather } = data;
+				const weather = rawWeather ?? null;
 
-				// Fetch weather data (optional enhancement)
-				let weather: WeatherConditions | null = null;
-				try {
-					weather = await getWeatherForPass(location, passData.startTime, 2);
-				} catch (e) {
-					const err = e instanceof Error ? e : new Error(String(e));
-					console.log("[AI Briefing] Capturing weather fetch error to Sentry");
-					try {
-						Sentry.captureException(err, {
-							tags: {
-								component: "ai_briefing",
-								operation: "weather_fetch",
-							},
-							extra: {
-								location,
-								passTime: passData.startTime.toISOString(),
-							},
-						});
-						console.log("[AI Briefing] Error captured successfully");
-					} catch (sentryError) {
-						console.error(
-							"[AI Briefing] Failed to capture to Sentry:",
-							sentryError,
-						);
-					}
-					console.warn("Weather fetch failed, continuing without:", err);
-				}
+				// Note: Weather is now fetched client-side and passed in to avoid
+				// server-side rate limits and IP blocking (Open-Meteo).
 
 				// Get AI binding from Cloudflare environment
 				// When running via 'wrangler pages dev --proxy', this is available in 'env'
 				const ai =
-					(env as Cloudflare.Env)?.AI ||
-					(context &&
-						(context as unknown as { cloudflare?: { env?: Cloudflare.Env } })
-							.cloudflare?.env?.AI);
+					context &&
+					(context as unknown as { cloudflare?: { env?: Cloudflare.Env } })
+						.cloudflare?.env?.AI;
 
 				if (!ai) {
 					// Fallback: Return structured data without AI narrative
@@ -253,16 +229,18 @@ export const generateBriefing = createServerFn({ method: "POST" })
 
 				for (let attempt = 0; attempt <= maxRetries; attempt++) {
 					try {
-						aiResponse = await ai.run(
-							"@cf/meta/llama-3.1-8b-instruct" as Parameters<typeof ai.run>[0],
-							{
-								messages: [
-									{ role: "system", content: SYSTEM_PROMPT },
-									{ role: "user", content: prompt },
-								],
-								max_tokens: 500,
-							},
-						);
+						// Type assertion to bypass TS error - run exists at runtime
+						aiResponse = await (
+							ai as unknown as {
+								run: (model: string, options: unknown) => Promise<unknown>;
+							}
+						).run("@cf/meta/llama-3.1-8b-instruct", {
+							messages: [
+								{ role: "system", content: SYSTEM_PROMPT },
+								{ role: "user", content: prompt },
+							],
+							max_tokens: 500,
+						});
 						aiError = null;
 						break; // Success, exit retry loop
 					} catch (error) {
@@ -304,7 +282,7 @@ export const generateBriefing = createServerFn({ method: "POST" })
 						const fallbackBriefing = createFallbackBriefing(
 							passData,
 							location,
-							weather,
+							weather ?? null,
 						);
 						return {
 							status: "success",

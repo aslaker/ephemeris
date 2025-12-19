@@ -450,3 +450,4 @@ export function getBrightnessDescription(magnitude: number): string {
 	return "Visible in dark skies";
 }
 
+

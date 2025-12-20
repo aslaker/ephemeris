@@ -3,6 +3,7 @@ import {
 	AlertTriangle,
 	Calendar,
 	Map as MapIcon,
+	MessageSquare,
 	Satellite,
 	Users,
 	Volume2,
@@ -125,6 +126,17 @@ export const ISSLayout = ({ children }: ISSLayoutProps) => {
 							<Calendar className="w-3 h-3 inline mr-1" />
 							Passes
 						</Link>
+						<a
+							href="/iss/copilot"
+							className={`px-3 py-1 text-xs uppercase border transition-colors hover:border-matrix-dim ${
+								location.pathname === "/iss/copilot"
+									? "border-matrix-text text-matrix-text"
+									: "border-transparent"
+							}`}
+						>
+							<MessageSquare className="w-3 h-3 inline mr-1" />
+							Copilot
+						</a>
 
 						{/* Mute Toggle */}
 						<button

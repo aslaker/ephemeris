@@ -3,7 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "NODE_OPTIONS='--import ./instrument.server.mjs' vite dev --port 3000",
+    "dev": "NODE_OPTIONS='--import ./instrument.server.mjs' wrangler dev --port 3000",
+    "dev:vite": "NODE_OPTIONS='--import ./instrument.server.mjs' vite dev --port 3000",
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest run",
@@ -14,6 +15,7 @@
     "deploy": "wrangler deploy"
   },
   "dependencies": {
+    "@cloudflare/ai-utils": "^1.0.1",
     "@cloudflare/vite-plugin": "^1.13.8",
     "@faker-js/faker": "^10.0.0",
     "@modelcontextprotocol/sdk": "^1.17.0",

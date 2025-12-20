@@ -13,6 +13,9 @@ Auto-generated from all feature plans. Last updated: 2025-12-13
 - N/A (metadata is static configuration, no database changes) (005-professional-polish)
 - TypeScript 5.7, React 19 + TanStack Start, TanStack Router, TanStack Query, TanStack Store, Dexie (IndexedDB), Sentry, Zod, satellite.js (006-ai-pass-briefing)
 - IndexedDB via Dexie (client-side for caching), Cloudflare KV (optional, for server-side caching) (006-ai-pass-briefing)
+- TypeScript 5.7, React 19 + TanStack Start, TanStack Query, TanStack Store, Cloudflare Workers AI, Zod (007-observation-copilot)
+- Session-only (TanStack Store in memory), existing IndexedDB for ISS data (007-observation-copilot)
+- TypeScript 5.7, React 19 + TanStack Start, TanStack Query, TanStack Store, **TanStack AI**, Cloudflare Workers AI, Zod (007-observation-copilot)
 
 - TypeScript 5.7+, React 19 + TanStack Start, TanStack Query, TanStack Router, react-globe.gl, satellite.js, three.js, lucide-reac (001-iss-tracker-migration)
 
@@ -32,9 +35,9 @@ npm test && npm run lint
 TypeScript 5.7+, React 19: Follow standard conventions
 
 ## Recent Changes
+- 007-observation-copilot: Added TypeScript 5.7, React 19 + TanStack Start, TanStack Query, TanStack Store, **TanStack AI**, Cloudflare Workers AI, Zod
+- 007-observation-copilot: Added TypeScript 5.7, React 19 + TanStack Start, TanStack Query, TanStack Store, Cloudflare Workers AI, Zod
 - 006-ai-pass-briefing: Added TypeScript 5.7, React 19 + TanStack Start, TanStack Router, TanStack Query, TanStack Store, Dexie (IndexedDB), Sentry, Zod, satellite.js
-- 005-professional-polish: Added TypeScript 5.7.2 (strict mode) + TanStack Start 1.132.0, TanStack Router 1.132.0, React 19.2.0, Vite 7.1.7
-- 004-tanstack-db-storage: Added TypeScript 5.7.2, React 19.2.0 + TanStack DB 0.1.1, TanStack Query 5.66.5, TanStack Query DB Collection 0.2.0
 
 
 <!-- MANUAL ADDITIONS START -->

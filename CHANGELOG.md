@@ -9,6 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Observation Copilot**: AI-powered chat interface for ISS questions and pass queries
+  - Natural language chat interface on `/iss/copilot` route for asking about ISS passes, weather, and spaceflight facts
+  - Embedded function calling with 5 tools: ISS position, upcoming passes, weather, location, and knowledge base
+  - Curated knowledge base with 70+ ISS facts across 6 categories (specifications, history, orbital mechanics, observation, crew, missions)
+  - Conversation context management (last 10 messages or 15 minutes)
+  - Client-side rate limiting (3 concurrent, 5 queued requests)
+  - Privacy-first data sanitization before logging
+  - Integration with Cloudflare Workers AI using `@cf/meta/llama-3.1-8b-instruct` model
+  - Copilot library: `agent.ts`, `tools.ts`, `knowledge.ts`, `prompts.ts`, `store.ts`, `utils.ts`
+  - UI components: `CopilotPanel`, `MessageBubble`, `ChatInput`, `SuggestedPrompts`, `MessageList`, `ToolExecutionIndicator`
+  - Specification documents for Observation Copilot feature (007-observation-copilot)
+  - Dependency: `@cloudflare/ai-utils` for embedded function calling with Workers AI
 - TypeScript type checking phase to pre-commit workflow (`bun run type-check`)
 - AI-powered ISS pass briefings using Cloudflare Workers AI integration
 - New passes route (`/iss/passes`) with comprehensive ISS pass predictions
@@ -46,6 +58,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Updated dev script to use `wrangler dev` instead of `vite dev` for proper Cloudflare Workers bindings access (added `dev:vite` as fallback)
 - Enhanced orbital calculations with pass visibility predictions
 - Updated ISS types with pass prediction interfaces
 - Refactored ISSLayout and FlyoverControl for improved navigation
@@ -62,6 +75,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Fixed 5 Biome lint warnings for `noExplicitAny` in Observation Copilot agent response parsing (added inline ignore comments for intentional type assertions)
+- Auto-fixed 1 formatting issue in agent.ts with proper indentation
 - Resolved Open Meteo 429 rate limit errors by moving weather fetch to client-side
 - Fixed server-side IP blocking issues by leveraging distributed user IPs for weather data
 - Updated `generateBriefing` server function to accept client-provided weather data

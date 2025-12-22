@@ -22,7 +22,11 @@ const config = defineConfig(({ mode }) => {
       ...(isTest ? [] : [tanstackStart()]),
       viteReact({
         babel: {
-          plugins: ['babel-plugin-react-compiler'],
+          plugins: [
+            'babel-plugin-react-compiler',
+            ['@babel/plugin-proposal-decorators', { legacy: true }],
+            ['@babel/plugin-proposal-class-properties', { loose: true }],
+          ],
         },
       }),
     ],

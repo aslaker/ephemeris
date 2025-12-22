@@ -5,10 +5,10 @@
  * Includes Sentry instrumentation per project rules.
  */
 
-// import { env } from "cloudflare:workers";
 import * as Sentry from "@sentry/tanstackstart-react";
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { AI_CONFIG } from "../ai/config";
 import { buildBriefingPrompt, parseAIResponse, SYSTEM_PROMPT } from "./prompt";
 import { ensureSentryInitialized } from "./sentry-init";
 import type {
@@ -225,7 +225,7 @@ export const generateBriefing = createServerFn({ method: "POST" })
 				// Retry logic for AI generation
 				let aiResponse: unknown = null;
 				let aiError: Error | null = null;
-				const maxRetries = 2;
+				const maxRetries = AI_CONFIG.retry.maxAttempts;
 
 				for (let attempt = 0; attempt <= maxRetries; attempt++) {
 					try {
@@ -234,7 +234,7 @@ export const generateBriefing = createServerFn({ method: "POST" })
 							ai as unknown as {
 								run: (model: string, options: unknown) => Promise<unknown>;
 							}
-						).run("@cf/meta/llama-3.1-8b-instruct", {
+						).run(AI_CONFIG.modelId, {
 							messages: [
 								{ role: "system", content: SYSTEM_PROMPT },
 								{ role: "user", content: prompt },
@@ -252,7 +252,10 @@ export const generateBriefing = createServerFn({ method: "POST" })
 							!aiError.message.includes("rate limit")
 						) {
 							await new Promise((resolve) =>
-								setTimeout(resolve, 1000 * (attempt + 1)),
+								setTimeout(
+									resolve,
+									AI_CONFIG.retry.baseDelayMs * (attempt + 1),
+								),
 							);
 							continue;
 						}

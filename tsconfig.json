@@ -20,6 +20,8 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
+    "experimentalDecorators": false,
+    "emitDecoratorMetadata": false,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]

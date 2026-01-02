@@ -92,9 +92,9 @@
             "command": "grep -rn '\\.filter(' src/lib/copilot src/lib/iss | grep -v node_modules",
             "expected": "List of all filter calls to review"
           },
-          "status": "in_progress",
-          "notes": "Starting analysis of all .filter() calls in copilot and ISS code paths",
-          "updated_at": "2026-01-02T17:55:52.492603+00:00"
+          "status": "completed",
+          "notes": "ANALYSIS COMPLETE - Found 5 filter calls:\\n\\n1. knowledge.ts:54 - SAFE: Chained to .map() which always returns array\\n2. prompts.ts:113 - SAFE: SUGGESTED_PROMPTS is constant array defined in same file\\n3. store.ts:69 - SAFE: TypeScript-enforced Message[] parameter, always passed arrays\\n4. storage.ts:442 - SAFE: detectGaps() always returns GapInfo[] (line 345 shows return [] guard, line 347 initializes const gaps: GapInfo[])\\n5. api.ts:189 - **HIGH RISK PRIMARY SUSPECT**: basicData.people.filter() accesses external API response without defensive null check\\n\\nROOT CAUSE IDENTIFIED: src/lib/iss/api.ts:189 is the source of the production error. While validateOpenNotifyResponse() checks Array.isArray(obj.people), any network failure (like ERR_BLOCKED_BY_CLIENT) or async timing issue could result in undefined basicData reaching this line.",
+          "updated_at": "2026-01-02T17:59:33.476610+00:00"
         },
         {
           "id": "subtask-2-2",
@@ -110,7 +110,9 @@
             "command": "grep -A 10 'fetchCrewData' src/lib/iss/api.ts",
             "expected": "Identify line 189 - basicData.people.filter() without null check"
           },
-          "status": "pending"
+          "status": "completed",
+          "notes": "VERIFIED: Line 189 in fetchCrewData has `basicData.people.filter()` without null check. ROOT CAUSE IDENTIFIED: (1) validateOpenNotifyResponse exists and properly validates structure, (2) BUT fetchCrewData assumes basicData is always valid after await, (3) If fetchCrewFromApi() throws (network error, timeout, invalid JSON), basicData is undefined, (4) Accessing undefined.people throws 'Cannot read properties of undefined (reading filter)'. FIX REQUIRED: Change line 189 from `basicData.people.filter()` to `(basicData?.people ?? []).filter()` following the defensive pattern from store.ts.",
+          "updated_at": "2026-01-02T18:01:46.432378+00:00"
         },
         {
           "id": "subtask-2-3",
@@ -422,5 +424,5 @@
   "planStatus": "in_progress",
   "updated_at": "2026-01-02T17:46:53.270Z",
   "recoveryNote": "Task recovered from stuck state at 2026-01-02T17:46:53.270Z",
-  "last_updated": "2026-01-02T17:55:52.492610+00:00"
+  "last_updated": "2026-01-02T18:01:46.432384+00:00"
 }

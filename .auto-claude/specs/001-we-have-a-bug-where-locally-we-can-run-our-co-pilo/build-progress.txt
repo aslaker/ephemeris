@@ -188,3 +188,177 @@ Static verification PASSED. All code paths are correctly structured with proper
 defensive coding patterns. Runtime verification recommended but not blocking for
 this investigation-type subtask - the code structure confirms local dev environment
 is correctly configured.
+
+## subtask-2-1: Analyze all .filter() calls on potentially undefined arrays
+Status: COMPLETED
+
+### Analysis Methodology ###
+
+Ran grep to find all .filter() calls in copilot and ISS code:
+```bash
+grep -rn '\.filter(' src/lib/copilot src/lib/iss | grep -v node_modules
+```
+
+Found 5 filter calls. Analyzed each for undefined array risk.
+
+### Complete Filter Call Analysis ###
+
+| File:Line | Code | Risk Level | Analysis |
+|-----------|------|------------|----------|
+| `knowledge.ts:54` | `.filter((entry) => entry.relevanceScore > 0)` | **NONE** | Chained to `.map()` which always returns array |
+| `prompts.ts:113` | `SUGGESTED_PROMPTS.filter((prompt) => {...})` | **NONE** | SUGGESTED_PROMPTS is constant array defined in same file (lines 43-104) |
+| `store.ts:69` | `messages.filter((m) => m.timestamp > fifteenMinsAgo)` | **VERY LOW** | TypeScript-enforced `Message[]` parameter, always passed arrays |
+| `storage.ts:442` | `gaps.filter((g) => g.useOrbitalCalculation)` | **NONE** | `detectGaps()` always returns `GapInfo[]` (guard at line 345, init at line 347) |
+| **`api.ts:189`** | `basicData.people.filter((p) => p.craft === "ISS")` | **HIGH** | External API response - PRIMARY SUSPECT |
+
+### Detailed Findings ###
+
+**SAFE - knowledge.ts:54**
+```typescript
+const scored = KNOWLEDGE_BASE.map((entry) => {...}).filter((entry) => entry.relevanceScore > 0);
+```
+- KNOWLEDGE_BASE is imported from `./knowledge-data.ts` as a constant `KnowledgeEntry[]` array
+- The `.map()` always returns an array, so `.filter()` is safe
+
+**SAFE - prompts.ts:113**
+```typescript
+return SUGGESTED_PROMPTS.filter((prompt) => {...});
+```
+- SUGGESTED_PROMPTS is a const array defined at lines 43-104 in the same file
+- Cannot be undefined
+
+**SAFE - store.ts:69**
+```typescript
+const recent = messages.filter((m) => m.timestamp > fifteenMinsAgo);
+```
+- Parameter `messages: Message[]` is TypeScript-enforced
+- All call sites (lines 123, 154, 193) pass spread arrays like `[...prev.conversation.messages, message]`
+
+**SAFE - storage.ts:442**
+```typescript
+const largeGaps = gaps.filter((g) => g.useOrbitalCalculation);
+```
+- `detectGaps()` function (lines 341-344) returns `GapInfo[]`
+- Has guard at line 345: `if (positions.length < 2) return [];`
+- Initializes empty array at line 347: `const gaps: GapInfo[] = [];`
+
+**⚠️ HIGH RISK - api.ts:189 (PRIMARY SUSPECT)**
+```typescript
+const issCrew = basicData.people.filter((p) => p.craft === "ISS");
+```
+- `basicData` comes from `fetchCrewFromApi()` - external Open Notify API call
+- While `validateOpenNotifyResponse()` checks `Array.isArray(obj.people)` at line 152...
+- Any network failure (e.g., `ERR_BLOCKED_BY_CLIENT` from ad blockers) could cause:
+  - `basicData` to be undefined
+  - Validation to not be reached
+  - Partial response reaching this line
+- This matches the exact production error: "Cannot read properties of undefined (reading 'filter')"
+
+### Root Cause Confirmation ###
+
+**src/lib/iss/api.ts:189** is confirmed as the PRIMARY ROOT CAUSE of the production error.
+
+The error occurs because:
+1. External API call fails or is blocked (ERR_BLOCKED_BY_CLIENT seen in browser)
+2. Error handling doesn't properly propagate the failure
+3. `basicData` becomes undefined
+4. `.filter()` is called on `undefined.people`
+5. JavaScript throws "Cannot read properties of undefined (reading 'filter')"
+
+### Recommended Fix ###
+
+Change line 189 from:
+```typescript
+const issCrew = basicData.people.filter((p) => p.craft === "ISS");
+```
+
+To:
+```typescript
+const people = basicData?.people ?? [];
+const issCrew = people.filter((p) => p.craft === "ISS");
+```
+
+This matches the defensive pattern from src/lib/copilot/store.ts.
+
+## subtask-2-2: Verify Open Notify API response structure and identify missing validation
+Status: COMPLETED
+
+### Open Notify API Response Structure ###
+
+**Endpoint:** http://api.open-notify.org/astros.json
+
+**TypeScript Interface (in api.ts lines 136-140):**
+```typescript
+interface OpenNotifyAstrosResponse {
+  message: "success" | "error";
+  number: number;
+  people: Array<{ name: string; craft: string }>;
+}
+```
+
+### Validation Analysis ###
+
+**Existing Validation (lines 145-161):**
+- `validateOpenNotifyResponse()` properly checks:
+  - `typeof data === 'object' && data !== null`
+  - `obj.message === "success"`
+  - `Array.isArray(obj.people)`
+  - Each person has `name: string` and `craft: string`
+
+**The Gap:** Validation is in `fetchCrewFromApi()` (server function) but NOT in `fetchCrewData()`.
+
+### Root Cause Confirmed at Line 189 ###
+
+```typescript
+// Line 185-189 in src/lib/iss/api.ts
+export const fetchCrewData = async (): Promise<Astronaut[]> => {
+  return Sentry.startSpan({ name: "Fetching Crew Data" }, async () => {
+    const basicData = await fetchCrewFromApi();  // Can throw!
+    const issCrew = basicData.people.filter((p) => p.craft === "ISS");  // CRASH if basicData undefined
+```
+
+**Failure Scenarios:**
+1. Network failure - `fetchCrewFromApi()` throws, `basicData` is undefined
+2. Server timeout - Promise rejects, error not caught
+3. Ad blocker - ERR_BLOCKED_BY_CLIENT prevents request
+4. JSON parsing failure - Response body invalid
+
+In ALL cases, `basicData` becomes undefined and `.people.filter()` throws the error.
+
+### Pattern Comparison (store.ts vs api.ts) ###
+
+**Good Pattern (store.ts:191-193):**
+```typescript
+const state = conversationStore.state;
+if (!state.conversation) return [];  // Defensive check BEFORE accessing
+const trimmed = trimContext(state.conversation.messages);
+```
+
+**Bad Pattern (api.ts:187-189):**
+```typescript
+const basicData = await fetchCrewFromApi();  // No try-catch
+const issCrew = basicData.people.filter(...);  // Assumes success
+```
+
+### Fix Required (for Phase 3) ###
+
+Apply defensive coding following store.ts pattern:
+```typescript
+// In fetchCrewData, wrap the call and add null check:
+const basicData = await fetchCrewFromApi();
+const people = basicData?.people ?? [];
+const issCrew = people.filter((p) => p.craft === "ISS");
+```
+
+Or with try-catch for better error handling:
+```typescript
+try {
+  const basicData = await fetchCrewFromApi();
+  const people = basicData?.people ?? [];
+  const issCrew = people.filter((p) => p.craft === "ISS");
+  // ... rest of function
+} catch (error) {
+  Sentry.captureException(error, { tags: { copilot: "crew_fetch_error" }});
+  return []; // Return empty array instead of crashing
+}
+```

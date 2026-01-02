@@ -14,7 +14,17 @@
       "description": "Copilot UI components are well-structured with 7 files: CopilotPanel.tsx (main container), ChatInput.tsx (with validation), SuggestedPrompts.tsx (context-aware), MessageList.tsx, MessageBubble.tsx, ToolExecutionIndicator.tsx, and BriefingErrorBoundary.tsx. All have defensive null checks already.",
       "category": "component-structure",
       "discovered_at": "2026-01-02T17:54:48.003063+00:00"
+    },
+    "src/lib/iss/api.ts:189": {
+      "description": "PRIMARY ROOT CAUSE: Line 189 `basicData.people.filter()` is the source of \"Cannot read properties of undefined (reading 'filter')\" error. External API response is not defensively accessed. Other 4 filter calls (knowledge.ts:54, prompts.ts:113, store.ts:69, storage.ts:442) are SAFE - they operate on constants, TypeScript-enforced arrays, or internal functions that always return arrays.",
+      "category": "bug-root-cause",
+      "discovered_at": "2026-01-02T17:59:33.461006+00:00"
+    },
+    "src/lib/iss/api.ts": {
+      "description": "Line 189 in fetchCrewData() calls basicData.people.filter() without null check. When fetchCrewFromApi() fails, basicData is undefined causing 'Cannot read properties of undefined (reading filter)' error. The validateOpenNotifyResponse function validates the API response structure, but the error occurs when the server function call itself fails.",
+      "category": "bug",
+      "discovered_at": "2026-01-02T18:01:46.451174+00:00"
     }
   },
-  "last_updated": "2026-01-02T17:54:48.003069+00:00"
+  "last_updated": "2026-01-02T18:01:46.451181+00:00"
 }

@@ -127,7 +127,9 @@
             "type": "manual",
             "instructions": "Review INVESTIGATION.md for: 1) Root cause identified, 2) Evidence provided, 3) Fixes proposed"
           },
-          "status": "pending"
+          "status": "completed",
+          "notes": "Created comprehensive INVESTIGATION.md documenting: 1) Root cause confirmed at src/lib/iss/api.ts:189 - unsafe basicData.people.filter() without null checking, 2) Evidence from analysis of all 5 filter() calls (4 safe, 1 unsafe), 3) Secondary issues (ERR_BLOCKED_BY_CLIENT, React Error #418), 4) Four proposed fixes with code examples following existing patterns from store.ts, 5) Verification plan and implementation priorities",
+          "updated_at": "2026-01-02T18:03:58.451985+00:00"
         }
       ]
     },
@@ -424,5 +426,5 @@
   "planStatus": "in_progress",
   "updated_at": "2026-01-02T17:46:53.270Z",
   "recoveryNote": "Task recovered from stuck state at 2026-01-02T17:46:53.270Z",
-  "last_updated": "2026-01-02T18:01:46.432384+00:00"
+  "last_updated": "2026-01-02T18:03:58.451990+00:00"
 }

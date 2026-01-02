@@ -1,0 +1,11 @@
+{
+  "task_description": "We have a bug where locally we can run our co-pilot feature which allows us to ask questions about the ISS. But when we deploy it to Cloudflare we are unable to get that to work. I can show you the error that comes up in the browser and then I can also show you the error that's in the browser logs as well. I think we just need to think about this and plan it and figure out what the issue is.\n\nDisplay Error: Attached image\n\nBrowser Console Error: Failed to load resource: net::ERR_BLOCKED_BY_CLIENT\nmain-BUnrGmg_.js:9 Uncaught Error: Minified React error #418; visit https://react.dev/errors/418?args[]=text&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.\n    at Gn (main-BUnrGmg_.js:9:31360)\n    at ep (main-BUnrGmg_.js:9:32394)\n    at mb (main-BUnrGmg_.js:9:86637)\n    at Do (main-BUnrGmg_.js:9:117734)\n    at Zm (main-BUnrGmg_.js:9:116982)\n    at Rb (main-BUnrGmg_.js:9:116893)\n    at Tb (main-BUnrGmg_.js:9:116748)\n    at Vm (main-BUnrGmg_.js:9:112241)\n    at cy (main-BUnrGmg_.js:9:124389)\n    at MessagePort.ct (main-BUnrGmg_.js:2:10167)",
+  "workflow_type": "feature",
+  "attached_images": [
+    {
+      "filename": "Screenshot 2026-01-02 at 10.54.44 AM.png",
+      "path": "attachments/Screenshot 2026-01-02 at 10.54.44 AM.png",
+      "description": ""
+    }
+  ]
+}

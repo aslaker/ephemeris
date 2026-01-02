@@ -1,0 +1,15 @@
+{
+  "discovered_files": {
+    "wrangler.jsonc": {
+      "description": "The copilot implementation does NOT use a Durable Object - it uses direct AI binding with @cloudflare/ai-utils runWithTools. The AI binding is correctly configured. The CopilotAgent DO mentioned in the spec was never implemented - the architecture is simpler.",
+      "category": "architecture",
+      "discovered_at": "2026-01-02T17:48:15.357131+00:00"
+    },
+    "src/lib/copilot/agent.ts": {
+      "description": "The copilot uses a server function pattern with createServerFn() and direct AI binding via cloudflare:workers env.AI. It does NOT use Durable Objects for conversation state - state is managed client-side in store.ts.",
+      "category": "architecture",
+      "discovered_at": "2026-01-02T17:48:15.375842+00:00"
+    }
+  },
+  "last_updated": "2026-01-02T17:48:15.375848+00:00"
+}

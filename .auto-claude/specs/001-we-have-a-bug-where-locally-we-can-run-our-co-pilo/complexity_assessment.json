@@ -1,0 +1,104 @@
+{
+  "complexity": "standard",
+  "workflow_type": "investigation",
+  "confidence": 0.85,
+  "reasoning": "This is a deployment-specific debugging task where the copilot feature works locally but fails on Cloudflare. The ERR_BLOCKED_BY_CLIENT error suggests either ad blocker interference (blocking 'copilot' URL patterns) or missing Cloudflare deployment configuration. Investigation is needed to identify root cause, then fix will likely be configuration or endpoint renaming.",
+
+  "analysis": {
+    "scope": {
+      "estimated_files": 4,
+      "estimated_services": 1,
+      "is_cross_cutting": false,
+      "notes": "Likely touches wrangler config, possibly TanStack server function endpoints, and Cloudflare dashboard settings. Single service (Cloudflare Workers deployment)."
+    },
+    "integrations": {
+      "external_services": ["Cloudflare Workers AI", "Cloudflare Durable Objects"],
+      "new_dependencies": [],
+      "research_needed": false,
+      "notes": "Uses existing Cloudflare integrations (Workers AI, Durable Objects via 'agents' SDK). Error appears to be configuration/deployment issue, not integration issue."
+    },
+    "infrastructure": {
+      "docker_changes": false,
+      "database_changes": false,
+      "config_changes": true,
+      "notes": "May require wrangler.toml updates, Cloudflare dashboard environment variable configuration, or endpoint URL changes to avoid ad blocker patterns."
+    },
+    "knowledge": {
+      "patterns_exist": true,
+      "research_required": false,
+      "unfamiliar_tech": [],
+      "notes": "Existing codebase already has working local implementation. Need to understand Cloudflare deployment differences and TanStack Start server function URL generation."
+    },
+    "risk": {
+      "level": "low",
+      "concerns": [
+        "Could be ad blocker false positive requiring URL renaming",
+        "Missing Durable Object bindings in production deployment",
+        "Environment variables not configured in Cloudflare dashboard"
+      ],
+      "notes": "Low risk as functionality works locally - this is a deployment configuration issue. Fix should not affect core business logic."
+    }
+  },
+
+  "recommended_phases": [
+    "discovery",
+    "requirements",
+    "context",
+    "spec_writing",
+    "planning",
+    "validation"
+  ],
+
+  "flags": {
+    "needs_research": false,
+    "needs_self_critique": false,
+    "needs_infrastructure_setup": false
+  },
+
+  "investigation_focus": {
+    "primary_hypotheses": [
+      {
+        "hypothesis": "Ad blocker blocking '/copilot' URL pattern",
+        "likelihood": "high",
+        "investigation": "Check network tab with ad blocker disabled, review TanStack server function URL patterns",
+        "potential_fix": "Rename endpoint to avoid trigger words (e.g., '/api/assistant' instead of '/copilot')"
+      },
+      {
+        "hypothesis": "Missing CopilotAgent Durable Object binding in production",
+        "likelihood": "medium",
+        "investigation": "Check wrangler.toml for Durable Object bindings, verify deployment logs",
+        "potential_fix": "Add Durable Object binding configuration to wrangler.toml"
+      },
+      {
+        "hypothesis": "Missing environment variables in Cloudflare dashboard",
+        "likelihood": "medium",
+        "investigation": "Compare .dev.vars with Cloudflare dashboard environment variables",
+        "potential_fix": "Configure missing variables in Cloudflare Pages/Workers settings"
+      },
+      {
+        "hypothesis": "CORS configuration issue on production",
+        "likelihood": "low",
+        "investigation": "Check network response headers for CORS errors in production",
+        "potential_fix": "Add CORS headers via _headers file or middleware"
+      }
+    ],
+    "key_files_to_examine": [
+      "wrangler.toml or wrangler.json",
+      "src/lib/copilot/agent.ts (server function)",
+      ".dev.vars vs production environment",
+      "Browser network tab logs on deployed site"
+    ]
+  },
+
+  "validation_recommendations": {
+    "risk_level": "low",
+    "skip_validation": false,
+    "minimal_mode": true,
+    "test_types_required": ["unit"],
+    "security_scan_required": false,
+    "staging_deployment_required": false,
+    "reasoning": "Bug fix for deployment configuration. Once root cause is identified, fix is likely a config change. Minimal validation with manual deployment testing is sufficient since local functionality already works."
+  },
+
+  "created_at": "2026-01-02T11:00:00.000Z"
+}

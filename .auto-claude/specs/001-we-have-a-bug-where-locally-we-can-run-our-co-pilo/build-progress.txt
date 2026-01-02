@@ -1,0 +1,99 @@
+=== AUTO-BUILD PROGRESS ===
+
+Project: ISS Copilot Cloudflare Deployment Bug Fix
+Workspace: ephemeris
+Started: 2026-01-02
+
+Workflow Type: investigation
+Rationale: The copilot feature works locally but fails in Cloudflare production. This requires investigation to identify root cause (likely unsafe array access or missing bindings) before implementing fixes.
+
+Session 1 (Planner):
+- Created implementation_plan.json
+- Phases: 4
+- Total subtasks: 13
+- Created init.sh
+- Updated context.json with investigation findings
+- Updated project_index.json with Cloudflare-specific details
+
+Phase Summary:
+- Phase 1 (Reproduce and Instrument): 3 subtasks, depends on none
+  - Verify wrangler.jsonc configuration
+  - Test local development environment
+  - Add Sentry breadcrumbs for tracing
+
+- Phase 2 (Root Cause Investigation): 3 subtasks, depends on phase-1
+  - Analyze all .filter() calls
+  - Verify Open Notify API response handling
+  - Document findings in INVESTIGATION.md
+
+- Phase 3 (Implement Fixes): 4 subtasks, depends on phase-2
+  - Add defensive null check to fetchCrewData
+  - Improve copilot agent error handling
+  - Add try-catch to CopilotAgent class
+  - Add defensive checks to knowledge/prompts
+
+- Phase 4 (Harden and Verify): 4 subtasks, depends on phase-3
+  - Create unit tests for API error handling
+  - Create unit tests for copilot agent
+  - Test with wrangler dev --remote
+  - Verify in production deployment
+
+Services Involved:
+- main: React/TanStack frontend with Cloudflare Workers backend
+
+Parallelism Analysis:
+- Max parallel phases: 1
+- Recommended workers: 1
+- Parallel groups: None (sequential investigation workflow)
+
+Key Files to Modify:
+- src/lib/iss/api.ts (defensive null check for .filter())
+- src/lib/copilot/agent.ts (improved error handling)
+- src/lib/copilot/agent-class.ts (try-catch for bindings)
+- src/lib/copilot/knowledge.ts (optional chaining)
+- src/lib/copilot/prompts.ts (optional chaining)
+
+Root Cause Analysis (from investigation):
+1. PRIMARY: src/lib/iss/api.ts:189 - basicData.people.filter() crashes when undefined
+2. SECONDARY: ERR_BLOCKED_BY_CLIENT - likely ad blocker blocking "copilot" URLs
+3. TERTIARY: React Error #418 - hydration mismatch caused by primary error
+
+=== STARTUP COMMAND ===
+
+To continue building this spec, run:
+
+  source auto-claude/.venv/bin/activate && python auto-claude/run.py --spec 001 --parallel 1
+
+Local development:
+  npm run dev
+
+Test with remote bindings:
+  wrangler dev --remote
+
+Deploy to production:
+  npm run deploy
+
+=== END SESSION 1 ===
+
+=== SESSION 2 (Builder) ===
+Started: 2026-01-02
+
+## subtask-1-1: Verify wrangler.jsonc configuration
+Status: COMPLETED
+
+Findings:
+- AI binding is correctly configured: "ai": { "binding": "AI", "remote": true }
+- No Durable Object section present (durable_objects)
+
+Key Discovery:
+The spec assumed a CopilotAgent Durable Object would be needed, but the actual
+implementation in src/lib/copilot/agent.ts uses @cloudflare/ai-utils runWithTools
+with embedded function calling - NOT a Durable Object architecture.
+
+The wrangler.jsonc configuration is CORRECT for the actual implementation.
+Only the AI binding is needed, which is properly configured.
+
+Files verified:
+- wrangler.jsonc ✓
+- src/lib/copilot/agent.ts ✓
+- worker-configuration.d.ts ✓ (confirms only AI: Ai in Env interface)

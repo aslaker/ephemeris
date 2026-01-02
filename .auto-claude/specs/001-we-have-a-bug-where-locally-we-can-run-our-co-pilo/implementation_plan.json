@@ -128,8 +128,8 @@
             "instructions": "Review INVESTIGATION.md for: 1) Root cause identified, 2) Evidence provided, 3) Fixes proposed"
           },
           "status": "completed",
-          "notes": "Created comprehensive INVESTIGATION.md documenting: 1) Root cause confirmed at src/lib/iss/api.ts:189 - unsafe basicData.people.filter() without null checking, 2) Evidence from analysis of all 5 filter() calls (4 safe, 1 unsafe), 3) Secondary issues (ERR_BLOCKED_BY_CLIENT, React Error #418), 4) Four proposed fixes with code examples following existing patterns from store.ts, 5) Verification plan and implementation priorities",
-          "updated_at": "2026-01-02T18:03:58.451985+00:00"
+          "notes": "Created INVESTIGATION.md with comprehensive root cause analysis. Documented: (1) Root cause identified as src/lib/iss/api.ts:189 - unsafe array access on external API response, (2) Evidence from analysis of all 5 filter calls in codebase showing only api.ts is unsafe, (3) Four proposed fixes with implementation priority (P0-P3), (4) Validation steps. Commit: b15bad4",
+          "updated_at": "2026-01-02T18:06:39.651734+00:00"
         }
       ]
     },
@@ -159,8 +159,9 @@
             "command": "grep -A 3 'const issCrew' src/lib/iss/api.ts",
             "expected": "Should show 'const people = basicData?.people ?? []' pattern"
           },
-          "status": "pending",
-          "notes": "Change line 189 from 'basicData.people.filter()' to use optional chaining and nullish coalescing"
+          "status": "completed",
+          "notes": "Added defensive null check pattern: `const people = basicData?.people ?? []` before calling .filter() to prevent runtime errors when API returns unexpected data.",
+          "updated_at": "2026-01-02T18:05:19.661769+00:00"
         },
         {
           "id": "subtask-3-2",
@@ -426,5 +427,5 @@
   "planStatus": "in_progress",
   "updated_at": "2026-01-02T17:46:53.270Z",
   "recoveryNote": "Task recovered from stuck state at 2026-01-02T17:46:53.270Z",
-  "last_updated": "2026-01-02T18:03:58.451990+00:00"
+  "last_updated": "2026-01-02T18:06:39.651741+00:00"
 }

@@ -89,6 +89,25 @@
           "approach": "Implemented: Document root cause findings and proposed fixes in INVESTIGATION.md",
           "success": true,
           "error": null
+        },
+        {
+          "session": 5,
+          "timestamp": "2026-01-02T12:06:56.142131",
+          "approach": "Implemented: Document root cause findings and proposed fixes in INVESTIGATION.md",
+          "success": true,
+          "error": null
+        }
+      ],
+      "status": "completed"
+    },
+    "subtask-3-1": {
+      "attempts": [
+        {
+          "session": 6,
+          "timestamp": "2026-01-02T12:05:27.573254",
+          "approach": "Implemented: Add defensive null check to fetchCrewData before .filter() call",
+          "success": true,
+          "error": null
         }
       ],
       "status": "completed"
@@ -97,6 +116,6 @@
   "stuck_subtasks": [],
   "metadata": {
     "created_at": "2026-01-02T11:46:53.656279",
-    "last_updated": "2026-01-02T12:04:09.471030"
+    "last_updated": "2026-01-02T12:06:56.142133"
   }
 }

@@ -10,6 +10,7 @@ import { env } from "cloudflare:workers";
 import { runWithTools } from "@cloudflare/ai-utils";
 import * as Sentry from "@sentry/tanstackstart-react";
 import { createServerFn } from "@tanstack/react-start";
+import { ensureSentryInitialized } from "../briefing/sentry-init";
 import { getWeatherForPass } from "../briefing/weather";
 import { fetchISSPosition, fetchTLE } from "../iss/api";
 import { predictPasses } from "../iss/orbital";
@@ -27,15 +28,25 @@ import { sanitizeForLogging } from "./utils";
  */
 async function getISSPosition(): Promise<string> {
 	return Sentry.startSpan({ name: "Tool: get_iss_position" }, async () => {
-		const position = await fetchISSPosition();
-		return JSON.stringify({
-			latitude: position.latitude,
-			longitude: position.longitude,
-			altitude: position.altitude,
-			velocity: position.velocity,
-			visibility: position.visibility,
-			timestamp: position.timestamp * 1000,
-		});
+		try {
+			const position = await fetchISSPosition();
+			return JSON.stringify({
+				latitude: position.latitude,
+				longitude: position.longitude,
+				altitude: position.altitude,
+				velocity: position.velocity,
+				visibility: position.visibility,
+				timestamp: position.timestamp * 1000,
+			});
+		} catch (error) {
+			Sentry.captureException(error, {
+				tags: { tool: "get_iss_position" },
+			});
+			return JSON.stringify({
+				error: true,
+				message: "Unable to fetch ISS position. Please try again later.",
+			});
+		}
 	});
 }
 
@@ -49,32 +60,43 @@ async function getUpcomingPasses(args: {
 	maxPasses?: number;
 }): Promise<string> {
 	return Sentry.startSpan({ name: "Tool: get_upcoming_passes" }, async () => {
-		const { lat, lng, days = 7, maxPasses = 5 } = args;
-		const tle = await fetchTLE();
-		const passes = predictPasses(
-			tle[0],
-			tle[1],
-			{ lat, lng },
-			{
-				maxPasses,
-				maxDays: days,
-				minElevation: 10,
-			},
-		);
+		try {
+			const { lat, lng, days = 7, maxPasses = 5 } = args;
+			const tle = await fetchTLE();
+			const passes = predictPasses(
+				tle[0],
+				tle[1],
+				{ lat, lng },
+				{
+					maxPasses,
+					maxDays: days,
+					minElevation: 10,
+				},
+			);
 
-		return JSON.stringify({
-			passes: passes.map((pass) => ({
-				id: pass.id,
-				startTime: pass.startTime.toISOString(),
-				endTime: pass.endTime.toISOString(),
-				duration: Math.round(
-					(pass.endTime.getTime() - pass.startTime.getTime()) / 1000 / 60,
-				),
-				maxElevation: pass.maxElevation,
-				quality: pass.quality,
-			})),
-			location: { lat, lng },
-		});
+			return JSON.stringify({
+				passes: passes.map((pass) => ({
+					id: pass.id,
+					startTime: pass.startTime.toISOString(),
+					endTime: pass.endTime.toISOString(),
+					duration: Math.round(
+						(pass.endTime.getTime() - pass.startTime.getTime()) / 1000 / 60,
+					),
+					maxElevation: pass.maxElevation,
+					quality: pass.quality,
+				})),
+				location: { lat, lng },
+			});
+		} catch (error) {
+			Sentry.captureException(error, {
+				tags: { tool: "get_upcoming_passes" },
+				extra: { lat: args.lat, lng: args.lng },
+			});
+			return JSON.stringify({
+				error: true,
+				message: "Unable to calculate pass predictions. Please try again later.",
+			});
+		}
 	});
 }
 
@@ -87,27 +109,40 @@ async function getPassWeather(args: {
 	passTime: string;
 }): Promise<string> {
 	return Sentry.startSpan({ name: "Tool: get_pass_weather" }, async () => {
-		const { lat, lng, passTime } = args;
-		const passDate = new Date(passTime);
-		const weather = await getWeatherForPass({ lat, lng }, passDate);
+		try {
+			const { lat, lng, passTime } = args;
+			const passDate = new Date(passTime);
+			const weather = await getWeatherForPass({ lat, lng }, passDate);
 
-		if (!weather) {
+			if (!weather) {
+				return JSON.stringify({
+					cloudCover: 50,
+					visibility: 10000,
+					isFavorable: false,
+					recommendation: "Weather data unavailable. Check local conditions.",
+				});
+			}
+
+			return JSON.stringify({
+				cloudCover: weather.cloudCover,
+				visibility: weather.visibility,
+				isFavorable: weather.isFavorable,
+				recommendation: weather.isFavorable
+					? "Weather conditions look favorable for observation."
+					: "Cloud cover may obstruct visibility. Check local forecast.",
+			});
+		} catch (error) {
+			Sentry.captureException(error, {
+				tags: { tool: "get_pass_weather" },
+				extra: { lat: args.lat, lng: args.lng, passTime: args.passTime },
+			});
 			return JSON.stringify({
 				cloudCover: 50,
 				visibility: 10000,
 				isFavorable: false,
-				recommendation: "Weather data unavailable. Check local conditions.",
+				recommendation: "Weather data unavailable due to an error. Check local conditions.",
 			});
 		}
-
-		return JSON.stringify({
-			cloudCover: weather.cloudCover,
-			visibility: weather.visibility,
-			isFavorable: weather.isFavorable,
-			recommendation: weather.isFavorable
-				? "Weather conditions look favorable for observation."
-				: "Cloud cover may obstruct visibility. Check local forecast.",
-		});
 	});
 }
 
@@ -164,6 +199,9 @@ function searchKnowledge(args: {
 export const chatCompletion = createServerFn({ method: "POST" })
 	.inputValidator(ChatRequestSchema)
 	.handler(async ({ data }) => {
+		// Initialize Sentry for server-side error tracking
+		ensureSentryInitialized();
+
 		return Sentry.startSpan({ name: "Copilot Chat Completion" }, async () => {
 			// Breadcrumb: Entry point for debugging production failures
 			Sentry.addBreadcrumb({
@@ -179,7 +217,33 @@ export const chatCompletion = createServerFn({ method: "POST" })
 
 			try {
 				// Get AI binding from Cloudflare environment (TanStack Start pattern)
-				const ai = env.AI;
+				let ai: typeof env.AI;
+				try {
+					ai = env.AI;
+				} catch (bindingError) {
+					const err =
+						bindingError instanceof Error
+							? bindingError
+							: new Error(String(bindingError));
+					Sentry.captureException(err, {
+						tags: { copilot: "binding_access_error", binding: "AI" },
+						extra: { errorMessage: err.message },
+					});
+					Sentry.addBreadcrumb({
+						message: "Failed to access AI binding from env",
+						category: "copilot",
+						level: "error",
+						data: { errorMessage: err.message },
+					});
+					return {
+						status: "error",
+						error: {
+							code: "BINDING_ACCESS_ERROR",
+							message:
+								"Unable to access AI service. The service may not be properly configured.",
+						},
+					};
+				}
 
 				if (!ai) {
 					Sentry.addBreadcrumb({
@@ -190,12 +254,17 @@ export const chatCompletion = createServerFn({ method: "POST" })
 							envKeys: Object.keys(env || {}),
 						},
 					});
+					Sentry.captureMessage("AI binding is undefined in copilot agent", {
+						level: "warning",
+						tags: { copilot: "missing_binding", binding: "AI" },
+						extra: { envKeys: Object.keys(env || {}) },
+					});
 					return {
 						status: "error",
 						error: {
-							code: "AI_UNAVAILABLE",
+							code: "AI_BINDING_MISSING",
 							message:
-								"AI service is currently unavailable. Please try again later.",
+								"AI service is not configured. Please ensure the AI binding is set up in wrangler.jsonc.",
 						},
 					};
 				}
@@ -317,33 +386,117 @@ export const chatCompletion = createServerFn({ method: "POST" })
 				});
 
 				// Use embedded function calling - automatically executes tools
-				const aiResponse = await runWithTools(
-					ai,
-					"@cf/meta/llama-3.1-8b-instruct",
-					{
-						messages,
-						tools,
-						// @ts-expect-error - ai-utils types might not be perfect
-						maxIterations: 5, // Max tool call loops
-					},
-				);
+				// Wrapped in try-catch to handle AI generation failures specifically
+				let aiResponse: unknown;
+				try {
+					aiResponse = await runWithTools(
+						ai,
+						"@cf/meta/llama-3.1-8b-instruct",
+						{
+							messages,
+							tools,
+							// @ts-expect-error - ai-utils types might not be perfect
+							maxIterations: 5, // Max tool call loops
+						},
+					);
+				} catch (aiError) {
+					const err =
+						aiError instanceof Error ? aiError : new Error(String(aiError));
+
+					// Check for rate limiting
+					if (err.message.includes("rate limit")) {
+						Sentry.captureException(err, {
+							tags: { copilot: "ai_rate_limited" },
+							extra: { messageLength: data.message.length },
+						});
+						return {
+							status: "error",
+							error: {
+								code: "AI_RATE_LIMITED",
+								message:
+									"The AI service is currently busy. Please wait a moment and try again.",
+							},
+						};
+					}
+
+					// Check for model errors
+					if (
+						err.message.includes("model") ||
+						err.message.includes("inference")
+					) {
+						Sentry.captureException(err, {
+							tags: { copilot: "ai_model_error" },
+							extra: { errorMessage: err.message },
+						});
+						return {
+							status: "error",
+							error: {
+								code: "AI_MODEL_ERROR",
+								message:
+									"The AI model encountered an issue. Please try again later.",
+							},
+						};
+					}
+
+					// Generic AI failure
+					Sentry.captureException(err, {
+						tags: { copilot: "ai_generation_failed" },
+						extra: {
+							errorMessage: err.message,
+							messageLength: data.message.length,
+						},
+					});
+					return {
+						status: "error",
+						error: {
+							code: "AI_GENERATION_FAILED",
+							message:
+								"Failed to generate a response. Please try again.",
+						},
+					};
+				}
 
 				// Extract final response
 				// runWithTools returns: { response: "text", usage: {...} }
-				const content =
-					typeof aiResponse === "string"
-						? aiResponse
-						: // biome-ignore lint/suspicious/noExplicitAny: checking response type dynamically
-							typeof (aiResponse as any)?.response === "string"
-							? // biome-ignore lint/suspicious/noExplicitAny: extracting validated string response
-								(aiResponse as any).response
-							: // biome-ignore lint/suspicious/noExplicitAny: fallback extraction attempts
-								(aiResponse as any)?.response?.message?.content ||
-								// biome-ignore lint/suspicious/noExplicitAny: alternative response format
-								(aiResponse as any)?.content ||
-								// biome-ignore lint/suspicious/noExplicitAny: final fallback format
-								(aiResponse as any)?.message ||
-								"I apologize, but I couldn't generate a response. Please try again.";
+				// Wrapped in try-catch to handle response parsing failures
+				let content: string;
+				try {
+					content =
+						typeof aiResponse === "string"
+							? aiResponse
+							: // biome-ignore lint/suspicious/noExplicitAny: checking response type dynamically
+								typeof (aiResponse as any)?.response === "string"
+								? // biome-ignore lint/suspicious/noExplicitAny: extracting validated string response
+									(aiResponse as any).response
+								: // biome-ignore lint/suspicious/noExplicitAny: fallback extraction attempts
+									(aiResponse as any)?.response?.message?.content ||
+									// biome-ignore lint/suspicious/noExplicitAny: alternative response format
+									(aiResponse as any)?.content ||
+									// biome-ignore lint/suspicious/noExplicitAny: final fallback format
+									(aiResponse as any)?.message ||
+									null;
+
+					if (!content) {
+						throw new Error("Could not extract content from AI response");
+					}
+				} catch (parseError) {
+					const err =
+						parseError instanceof Error
+							? parseError
+							: new Error(String(parseError));
+
+					Sentry.captureException(err, {
+						tags: { copilot: "response_parse_error" },
+						extra: {
+							responseType: typeof aiResponse,
+							hasResponse: aiResponse !== null && aiResponse !== undefined,
+						},
+					});
+
+					// Return a graceful fallback message instead of failing
+					content =
+						"I apologize, but I couldn't generate a response. Please try again.";
+				}
 
 				// Log successful completion
 				Sentry.addBreadcrumb({
@@ -387,16 +540,36 @@ export const chatCompletion = createServerFn({ method: "POST" })
 				});
 				Sentry.captureException(err, {
 					tags: {
-						copilot: "chat_completion",
+						copilot: "chat_completion_unhandled",
 					},
 					extra: sanitized as Record<string, unknown>,
 				});
 
+				// Determine specific error code based on error message
+				let errorCode = "UNKNOWN_ERROR";
+				let errorMessage = "An error occurred while processing your request.";
+
+				if (err.message.includes("binding") || err.message.includes("env")) {
+					errorCode = "BINDING_ERROR";
+					errorMessage =
+						"A configuration error occurred. Please contact support.";
+				} else if (
+					err.message.includes("network") ||
+					err.message.includes("fetch")
+				) {
+					errorCode = "NETWORK_ERROR";
+					errorMessage =
+						"Unable to connect to required services. Please try again.";
+				} else if (err.message.includes("timeout")) {
+					errorCode = "TIMEOUT_ERROR";
+					errorMessage = "The request took too long. Please try again.";
+				}
+
 				return {
 					status: "error",
 					error: {
-						code: "UNKNOWN_ERROR",
-						message: "An error occurred while processing your request.",
+						code: errorCode,
+						message: errorMessage,
 					},
 				};
 			}

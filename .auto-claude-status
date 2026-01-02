@@ -3,13 +3,13 @@
   "spec": "001-we-have-a-bug-where-locally-we-can-run-our-co-pilo",
   "state": "building",
   "subtasks": {
-    "completed": 1,
+    "completed": 3,
     "total": 14,
     "in_progress": 1,
     "failed": 0
   },
   "phase": {
-    "current": "Reproduce and Instrument",
+    "current": "Root Cause Investigation",
     "id": null,
     "total": 3
   },
@@ -18,8 +18,8 @@
     "max": 1
   },
   "session": {
-    "number": 3,
+    "number": 4,
     "started_at": "2026-01-02T11:46:53.656540"
   },
-  "last_update": "2026-01-02T11:51:56.003758"
+  "last_update": "2026-01-02T11:55:35.575671"
 }

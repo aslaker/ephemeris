@@ -9,7 +9,12 @@
       "description": "The copilot uses a server function pattern with createServerFn() and direct AI binding via cloudflare:workers env.AI. It does NOT use Durable Objects for conversation state - state is managed client-side in store.ts.",
       "category": "architecture",
       "discovered_at": "2026-01-02T17:48:15.375842+00:00"
+    },
+    "src/routes/iss/-components/Copilot/": {
+      "description": "Copilot UI components are well-structured with 7 files: CopilotPanel.tsx (main container), ChatInput.tsx (with validation), SuggestedPrompts.tsx (context-aware), MessageList.tsx, MessageBubble.tsx, ToolExecutionIndicator.tsx, and BriefingErrorBoundary.tsx. All have defensive null checks already.",
+      "category": "component-structure",
+      "discovered_at": "2026-01-02T17:54:48.003063+00:00"
     }
   },
-  "last_updated": "2026-01-02T17:48:15.375848+00:00"
+  "last_updated": "2026-01-02T17:54:48.003069+00:00"
 }

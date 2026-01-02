@@ -165,11 +165,31 @@ export const chatCompletion = createServerFn({ method: "POST" })
 	.inputValidator(ChatRequestSchema)
 	.handler(async ({ data }) => {
 		return Sentry.startSpan({ name: "Copilot Chat Completion" }, async () => {
+			// Breadcrumb: Entry point for debugging production failures
+			Sentry.addBreadcrumb({
+				message: "Copilot chat request received",
+				category: "copilot",
+				level: "info",
+				data: {
+					messageLength: data.message.length,
+					contextMessageCount: data.conversationContext.messages.length,
+					hasLocation: !!data.location,
+				},
+			});
+
 			try {
 				// Get AI binding from Cloudflare environment (TanStack Start pattern)
 				const ai = env.AI;
 
 				if (!ai) {
+					Sentry.addBreadcrumb({
+						message: "AI binding not available",
+						category: "copilot",
+						level: "warning",
+						data: {
+							envKeys: Object.keys(env || {}),
+						},
+					});
 					return {
 						status: "error",
 						error: {
@@ -284,6 +304,18 @@ export const chatCompletion = createServerFn({ method: "POST" })
 					},
 				];
 
+				// Breadcrumb: Before AI call for tracing production failures
+				Sentry.addBreadcrumb({
+					message: "Calling runWithTools",
+					category: "copilot",
+					level: "info",
+					data: {
+						model: "@cf/meta/llama-3.1-8b-instruct",
+						toolCount: tools.length,
+						messageCount: messages.length,
+					},
+				});
+
 				// Use embedded function calling - automatically executes tools
 				const aiResponse = await runWithTools(
 					ai,
@@ -335,6 +367,18 @@ export const chatCompletion = createServerFn({ method: "POST" })
 				};
 			} catch (error) {
 				const err = error instanceof Error ? error : new Error(String(error));
+
+				// Breadcrumb: Error occurred for tracing production failures
+				Sentry.addBreadcrumb({
+					message: "Copilot chat error",
+					category: "copilot",
+					level: "error",
+					data: {
+						errorName: err.name,
+						errorMessage: err.message,
+						hasStack: !!err.stack,
+					},
+				});
 
 				// Log error with sanitized data
 				const sanitized = sanitizeForLogging({

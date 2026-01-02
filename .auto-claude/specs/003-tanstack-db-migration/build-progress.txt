@@ -1,0 +1,126 @@
+# TanStack DB Migration - Build Progress
+
+## Overview
+Migrate from TanStack Query + Dexie to unified TanStack DB collections for reactive data management.
+
+## Current Status: PLANNING COMPLETE
+
+### Implementation Plan Created
+- **8 Phases** with **33 subtasks**
+- **Estimated Total Effort**: 28 hours
+
+---
+
+## Phase Summary
+
+### Phase 1: Foundation - TanStack DB Collection Infrastructure (6 subtasks)
+Set up TanStack DB collections with Dexie adapter for IndexedDB persistence.
+- [x] 1.1 Research TanStack DB collection patterns
+- [ ] 1.2 Create positions collection
+- [ ] 1.3 Create crew collection
+- [ ] 1.4 Create TLE collection
+- [ ] 1.5 Create briefings collection
+- [ ] 1.6 Create collections index
+
+### Phase 2: Data Layer Migration (4 subtasks)
+Replace Dexie direct access with TanStack DB collection operations.
+- [ ] 2.1 Create position sync handler
+- [ ] 2.2 Create crew sync handler
+- [ ] 2.3 Create TLE sync handler
+- [ ] 2.4 Create unified sync manager
+
+### Phase 3: Hook Migration (5 subtasks)
+Replace TanStack Query hooks with TanStack DB useLiveQuery hooks.
+- [ ] 3.1 Create useISSPositionDB hook
+- [ ] 3.2 Create useISSCrewDB hook
+- [ ] 3.3 Create useISSTLEDB hook
+- [ ] 3.4 Create usePositionHistoryDB hook
+- [ ] 3.5 Create useBriefingDB hooks
+
+### Phase 4: Component Integration (6 subtasks)
+Update components to use new TanStack DB hooks.
+- [ ] 4.1 Update StatsPanel
+- [ ] 4.2 Update CrewCard and crew page
+- [ ] 4.3 Update OrbitalSolver
+- [ ] 4.4 Update PassesList and usePasses
+- [ ] 4.5 Update BriefingCard
+- [ ] 4.6 Update layout with sync manager
+
+### Phase 5: Storage Utilities Migration (3 subtasks)
+Migrate storage utilities to work with collections.
+- [ ] 5.1 Migrate retention cleanup
+- [ ] 5.2 Migrate gap detection
+- [ ] 5.3 Migrate corruption detection
+
+### Phase 6: Data Migration (2 subtasks)
+Transfer existing user data from Dexie to TanStack DB.
+- [ ] 6.1 Create data migration script
+- [ ] 6.2 Integrate migration on startup
+
+### Phase 7: Cleanup - Remove Legacy Code (5 subtasks)
+Remove old Dexie and TanStack Query code.
+- [ ] 7.1 Remove legacy Dexie database
+- [ ] 7.2 Remove legacy storage utilities
+- [ ] 7.3 Remove legacy TanStack Query queries
+- [ ] 7.4 Remove legacy hooks
+- [ ] 7.5 Remove legacy briefing collection
+
+### Phase 8: Testing & Documentation (3 subtasks)
+Verify migration and update documentation.
+- [ ] 8.1 Test offline persistence
+- [ ] 8.2 Test performance benchmarks
+- [ ] 8.3 Update developer documentation
+
+---
+
+## Key Technical Decisions
+
+### Current Architecture (Before)
+```
+ISS API ─> TanStack Query (queries.ts) ─> React Components
+                │
+                └─> Side effect ─> Dexie (db.ts) ─> IndexedDB
+
+Custom Hooks:
+- useISSPosition() - loads from Dexie cache, falls back to Query
+- useISSCrew() - loads from Dexie cache, falls back to Query
+- useISSTLE() - loads from Dexie cache, falls back to Query
+```
+
+### Target Architecture (After)
+```
+ISS API ─> Sync Manager ─> TanStack DB Collections ─> IndexedDB
+                                    │
+                                    └─> useLiveQuery ─> React Components
+
+New Hooks:
+- useISSPositionDB() - reactive via useLiveQuery
+- useISSCrewDB() - reactive via useLiveQuery
+- useISSTLEDB() - reactive via useLiveQuery
+```
+
+### Benefits
+1. **Unified data layer** - No more dual Query + Dexie maintenance
+2. **Reactive updates** - Live queries automatically update UI
+3. **Simpler hooks** - No manual cache-first logic needed
+4. **Better offline support** - Collection-based sync patterns
+
+---
+
+## Progress Log
+
+### 2026-01-02
+- ✅ Read spec.md and understood requirements
+- ✅ Analyzed current codebase architecture
+- ✅ Created detailed implementation plan with 8 phases, 33 subtasks
+- ✅ Identified key files to create, modify, and delete
+- ✅ **1.1 Research TanStack DB collection patterns** - COMPLETED
+  - Created comprehensive research document covering:
+    - Collection creation with queryCollectionOptions
+    - Dexie adapter configuration (tanstack-dexie-db-collection package)
+    - useLiveQuery hook patterns for reactive queries
+    - Sync handler patterns for background API polling
+  - Documented existing Dexie database setup compatibility
+  - Identified that tanstack-dexie-db-collection package needs to be installed
+  - All existing types are TanStack DB compatible with required id fields
+- 🔄 Next: 1.2 - Create positions collection with Dexie persistence

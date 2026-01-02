@@ -110,14 +110,28 @@ export function getSuggestedPrompts(context: {
 	hasLocation: boolean;
 	hasUpcomingPass: boolean;
 }): SuggestedPrompt[] {
+	// Defensive check for SUGGESTED_PROMPTS array
+	if (!Array.isArray(SUGGESTED_PROMPTS) || SUGGESTED_PROMPTS.length === 0) {
+		return [];
+	}
+
+	// Defensive check for context
+	const safeContext = {
+		hasLocation: context?.hasLocation ?? false,
+		hasUpcomingPass: context?.hasUpcomingPass ?? false,
+	};
+
 	return SUGGESTED_PROMPTS.filter((prompt) => {
+		// Defensive check for prompt
+		if (!prompt) return false;
+
 		if (!prompt.contextCondition) return true;
 
 		const { type } = prompt.contextCondition;
 		if (type === "always") return true;
-		if (type === "has_location" && context.hasLocation) return true;
-		if (type === "has_upcoming_pass" && context.hasUpcomingPass) return true;
-		if (type === "no_location" && !context.hasLocation) return true;
+		if (type === "has_location" && safeContext.hasLocation) return true;
+		if (type === "has_upcoming_pass" && safeContext.hasUpcomingPass) return true;
+		if (type === "no_location" && !safeContext.hasLocation) return true;
 
 		return false;
 	});

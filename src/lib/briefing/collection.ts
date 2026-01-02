@@ -120,3 +120,4 @@ export function clearBriefings(): void {
 export function getAllBriefings(): PassBriefing[] {
 	return Array.from(briefingsCache.values());
 }
+

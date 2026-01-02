@@ -203,3 +203,4 @@ export function PassCard({ pass, className = "" }: PassCardProps) {
 		</article>
 	);
 }
+

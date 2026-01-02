@@ -34,3 +34,4 @@
 - All checklist items pass validation
 - Specification is ready for `/speckit.clarify` or `/speckit.plan`
 
+

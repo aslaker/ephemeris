@@ -14,3 +14,6 @@ count.txt
 .vinxi
 todos.json
 mcp-todos.json
+
+# Auto Claude data directory
+.auto-claude/

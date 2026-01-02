@@ -8,6 +8,7 @@
 import * as Sentry from "@sentry/tanstackstart-react";
 import { callable } from "agents";
 import { AIChatAgent } from "agents/ai-chat-agent";
+import { autoTransformMessages } from "agents/ai-chat-v5-migration";
 import { convertToModelMessages, generateText } from "ai";
 import { createWorkersAI } from "workers-ai-provider";
 import { AI_CONFIG } from "../ai/config";
@@ -71,11 +72,13 @@ export class CopilotAgent extends AIChatAgent<Cloudflare.Env> {
 				result.text ||
 				"I apologize, but I couldn't generate a response. Please try again.";
 
-			// Save to persistent history (optional, but good for Agent pattern)
-			await this.persistMessages([
-				{ id: crypto.randomUUID(), role: "user", content: message },
-				{ id: crypto.randomUUID(), role: "assistant", content },
-			] as any);
+			// Save to persistent history (properly transformed for Agent persistence)
+			await this.persistMessages(
+				autoTransformMessages([
+					{ id: crypto.randomUUID(), role: "user", content: message },
+					{ id: crypto.randomUUID(), role: "assistant", content },
+				]),
+			);
 
 			return {
 				content,

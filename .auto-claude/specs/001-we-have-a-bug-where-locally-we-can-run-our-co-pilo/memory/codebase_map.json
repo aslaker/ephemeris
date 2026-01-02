@@ -24,7 +24,12 @@
       "description": "Line 189 in fetchCrewData() calls basicData.people.filter() without null check. When fetchCrewFromApi() fails, basicData is undefined causing 'Cannot read properties of undefined (reading filter)' error. The validateOpenNotifyResponse function validates the API response structure, but the error occurs when the server function call itself fails.",
       "category": "bug",
       "discovered_at": "2026-01-02T18:01:46.451174+00:00"
+    },
+    "src/lib/copilot/knowledge.ts": {
+      "description": "Added defensive checks pattern: Array.isArray() checks before array operations, optional chaining for property access, null checks for loop items, and nullish coalescing for sort comparisons",
+      "category": "pattern",
+      "discovered_at": "2026-01-02T18:13:03.697857+00:00"
     }
   },
-  "last_updated": "2026-01-02T18:01:46.451181+00:00"
+  "last_updated": "2026-01-02T18:13:03.697865+00:00"
 }

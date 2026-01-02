@@ -427,3 +427,84 @@ With the defensive null check in place, even if:
 
 The production error "Cannot read properties of undefined (reading 'filter')"
 should no longer occur because `basicData?.people ?? []` provides a safe fallback.
+
+## subtask-4-4: Verify fix in production deployment
+Status: READY FOR VERIFICATION
+
+### Deployment Status ###
+
+Current branch: `auto-claude/001-we-have-a-bug-where-locally-we-can-run-our-co-pilo`
+Commits ahead of main: 14
+
+The bug fixes have been implemented and committed. To deploy to production:
+
+### Option 1: Merge to Main (Recommended) ###
+
+```bash
+# Push the feature branch
+git push origin auto-claude/001-we-have-a-bug-where-locally-we-can-run-our-co-pilo
+
+# Create a Pull Request via GitHub, then merge to main
+# OR merge directly:
+git checkout main
+git merge auto-claude/001-we-have-a-bug-where-locally-we-can-run-our-co-pilo
+git push origin main
+```
+
+The GitHub Actions workflow will automatically deploy on push to main.
+
+### Option 2: Manual Deploy ###
+
+```bash
+# Deploy directly from this branch
+npm run deploy
+# OR
+wrangler deploy
+```
+
+### Production Verification Checklist ###
+
+After deployment, verify at: https://ephemeris.observer/iss/copilot
+
+**Page Load:**
+- [ ] Page loads without errors
+- [ ] No "Cannot read properties of undefined (reading 'filter')" error
+- [ ] "OBSERVATION COPILOT" header is visible
+- [ ] Chat input field is visible at bottom
+
+**Copilot Functionality:**
+- [ ] Suggested prompts are displayed
+- [ ] Click a suggested prompt → message is sent
+- [ ] AI responds with relevant ISS information
+- [ ] Tool execution indicators appear during processing
+
+**Error Handling:**
+- [ ] Error boundary does NOT trigger under normal operation
+- [ ] If network fails, user-friendly error is shown (not raw JS error)
+
+**Console Check (DevTools):**
+- [ ] No React Error #418 (hydration mismatch)
+- [ ] No "Cannot read properties of undefined" errors
+- [ ] No ERR_BLOCKED_BY_CLIENT errors (may occur with ad blockers - expected)
+
+### Test Messages to Try ###
+
+1. "Where is the ISS right now?"
+2. "When is the next pass over my location?"
+3. "Who is on the ISS?"
+4. "Tell me about the ISS orbital parameters"
+
+### Expected Results ###
+
+All test messages should receive AI-generated responses with relevant ISS data.
+If any `.filter()` or array access errors occur, they will be caught and handled
+gracefully instead of crashing the page.
+
+### Fixes Deployed ###
+
+1. **src/lib/iss/api.ts:190** - Defensive null check: `const people = basicData?.people ?? []`
+2. **src/lib/copilot/agent.ts** - Enhanced error handling with try-catch and Sentry tracking
+3. **src/lib/copilot/knowledge.ts** - Optional chaining for array operations
+4. **src/lib/copilot/prompts.ts** - Defensive checks for filtering
+
+=== END SESSION (Awaiting Production Verification) ===

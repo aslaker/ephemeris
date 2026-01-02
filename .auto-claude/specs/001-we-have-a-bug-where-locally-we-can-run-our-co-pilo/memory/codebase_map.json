@@ -29,7 +29,12 @@
       "description": "Added defensive checks pattern: Array.isArray() checks before array operations, optional chaining for property access, null checks for loop items, and nullish coalescing for sort comparisons",
       "category": "pattern",
       "discovered_at": "2026-01-02T18:13:03.697857+00:00"
+    },
+    "production verification": {
+      "description": "Production verification for Cloudflare-deployed apps requires manual browser testing when sandbox restrictions prevent npm/wrangler commands. Build-progress.txt should contain complete deployment and verification instructions for manual execution.",
+      "category": "process",
+      "discovered_at": "2026-01-02T18:25:26.301939+00:00"
     }
   },
-  "last_updated": "2026-01-02T18:13:03.697865+00:00"
+  "last_updated": "2026-01-02T18:25:26.301945+00:00"
 }

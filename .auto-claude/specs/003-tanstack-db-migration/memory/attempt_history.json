@@ -275,11 +275,35 @@
         }
       ],
       "status": "completed"
+    },
+    "5.3": {
+      "attempts": [
+        {
+          "session": 24,
+          "timestamp": "2026-01-02T21:54:56.052497",
+          "approach": "Implemented: Update corruption detection to validate and clean collection data",
+          "success": true,
+          "error": null
+        }
+      ],
+      "status": "completed"
+    },
+    "6.1": {
+      "attempts": [
+        {
+          "session": 25,
+          "timestamp": "2026-01-02T21:57:49.245925",
+          "approach": "Implemented: Create one-time migration to transfer data from Dexie tables to TanStack DB collections",
+          "success": true,
+          "error": null
+        }
+      ],
+      "status": "completed"
     }
   },
   "stuck_subtasks": [],
   "metadata": {
     "created_at": "2026-01-02T20:50:35.728184",
-    "last_updated": "2026-01-02T21:52:37.032239"
+    "last_updated": "2026-01-02T21:57:49.245940"
   }
 }

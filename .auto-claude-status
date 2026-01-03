@@ -3,23 +3,23 @@
   "spec": "003-tanstack-db-migration",
   "state": "building",
   "subtasks": {
-    "completed": 23,
+    "completed": 25,
     "total": 34,
     "in_progress": 1,
     "failed": 0
   },
   "phase": {
-    "current": "Storage Utilities Migration",
+    "current": "Data Migration - Transfer Existing User Data",
     "id": null,
-    "total": 3
+    "total": 2
   },
   "workers": {
     "active": 0,
     "max": 1
   },
   "session": {
-    "number": 24,
+    "number": 26,
     "started_at": "2026-01-02T20:50:35.728324"
   },
-  "last_update": "2026-01-02T21:52:42.301884"
+  "last_update": "2026-01-02T21:57:54.331776"
 }

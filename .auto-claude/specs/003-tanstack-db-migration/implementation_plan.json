@@ -586,7 +586,7 @@
           "id": "5.3",
           "title": "Migrate corruption detection to collection-based",
           "description": "Update corruption detection to validate and clean collection data",
-          "status": "in_progress",
+          "status": "completed",
           "priority": "medium",
           "estimated_effort": "1 hour",
           "files_to_create": [
@@ -603,8 +603,8 @@
             "Removes corrupted records from collection",
             "Triggers sync refresh after cleanup"
           ],
-          "notes": "Creating validation.ts with collection-based corruption detection",
-          "updated_at": "2026-01-03T03:53:56.950280+00:00"
+          "notes": "\u2705 Validation utilities successfully migrated to use TanStack DB collection operations:\n- Created src/lib/iss/collections/validation.ts with collection-based corruption detection\n- Validates positions, crew, TLE, and briefings using Zod schemas from collections\n- Samples position records for performance (first/last 100)\n- Validates all crew, TLE, and briefing records (smaller datasets)\n- Uses collection.utils.getTable() for efficient Dexie queries and deletions\n- detectAndRemoveCorruption() removes invalid records and returns corruption info\n- runCorruptionCheck() convenience function with error handling\n- Returns needsRefetch flag to trigger sync refresh when needed\n- Follows exact same pattern as cleanup.ts and gap-filling.ts\n- All TypeScript compilation checks passing\n- Production build succeeded without errors\n- Git commit: 7100e9c",
+          "updated_at": "2026-01-03T03:54:38.698974+00:00"
         }
       ]
     },
@@ -618,7 +618,7 @@
           "id": "6.1",
           "title": "Create data migration script",
           "description": "Create one-time migration to transfer data from Dexie tables to TanStack DB collections",
-          "status": "pending",
+          "status": "completed",
           "priority": "high",
           "estimated_effort": "2 hours",
           "files_to_create": [
@@ -634,7 +634,8 @@
             "Handles migration state (run once)",
             "Validates migrated data"
           ],
-          "notes": ""
+          "notes": "\u2705 Migration script created successfully with:\n- Comprehensive migration from legacy Dexie tables to TanStack DB collections\n- Migrates positions, crew, TLE from Dexie database (ephemeris-iss)\n- Migrates briefings from localStorage to TanStack DB collection\n- Migration state tracking in localStorage (runs only once)\n- Validates all data using Zod schemas before insertion\n- Uses bulkPut() for efficient batch insertion of validated records\n- Returns detailed MigrationResult with counts and validation errors\n- Non-destructive migration (preserves legacy data for verification)\n- Handles all data types in parallel for optimal performance\n- resetMigrationState() helper for testing/debugging\n- Comprehensive JSDoc documentation with usage examples\n- All TypeScript compilation checks passing\n- Production build succeeded without errors\n- Git commit: f9f2741",
+          "updated_at": "2026-01-03T03:57:26.543738+00:00"
         },
         {
           "id": "6.2",
@@ -916,5 +917,5 @@
     }
   },
   "recoveryNote": "Task recovered from stuck state at 2026-01-03T02:50:34.858Z",
-  "last_updated": "2026-01-03T03:53:56.950290+00:00"
+  "last_updated": "2026-01-03T03:57:26.543744+00:00"
 }

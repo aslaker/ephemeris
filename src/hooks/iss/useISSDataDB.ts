@@ -13,7 +13,8 @@
 import { useLiveQuery } from "@tanstack/react-db";
 import { positionsCollection } from "@/lib/iss/collections/positions";
 import { crewCollection } from "@/lib/iss/collections/crew";
-import type { ISSPosition, Astronaut } from "@/lib/iss/types";
+import { tleCollection } from "@/lib/iss/collections/tle";
+import type { ISSPosition, Astronaut, TLEData } from "@/lib/iss/types";
 
 // =============================================================================
 // useISSPositionDB - Reactive position loading from collection
@@ -139,5 +140,77 @@ export function useISSCrewDB(): UseISSCrewResult {
 		isFetching: query.isLoading,
 		// Convert isError boolean to Error | null
 		error: query.isError ? new Error("Failed to query crew collection") : null,
+	};
+}
+
+// =============================================================================
+// useISSTLEDB - Reactive TLE loading from collection
+// =============================================================================
+
+export interface UseISSTLEResult {
+	/** Current TLE data from collection (converted to tuple format) */
+	data: TLEData | null;
+	/** Whether initial data is loading (collection not ready) */
+	isLoading: boolean;
+	/** Whether data came from cache (always true for DB collections) */
+	fromCache: boolean;
+	/** Whether a background fetch is in progress (same as isLoading for DB) */
+	isFetching: boolean;
+	/** Any error from the query */
+	error: Error | null;
+}
+
+/**
+ * Hook for ISS TLE data with reactive TanStack DB live query
+ *
+ * Queries the latest TLE from the TLE collection and
+ * automatically updates when new TLE data is synced.
+ *
+ * Features:
+ * - Reactive updates when collection changes (via sync handler)
+ * - Instant load from IndexedDB (no network delay)
+ * - Consistent interface with legacy useISSTLE hook
+ * - Type-safe with Zod schema validation
+ * - Converts StoredTLE to TLEData format ([line1, line2])
+ *
+ * @returns Latest ISS TLE data with loading/error states
+ *
+ * @example
+ * ```typescript
+ * function OrbitalSolver() {
+ *   const { data: tle, isLoading } = useISSTLEDB()
+ *
+ *   if (isLoading) return <div>Loading TLE...</div>
+ *   if (!tle) return <div>No TLE data</div>
+ *
+ *   return <OrbitalCalculator tle={tle} />
+ * }
+ * ```
+ */
+export function useISSTLEDB(): UseISSTLEResult {
+	// Query latest TLE from collection (ordered by fetchedAt descending)
+	const query = useLiveQuery((q) =>
+		q
+			.from({ tle: tleCollection })
+			.orderBy(({ tle }) => tle.fetchedAt, "desc")
+			.findOne(),
+	);
+
+	// Convert StoredTLE to TLEData format ([line1, line2])
+	const tleData: TLEData | null = query.data
+		? [query.data.line1, query.data.line2]
+		: null;
+
+	return {
+		// Convert StoredTLE to TLEData tuple format
+		data: tleData,
+		// isLoading is true until first data is ready
+		isLoading: query.isLoading,
+		// DB collections always serve from cache (IndexedDB)
+		fromCache: true,
+		// For DB collections, isFetching is same as isLoading
+		isFetching: query.isLoading,
+		// Convert isError boolean to Error | null
+		error: query.isError ? new Error("Failed to query TLE collection") : null,
 	};
 }

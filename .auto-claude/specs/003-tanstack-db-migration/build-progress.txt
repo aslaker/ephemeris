@@ -1,6 +1,6 @@
 # TanStack DB Migration - Build Progress
 
-## Current Status: Phase 3 - Hook Migration
+## Current Status: Phase 4 - Component Integration
 
 ### Completed Subtasks
 
@@ -18,35 +18,44 @@
 - [x] 2.3 - Create TLE sync handler for API data
 - [x] 2.4 - Create unified sync manager
 
-#### Phase 3: Hook Migration - Replace TanStack Query with Live Queries 🔄
+#### Phase 3: Hook Migration - Replace TanStack Query with Live Queries ✅
 - [x] 3.1 - Create useISSPositionDB hook with live query
 - [x] 3.2 - Create useISSCrewDB hook with live query
+- [x] 3.3 - Create useISSTLEDB hook with live query
+- [x] 3.4 - Create usePositionHistoryDB hook with collection query
+- [x] 3.5 - Create useBriefingDB hooks with live query
 
-### Latest Completion: Subtask 3.2
+#### Phase 4: Component Integration - Update Consumers 🔄
+- [x] 4.1 - Update StatsPanel to use DB hooks
+- [x] 4.2 - Update CrewCard and crew page to use DB hooks
+- [x] 4.3 - Update OrbitalSolver to use DB hooks
+- [x] 4.4 - Update PassesList and usePasses to use DB hooks
+
+### Latest Completion: Subtask 4.4
 
 **Date**: 2026-01-03
-**Subtask**: 3.2 - Create useISSCrewDB hook with live query
+**Subtask**: 4.4 - Update pass prediction components to use TLE from DB collection
 **Status**: ✅ Completed
 
 **Implementation Details**:
-- Added useISSCrewDB hook to `src/hooks/iss/useISSDataDB.ts`
-- Uses TanStack DB useLiveQuery for reactive crew queries
-- Queries all crew members from crewCollection (returns array by default)
-- Returns compatible interface with legacy UseISSCrewResult (data, isLoading, fromCache, isFetching, error)
-- Reactive updates when collection changes via sync handler
-- Type-safe with Zod schema validation
-- Instant load from IndexedDB with no network delay
+- Updated `src/hooks/iss/usePasses.ts` to fetch TLE data from TanStack DB collection
+- Replaced `useQuery(issQueries.tle())` with `useISSTLEDB()` hook
+- Removed issQueries import (no longer needed)
+- Added useISSTLEDB import from @/hooks/iss/useISSDataDB
+- Updated file header to reflect new DB-based approach
+- PassesList.tsx and passes.tsx require no changes (already use usePasses hook)
+- Pass predictions now use reactive TLE data from IndexedDB
 
 **Verification**:
-- TypeScript compilation: ✅ Passed (no new errors from this change)
-- Git commit: ✅ 1d10a71
+- TypeScript compilation: ✅ Passed
+- Production build: ✅ Succeeded
+- Git commit: ✅ bdcbbe3
 
 ### Next Steps
 
-Continue with Phase 3 hook migration:
-- [ ] 3.3 - Create useISSTLEDB hook with live query
-- [ ] 3.4 - Create usePositionHistoryDB hook with collection query
-- [ ] 3.5 - Create useBriefingDB hooks with live query
+Continue with Phase 4 component integration:
+- [ ] 4.5 - Update BriefingCard to use DB hooks
+- [ ] 4.6 - Update layout with sync manager
 
 ---
 

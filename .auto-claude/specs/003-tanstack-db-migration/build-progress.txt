@@ -1,6 +1,6 @@
 # TanStack DB Migration - Build Progress
 
-## Current Status: Phase 4 - Component Integration
+## Current Status: Phase 7 - Cleanup - Remove Legacy Code
 
 ### Completed Subtasks
 
@@ -33,34 +33,50 @@
 - [x] 4.5 - Update BriefingCard to use DB hooks
 - [x] 4.6 - Update layout with sync manager
 
-### Latest Completion: Subtask 4.6
+#### Phase 5: Storage Utilities Migration ✅
+- [x] 5.1 - Migrate retention cleanup to collection-based
+- [x] 5.2 - Migrate gap detection to collection-based
+- [x] 5.3 - Migrate corruption detection to collection-based
+
+#### Phase 6: Data Migration - Transfer Existing User Data ✅
+- [x] 6.1 - Create data migration script
+- [x] 6.2 - Integrate migration on app startup
+
+#### Phase 7: Cleanup - Remove Legacy Code
+- [x] 7.1 - Remove legacy Dexie database (db.ts)
+- [ ] 7.2 - Remove legacy storage utilities (storage.ts)
+- [ ] 7.3 - Remove legacy TanStack Query ISS queries
+- [ ] 7.4 - Remove legacy hooks (useISSData.ts)
+- [ ] 7.5 - Remove legacy briefing collection
+
+### Latest Completion: Subtask 7.1
 
 **Date**: 2026-01-03
-**Subtask**: 4.6 - Initialize sync manager at the ISS layout/root level for all pages
+**Subtask**: 7.1 - Remove legacy Dexie database (db.ts)
 **Status**: ✅ Completed
 
 **Implementation Details**:
-- Added sync manager initialization to ISSLayout component using `getDefaultSyncManager()`
-- Sync manager starts on component mount, stops on unmount via useEffect cleanup
-- Background data synchronization configured for:
-  * Position data: 5 second intervals
-  * Crew data: 1 hour intervals
-  * TLE data: 1 hour intervals
-- Automatic pause/resume when tab visibility changes to save resources
-- Updated map.tsx to use new DB hooks (useISSPositionDB, useISSTLEDB) instead of TanStack Query
-- All ISS pages now benefit from automatic background data sync
+- Removed legacy src/lib/iss/db.ts file completely
+- Migrated final consumers to use new TanStack DB hooks:
+  * Updated src/routes/iss/index.tsx to use useISSPositionDB and useISSTLEDB
+  * Updated src/hooks/useNextPass.ts to use useISSTLEDB
+  * Removed storage side effects from src/lib/iss/queries.ts
+- All active code now uses TanStack DB collections exclusively
+- Legacy useISSData.ts file remains but is unused (will be removed in subtask 7.4)
+- No remaining imports of db.ts in active codebase
 
 **Verification**:
 - TypeScript compilation: ✅ Passed
 - Production build: ✅ Succeeded
-- Git commit: ✅ df54b08
+- Git commit: ✅ c280461
 
 ### Next Steps
 
-Phase 4 Complete! Continue with Phase 5: Storage Utilities Migration
-- [ ] 5.1 - Migrate retention cleanup to collection-based
-- [ ] 5.2 - Migrate gap detection to collection-based
-- [ ] 5.3 - Migrate corruption detection to collection-based
+Continue with Phase 7: Cleanup - Remove Legacy Code
+- [ ] 7.2 - Remove legacy storage utilities (storage.ts)
+- [ ] 7.3 - Remove legacy TanStack Query ISS queries
+- [ ] 7.4 - Remove legacy hooks (useISSData.ts)
+- [ ] 7.5 - Remove legacy briefing collection
 
 ---
 
@@ -129,3 +145,50 @@ Phase 4 Complete! Continue with Phase 5: Storage Utilities Migration
 - All data fetching migrated from TanStack Query to reactive live queries
 - Background sync ensures fresh data without manual refresh
 - Ready to proceed with Phase 5: Storage Utilities Migration
+
+## [2026-01-03 - Subtask 7.1 COMPLETED] Remove legacy Dexie database (db.ts)
+
+### Changes Made
+1. Removed src/lib/iss/db.ts:
+   - Deleted legacy Dexie database file completely
+   - Removed all type definitions (StoredAstronaut, StoredTLE, TimelineEvent)
+   - Removed database class and singleton instance
+   - Removed storage helper functions (getCachedPosition, storeCrew, etc.)
+
+2. Migrated src/routes/iss/index.tsx:
+   - Replaced `useISSPosition` with `useISSPositionDB`
+   - Replaced `useISSTLE` with `useISSTLEDB`
+   - Removed `useStorageCleanup` (now handled by sync manager in ISSLayout)
+   - Removed `useWindowFocusRefetch` (now handled by sync manager in ISSLayout)
+   - Updated import from @/hooks/iss/useISSData to @/hooks/iss/useISSDataDB
+
+3. Migrated src/hooks/useNextPass.ts:
+   - Replaced `useQuery(issQueries.tle())` with `useISSTLEDB()`
+   - Removed @tanstack/react-query import
+   - Removed issQueries import
+   - Updated comment to reflect TanStack DB collection usage
+
+4. Updated src/lib/iss/queries.ts:
+   - Removed db.ts imports (storeCrew, storePosition, storeTLE)
+   - Removed IndexedDB persistence side effects from all query functions
+   - Added comments noting that persistence is now handled by TanStack DB sync handlers
+   - File remains for now (will be removed in subtask 7.3)
+
+### Key Benefits
+- Complete elimination of dual persistence layer
+- All data now flows through TanStack DB collections
+- No more manual IndexedDB operations scattered across codebase
+- Sync manager provides centralized, coordinated data persistence
+- Cleaner separation of concerns (API fetching vs persistence)
+
+### Verification
+- TypeScript compilation: ✅ PASSING
+- Production build: ✅ PASSING
+- No active imports of db.ts (only unused legacy file has broken import)
+- Git commit: c280461
+
+### Impact
+- **Phase 7 Started!** Beginning cleanup of legacy code
+- Legacy Dexie database completely removed
+- All ISS data operations now use unified TanStack DB architecture
+- Ready to proceed with subtask 7.2: Remove legacy storage utilities

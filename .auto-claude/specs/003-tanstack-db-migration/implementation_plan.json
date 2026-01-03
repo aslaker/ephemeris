@@ -700,7 +700,7 @@
           "id": "7.2",
           "title": "Remove legacy storage utilities",
           "description": "Remove src/lib/iss/storage.ts after utilities migrated",
-          "status": "pending",
+          "status": "completed",
           "priority": "high",
           "estimated_effort": "30 minutes",
           "files_to_modify": [],
@@ -719,7 +719,8 @@
             "No remaining imports",
             "App builds without errors"
           ],
-          "notes": ""
+          "notes": "\u2705 Legacy storage.ts successfully removed with:\n- Removed src/lib/iss/storage.ts (500+ lines of legacy Dexie-based storage utilities)\n- Verified no remaining imports of storage.ts in the codebase\n- All storage utilities have been successfully migrated to collection-based implementations:\n  * Cleanup functions \u2192 src/lib/iss/collections/cleanup.ts (subtask 5.1)\n  * Gap filling \u2192 src/lib/iss/collections/gap-filling.ts (subtask 5.2)\n  * Validation \u2192 src/lib/iss/collections/validation.ts (subtask 5.3)\n- Only remaining import was from src/hooks/iss/useISSData.ts (legacy hooks file to be removed in subtask 7.4)\n- No active components use the legacy hooks - all migrated to DB hooks\n- All TypeScript compilation checks passing\n- Production build succeeded without errors\n- Git commit: a9be5e2",
+          "updated_at": "2026-01-03T04:06:12.580534+00:00"
         },
         {
           "id": "7.3",
@@ -919,5 +920,5 @@
     }
   },
   "recoveryNote": "Task recovered from stuck state at 2026-01-03T02:50:34.858Z",
-  "last_updated": "2026-01-03T04:03:30.534553+00:00"
+  "last_updated": "2026-01-03T04:06:12.580539+00:00"
 }

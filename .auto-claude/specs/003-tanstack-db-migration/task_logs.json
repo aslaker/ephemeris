@@ -1,7 +1,7 @@
 {
   "spec_id": "003-tanstack-db-migration",
   "created_at": "2026-01-03T02:50:35.728447+00:00",
-  "updated_at": "2026-01-03T03:48:32.764772+00:00",
+  "updated_at": "2026-01-03T03:51:48.799921+00:00",
   "phases": {
     "planning": {
       "phase": "planning",
@@ -10013,6 +10013,403 @@
           "tool_input": "git commit -m \"auto-claude: 5.1 - Update cleanu...",
           "subtask_id": "5.1",
           "session": 22
+        },
+        {
+          "timestamp": "2026-01-03T03:48:33.445621+00:00",
+          "type": "tool_end",
+          "content": "[Bash] Done",
+          "phase": "coding",
+          "tool_name": "Bash",
+          "subtask_id": "5.1",
+          "session": 22,
+          "detail": "",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T03:48:37.883884+00:00",
+          "type": "text",
+          "content": "Now let me update the implementation plan to mark this subtask as completed:",
+          "phase": "coding",
+          "subtask_id": "5.1",
+          "session": 22
+        },
+        {
+          "timestamp": "2026-01-03T03:48:42.730803+00:00",
+          "type": "tool_start",
+          "content": "[mcp__auto-claude__update_subtask_status]",
+          "phase": "coding",
+          "tool_name": "mcp__auto-claude__update_subtask_status",
+          "subtask_id": "5.1",
+          "session": 22
+        },
+        {
+          "timestamp": "2026-01-03T03:48:42.762613+00:00",
+          "type": "tool_end",
+          "content": "[mcp__auto-claude__update_subtask_status] Done",
+          "phase": "coding",
+          "tool_name": "mcp__auto-claude__update_subtask_status",
+          "subtask_id": "5.1",
+          "session": 22,
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T03:48:46.112659+00:00",
+          "type": "text",
+          "content": "Let me record this as a codebase discovery for future sessions:",
+          "phase": "coding",
+          "subtask_id": "5.1",
+          "session": 22
+        },
+        {
+          "timestamp": "2026-01-03T03:48:48.544213+00:00",
+          "type": "tool_start",
+          "content": "[mcp__auto-claude__record_discovery] src/lib/iss/collections/cleanup.ts",
+          "phase": "coding",
+          "tool_name": "mcp__auto-claude__record_discovery",
+          "tool_input": "src/lib/iss/collections/cleanup.ts",
+          "subtask_id": "5.1",
+          "session": 22
+        },
+        {
+          "timestamp": "2026-01-03T03:48:48.574149+00:00",
+          "type": "tool_end",
+          "content": "[mcp__auto-claude__record_discovery] Done",
+          "phase": "coding",
+          "tool_name": "mcp__auto-claude__record_discovery",
+          "subtask_id": "5.1",
+          "session": 22,
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T03:48:59.337500+00:00",
+          "type": "text",
+          "content": "## ✅ Subtask 5.1 Completed Successfully\n\nI've successfully migrated the cleanup utilities to use TanStack DB collection delete operations. Here's what was accomplished:\n\n### Created File\n- **`src/lib/iss/collections/cleanup.ts`** - New collection-based cleanup utilities\n\n### Implementation Details\n\n**Migration Pattern:**\n- Used `collection.utils.getTable()` to access the underlying Dexie table for efficient queries\n- Leveraged Dexie's query API (`where()`, `orderBy()`, `limit()`) for complex filtering\n- Used `bulkDelete()` for efficient batch deletion operations\n\n**Functions Migrated:**\n1. ✅ `cleanupOldPositions()` - Deletes position records older than 30 days using collection table queries\n2. ✅ `cleanupOldTle()` - Keeps only the 7 most recent TLE records using collection table queries\n3. ✅ `runCleanup()` - Executes both cleanup operations\n4. ✅ `startCleanupScheduler()` / `stopCleanupScheduler()` - Periodic cleanup scheduler\n\n**Retained Constants:**\n- `POSITION_RETENTION` - 30 days max age, 600k max records, 10k batch size, 1min interval\n- `TLE_RETENTION` - 7 max records\n\n### Verification\n- ✅ TypeScript compilation passed\n- ✅ Production build succeeded without errors\n- ✅ Git commit created: `234f656`\n- ✅ Implementation plan updated to \"completed\"\n\nThe cleanup utilities now work seamlessly with TanStack DB collections while maintaining all the original functionality and retention policies.",
+          "phase": "coding",
+          "subtask_id": "5.1",
+          "session": 22
+        },
+        {
+          "timestamp": "2026-01-03T03:49:11.667120+00:00",
+          "type": "text",
+          "content": "I'll implement subtask 5.2 to update gap detection and filling to use collection queries. Let me start by reading the spec and understanding the context.",
+          "phase": "coding",
+          "subtask_id": "5.2",
+          "session": 23
+        },
+        {
+          "timestamp": "2026-01-03T03:49:12.185262+00:00",
+          "type": "tool_start",
+          "content": "[Read] ...-claude/specs/003-tanstack-db-migration/spec.md",
+          "phase": "coding",
+          "tool_name": "Read",
+          "tool_input": "...-claude/specs/003-tanstack-db-migration/spec.md",
+          "subtask_id": "5.2",
+          "session": 23
+        },
+        {
+          "timestamp": "2026-01-03T03:49:13.058524+00:00",
+          "type": "tool_start",
+          "content": "[Read] ...-tanstack-db-migration/implementation_plan.json",
+          "phase": "coding",
+          "tool_name": "Read",
+          "tool_input": "...-tanstack-db-migration/implementation_plan.json",
+          "subtask_id": "5.2",
+          "session": 23
+        },
+        {
+          "timestamp": "2026-01-03T03:49:13.401474+00:00",
+          "type": "tool_start",
+          "content": "[mcp__auto-claude__get_build_progress]",
+          "phase": "coding",
+          "tool_name": "mcp__auto-claude__get_build_progress",
+          "subtask_id": "5.2",
+          "session": 23
+        },
+        {
+          "timestamp": "2026-01-03T03:49:13.448336+00:00",
+          "type": "tool_start",
+          "content": "[mcp__auto-claude__get_session_context]",
+          "phase": "coding",
+          "tool_name": "mcp__auto-claude__get_session_context",
+          "subtask_id": "5.2",
+          "session": 23
+        },
+        {
+          "timestamp": "2026-01-03T03:49:13.515346+00:00",
+          "type": "tool_end",
+          "content": "[mcp__auto-claude__get_session_context] Done",
+          "phase": "coding",
+          "tool_name": "mcp__auto-claude__get_session_context",
+          "subtask_id": "5.2",
+          "session": 23,
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T03:49:20.476039+00:00",
+          "type": "text",
+          "content": "Let me read the existing gap detection implementation and pattern files to understand the code style.",
+          "phase": "coding",
+          "subtask_id": "5.2",
+          "session": 23
+        },
+        {
+          "timestamp": "2026-01-03T03:49:21.694588+00:00",
+          "type": "tool_start",
+          "content": "[Grep] pattern: gap",
+          "phase": "coding",
+          "tool_name": "Grep",
+          "tool_input": "pattern: gap",
+          "subtask_id": "5.2",
+          "session": 23
+        },
+        {
+          "timestamp": "2026-01-03T03:49:22.222956+00:00",
+          "type": "tool_start",
+          "content": "[Read] ./src/lib/iss/collections/cleanup.ts",
+          "phase": "coding",
+          "tool_name": "Read",
+          "tool_input": "./src/lib/iss/collections/cleanup.ts",
+          "subtask_id": "5.2",
+          "session": 23
+        },
+        {
+          "timestamp": "2026-01-03T03:49:22.612443+00:00",
+          "type": "tool_start",
+          "content": "[Read] ./src/lib/iss/collections/positions.ts",
+          "phase": "coding",
+          "tool_name": "Read",
+          "tool_input": "./src/lib/iss/collections/positions.ts",
+          "subtask_id": "5.2",
+          "session": 23
+        },
+        {
+          "timestamp": "2026-01-03T03:49:22.631949+00:00",
+          "type": "tool_end",
+          "content": "[Read] Done",
+          "phase": "coding",
+          "tool_name": "Read",
+          "subtask_id": "5.2",
+          "session": 23,
+          "detail": "     1→/**\n     2→ * Collection Cleanup Utilities\n     3→ *\n     4→ * Provides retention policy enforcement and cleanup operations for TanStack DB collections.\n     5→ * Uses collection.utils.getTable() for efficient Dexie queries and deletes.\n     6→ */\n     7→\n     8→import { positionsCollection } from \"./positions\";\n     9→import { tleCollection } from \"./tle\";\n    10→\n    11→// =============================================================================\n    12→// RETENTION POLICY CONFIGURATION\n    13→// =============================================================================\n    14→\n    15→/**\n    16→ * Configuration for position data retention\n    17→ */\n    18→export const POSITION_RETENTION = {\n    19→\t/** Maximum age in days for position records */\n    20→\tmaxAgeDays: 30,\n    21→\t/** Maximum number of position records to keep */\n    22→\tmaxRecords: 600_000, // ~35 days at 5s intervals\n    23→\t/** Batch size for cleanup operations */\n    24→\tcleanupBatchSize: 10_000,\n    25→\t/** Interval between cleanup runs in milliseconds */\n    26→\tcleanupIntervalMs: 60_000, // 1 minute\n    27→} as const;\n    28→\n    29→/**\n    30→ * Configuration for TLE data retention\n    31→ */\n    32→export const TLE_RETENTION = {\n    33→\t/** Maximum number of TLE records to keep */\n    34→\tmaxRecords: 7, // 1 week at hourly refresh\n    35→} as const;\n    36→\n    37→// =============================================================================\n    38→// RETENTION CLEANUP FUNCTIONS\n    39→// =============================================================================\n    40→\n    41→/**\n    42→ * Clean up old position records based on retention policy\n    43→ *\n    44→ * Uses TanStack DB collection with Dexie table queries for efficient\n    45→ * batch deletion of positions older than the retention policy.\n    46→ *\n    47→ * @returns Number of records deleted\n    48→ */\n    49→export async function cleanupOldPositions(): Promise<number> {\n    50→\tif (typeof window === \"undefined\") return 0;\n    51→\n    52→\tconst cutoffTimestamp =\n    53→\t\tDate.now() / 1000 - POSITION_RETENTION.maxAgeDays * 86400;\n    54→\n    55→\t// Get Dexie table for efficient query\n    56→\tconst table = positionsCollection.utils.getTable();\n    57→\n    58→\t// Find and delete old positions in batches\n    59→\tconst oldPositions = await table\n    60→\t\t.where(\"timestamp\")\n    61→\t\t.below(cutoffTimestamp)\n    62→\t\t.limit(POSITION_RETENTION.cleanupBatchSize)\n    63→\t\t.primaryKeys();\n    64→\n    65→\tif (oldPositions.length > 0) {\n    66→\t\t// Use Dexie bulkDelete for efficient batch deletion\n    67→\t\tawait table.bulkDelete(oldPositions);\n    68→\t}\n    69→\n    70→\treturn oldPositions.length;\n    71→}\n    72→\n    73→/**\n    74→ * Clean up old TLE records, keeping only the most recent ones\n    75→ *\n    76→ * Uses TanStack DB collection with Dexie table queries to maintain\n    77→ * only the latest N TLE records as per retention policy.\n    78→ *\n    79→ * @returns Number of records deleted\n    80→ */\n    81→export async function cleanupOldTle(): Promise<number> {\n    82→\tif (typeof window === \"undefined\") return 0;\n    83→\n    84→\t// Get Dexie table for efficient query\n    85→\tconst table = tleCollection.utils.getTable();\n    86→\n    87→\t// Get all TLE records ordered by fetchedAt\n    88→\tconst allTle = await table.orderBy(\"fetchedAt\").toArray();\n    89→\n    90→\tif (allTle.length <= TLE_RETENTION.maxRecords) return 0;\n    91→\n    92→\t// Delete oldest records, keep only the most recent\n    93→\tconst toDelete = allTle.slice(0, allTle.length - TLE_RETENTION.maxRecords);\n    94→\tconst deleteIds = toDelete.map((tle) => tle.id);\n    95→\n    96→\t// Use Dexie bulkDelete for efficient batch deletion\n    97→\tawait table.bulkDelete(deleteIds);\n    98→\treturn deleteIds.length;\n    99→}\n   100→\n   101→/**\n   102→ * Run all cleanup operations\n   103→ *\n   104→ * Executes both position and TLE cleanup operations and returns\n   105→ * counts of deleted records for each type.\n   106→ *\n   107→ * @returns Object with counts of deleted records\n   108→ */\n   109→export async function runCleanup(): Promise<{\n   110→\tpositions: number;\n   111→\ttle: number;\n   112→}> {\n   113→\tconst positions = await cleanupOldPositions();\n   114→\tconst tle = await cleanupOldTle();\n   115→\treturn { positions, tle };\n   116→}\n   117→\n   118→// =============================================================================\n   119→// CLEANUP SCHEDULER\n   120→// =============================================================================\n   121→\n   122→let cleanupIntervalId: ReturnType<typeof setInterval> | null = null;\n   123→\n   124→/**\n   125→ * Start the cleanup scheduler\n   126→ *\n   127→ * Runs cleanup periodically during app activity based on the configured\n   128→ * interval. Safe to call multiple times (ignores if already running).\n   129→ */\n   130→export function startCleanupScheduler(): void {\n   131→\tif (typeof window === \"undefined\") return;\n   132→\tif (cleanupIntervalId) return; // Already running\n   133→\n   134→\tcleanupIntervalId = setInterval(async () => {\n   135→\t\ttry {\n   136→\t\t\tconst result = await runCleanup();\n   137→\t\t\tif (result.positions > 0 || result.tle > 0) {\n   138→\t\t\t\tconsole.debug(\"[Cleanup] Completed:\", result);\n   139→\t\t\t}\n   140→\t\t} catch (error) {\n   141→\t\t\tconsole.warn(\"[Cleanup] Failed:\", error);\n   142→\t\t}\n   143→\t}, POSITION_RETENTION.cleanupIntervalMs);\n   144→}\n   145→\n   146→/**\n   147→ * Stop the cleanup scheduler\n   148→ *\n   149→ * Stops the periodic cleanup interval. Safe to call multiple times.\n   150→ */\n   151→export function stopCleanupScheduler(): void {\n   152→\tif (cleanupIntervalId) {\n   153→\t\tclearInterval(cleanupIntervalId);\n   154→\t\tcleanupIntervalId = null;\n   155→\t}\n   156→}\n   157→\n\n<system-reminder>\nWhenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.\n</system-reminder>\n",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T03:49:28.284385+00:00",
+          "type": "tool_start",
+          "content": "[Read] ./src/lib/iss/storage.ts",
+          "phase": "coding",
+          "tool_name": "Read",
+          "tool_input": "./src/lib/iss/storage.ts",
+          "subtask_id": "5.2",
+          "session": 23
+        },
+        {
+          "timestamp": "2026-01-03T03:49:28.627206+00:00",
+          "type": "tool_start",
+          "content": "[Glob] pattern: **/orbital.ts",
+          "phase": "coding",
+          "tool_name": "Glob",
+          "tool_input": "pattern: **/orbital.ts",
+          "subtask_id": "5.2",
+          "session": 23
+        },
+        {
+          "timestamp": "2026-01-03T03:49:28.649165+00:00",
+          "type": "tool_end",
+          "content": "[Glob] Done",
+          "phase": "coding",
+          "tool_name": "Glob",
+          "subtask_id": "5.2",
+          "session": 23,
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T03:49:33.436705+00:00",
+          "type": "tool_start",
+          "content": "[Read] ./src/lib/iss/orbital.ts",
+          "phase": "coding",
+          "tool_name": "Read",
+          "tool_input": "./src/lib/iss/orbital.ts",
+          "subtask_id": "5.2",
+          "session": 23
+        },
+        {
+          "timestamp": "2026-01-03T03:49:33.454820+00:00",
+          "type": "tool_end",
+          "content": "[Read] Done",
+          "phase": "coding",
+          "tool_name": "Read",
+          "subtask_id": "5.2",
+          "session": 23,
+          "detail": "     1→/**\n     2→ * Orbital Calculation Utilities\n     3→ * Uses satellite.js for TLE propagation and orbital mechanics.\n     4→ */\n     5→\n     6→import * as satellite from \"satellite.js\";\n     7→import type {\n     8→\tLatLng,\n     9→\tOrbitalParameters,\n    10→\tOrbitalPoint,\n    11→\tPassPrediction,\n    12→} from \"./types\";\n    13→import { generateEntityId } from \"./types\";\n    14→\n    15→/**\n    16→ * Normalize longitude to -180 to 180 range\n    17→ */\n    18→const normalizeLongitude = (lon: number): number =>\n    19→\t((((lon + 180) % 360) + 360) % 360) - 180;\n    20→\n    21→/**\n    22→ * Convert radians to degrees\n    23→ */\n    24→const radiansToDegrees = (radians: number): number => radians * (180 / Math.PI);\n    25→\n    26→/**\n    27→ * Get satellite.js library safely\n    28→ */\n    29→const getSatelliteLib = () => {\n    30→\tif (!satellite || !satellite.twoline2satrec) {\n    31→\t\tconsole.warn(\"Satellite.js library not loaded correctly\", satellite);\n    32→\t\tthrow new Error(\"ORBITAL_LIB_ERROR\");\n    33→\t}\n    34→\treturn satellite;\n    35→};\n    36→\n    37→/**\n    38→ * Calculate orbital path from TLE data\n    39→ * @param line1 - First TLE line\n    40→ * @param line2 - Second TLE line\n    41→ * @param startMins - Start time offset in minutes (negative for past)\n    42→ * @param endMins - End time offset in minutes\n    43→ * @param stepMins - Time step between points (default: 1)\n    44→ * @returns Array of orbital points\n    45→ */\n    46→export const calculateOrbitPath = (\n    47→\tline1: string,\n    48→\tline2: string,\n    49→\tstartMins: number,\n    50→\tendMins: number,\n    51→\tstepMins: number = 1,\n    52→): OrbitalPoint[] => {\n    53→\tconst points: OrbitalPoint[] = [];\n    54→\ttry {\n    55→\t\tconst satLib = getSatelliteLib();\n    56→\t\tconst satrec = satLib.twoline2satrec(line1, line2);\n    57→\t\tif (!satrec) return [];\n    58→\n    59→\t\tconst now = new Date();\n    60→\t\tfor (let i = startMins; i <= endMins; i += stepMins) {\n    61→\t\t\tconst time = new Date(now.getTime() + i * 60 * 1000);\n    62→\t\t\tconst positionAndVelocity = satLib.propagate(satrec, time);\n    63→\t\t\tconst pos = positionAndVelocity.position;\n    64→\n    65→\t\t\tif (pos && typeof pos !== \"boolean\") {\n    66→\t\t\t\tconst gmst = satLib.gstime(time);\n    67→\t\t\t\tconst geo = satLib.eciToGeodetic(pos, gmst);\n    68→\t\t\t\tpoints.push({\n    69→\t\t\t\t\tlat: satLib.degreesLat(geo.latitude),\n    70→\t\t\t\t\tlng: normalizeLongitude(satLib.degreesLong(geo.longitude)),\n    71→\t\t\t\t\talt: geo.height,\n    72→\t\t\t\t});\n    73→\t\t\t}\n    74→\t\t}\n    75→\t} catch (e) {\n    76→\t\tconsole.warn(\"Orbit calculation error:\", e);\n    77→\t}\n    78→\treturn points;\n    79→};\n    80→\n    81→/**\n    82→ * Predict future orbital path\n    83→ * Convenience wrapper for calculateOrbitPath starting from now\n    84→ */\n    85→export const predictOrbit = (\n    86→\tline1: string,\n    87→\tline2: string,\n    88→\tdurationMins: number,\n    89→): OrbitalPoint[] => calculateOrbitPath(line1, line2, 0, durationMins);\n    90→\n    91→/**\n    92→ * Calculate Keplerian orbital parameters from TLE\n    93→ * @param line1 - First TLE line\n    94→ * @param line2 - Second TLE line\n    95→ * @returns OrbitalParameters or null if calculation fails\n    96→ */\n    97→export const calculateOrbitalParameters = (\n    98→\tline1: string,\n    99→\tline2: string,\n   100→): OrbitalParameters | null => {\n   101→\ttry {\n   102→\t\tconst satLib = getSatelliteLib();\n   103→\t\tconst satrec = satLib.twoline2satrec(line1, line2);\n   104→\t\tif (!satrec) return null;\n   105→\n   106→\t\t// Mean motion in rad/sec (satrec.no is in rad/min)\n   107→\t\tconst n_rad_s = satrec.no / 60;\n   108→\t\t// Earth's gravitational parameter (km³/s²)\n   109→\t\tconst mu = 398600.4418;\n   110→\t\t// Semi-major axis (km)\n   111→\t\tconst a = (mu / (n_rad_s * n_rad_s)) ** (1 / 3);\n   112→\t\t// Earth radius (km)\n   113→\t\tconst earthRadius = 6378.137;\n   114→\n   115→\t\treturn {\n   116→\t\t\tinclination: satrec.inclo * (180 / Math.PI),\n   117→\t\t\teccentricity: satrec.ecco,\n   118→\t\t\tmeanMotion: (satrec.no * 1440) / (2 * Math.PI), // rev/day\n   119→\t\t\tperiod: (2 * Math.PI) / n_rad_s / 60, // minutes\n   120→\t\t\tapogee: a * (1 + satrec.ecco) - earthRadius,\n   121→\t\t\tperigee: a * (1 - satrec.ecco) - earthRadius,\n   122→\t\t};\n   123→\t} catch (e) {\n   124→\t\tconsole.warn(\"Orbital parameters calculation error:\", e);\n   125→\t\treturn null;\n   126→\t}\n   127→};\n   128→\n   129→/**\n   130→ * Predict next visible ISS pass for observer location\n   131→ * @param line1 - First TLE line\n   132→ * @param line2 - Second TLE line\n   133→ * @param userLoc - Observer's geographic location\n   134→ * @returns PassPrediction or null if no pass within 24 hours\n   135→ */\n   136→/**\n   137→ * Options for predicting multiple passes\n   138→ */\n   139→export interface PredictPassesOptions {\n   140→\t/** Maximum number of passes to find (default: 10) */\n   141→\tmaxPasses?: number;\n   142→\t/** Maximum days to search ahead (default: 7) */\n   143→\tmaxDays?: number;\n   144→\t/** Minimum elevation angle to include (default: 10°) */\n   145→\tminElevation?: number;\n   146→}\n   147→\n   148→/**\n   149→ * Predict multiple ISS passes for observer location\n   150→ * @param line1 - First TLE line\n   151→ * @param line2 - Second TLE line\n   152→ * @param userLoc - Observer's geographic location\n   153→ * @param options - Prediction options\n   154→ * @returns Array of PassPrediction objects\n   155→ */\n   156→export const predictPasses = (\n   157→\tline1: string,\n   158→\tline2: string,\n   159→\tuserLoc: LatLng,\n   160→\toptions: PredictPassesOptions = {},\n   161→): PassPrediction[] => {\n   162→\tconst { maxPasses = 10, maxDays = 7, minElevation = 10 } = options;\n   163→\n   164→\tconst passes: PassPrediction[] = [];\n   165→\tconst maxHorizon = maxDays * 24 * 60 * 60 * 1000;\n   166→\tconst now = Date.now();\n   167→\tconst horizonEnd = now + maxHorizon;\n   168→\tlet searchStart = new Date();\n   169→\n   170→\t// Continue searching until we hit maxPasses OR exceed maxDays boundary\n   171→\twhile (passes.length < maxPasses) {\n   172→\t\tconst pass = predictNextPassFrom(\n   173→\t\t\tline1,\n   174→\t\t\tline2,\n   175→\t\t\tuserLoc,\n   176→\t\t\tsearchStart,\n   177→\t\t\tminElevation,\n   178→\t\t\thorizonEnd,\n   179→\t\t);\n   180→\n   181→\t\tif (!pass) break;\n   182→\n   183→\t\t// Check if pass is within date range - prioritize maxDays over maxPasses\n   184→\t\tconst passStartTime = pass.startTime.getTime();\n   185→\t\tif (passStartTime > horizonEnd) {\n   186→\t\t\t// This pass exceeds the maxDays boundary, stop searching\n   187→\t\t\tbreak;\n   188→\t\t}\n   189→\n   190→\t\tpasses.push(pass);\n   191→\t\t// Start next search after this pass ends (plus 1 minute buffer)\n   192→\t\tsearchStart = new Date(pass.endTime.getTime() + 60000);\n   193→\t}\n   194→\n   195→\treturn passes;\n   196→};\n   197→\n   198→/**\n   199→ * Internal helper - predict next pass starting from a specific time\n   200→ * @param horizonEnd - Absolute timestamp (ms) for search boundary\n   201→ */\n   202→const predictNextPassFrom = (\n   203→\tline1: string,\n   204→\tline2: string,\n   205→\tuserLoc: LatLng,\n   206→\tstartFrom: Date,\n   207→\tminElevation: number,\n   208→\thorizonEnd: number,\n   209→): PassPrediction | null => {\n   210→\ttry {\n   211→\t\tconst satLib = getSatelliteLib();\n   212→\t\tconst satrec = satLib.twoline2satrec(line1, line2);\n   213→\n   214→\t\t// Observer geodetic position\n   215→\t\tconst observerGd = {\n   216→\t\t\tlatitude: satLib.degreesToRadians(userLoc.lat),\n   217→\t\t\tlongitude: satLib.degreesToRadians(userLoc.lng),\n   218→\t\t\theight: 0.03, // ~30m above sea level\n   219→\t\t};\n   220→\n   221→\t\tconst stepSeconds = 20;\n   222→\t\tlet currentTime = Math.max(startFrom.getTime(), Date.now());\n   223→\n   224→\t\tlet passStart: Date | null = null;\n   225→\t\tlet maxEl = 0;\n   226→\t\tlet passPath: OrbitalPoint[] = [];\n   227→\n   228→\t\twhile (currentTime < horizonEnd) {\n   229→\t\t\tconst time = new Date(currentTime);\n   230→\n   231→\t\t\tconst positionAndVelocity = satLib.propagate(satrec, time);\n   232→\t\t\tconst posEci = positionAndVelocity.position;\n   233→\t\t\tconst gmst = satLib.gstime(time);\n   234→\n   235→\t\t\tif (!posEci || typeof posEci === \"boolean\") {\n   236→\t\t\t\tcurrentTime += stepSeconds * 1000;\n   237→\t\t\t\tcontinue;\n   238→\t\t\t}\n   239→\n   240→\t\t\tconst posEcf = satLib.eciToEcf(posEci, gmst);\n   241→\t\t\tconst look = satLib.ecfToLookAngles(observerGd, posEcf);\n   242→\t\t\tconst elevationDeg = radiansToDegrees(look.elevation);\n   243→\n   244→\t\t\tif (elevationDeg > minElevation) {\n   245→\t\t\t\t// Above threshold is visible\n   246→\t\t\t\tif (!passStart) {\n   247→\t\t\t\t\tpassStart = time;\n   248→\t\t\t\t\tpassPath = [];\n   249→\t\t\t\t}\n   250→\n   251→\t\t\t\tif (elevationDeg > maxEl) maxEl = elevationDeg;\n   252→\n   253→\t\t\t\tconst geo = satLib.eciToGeodetic(posEci, gmst);\n   254→\t\t\t\tpassPath.push({\n   255→\t\t\t\t\tlat: satLib.degreesLat(geo.latitude),\n   256→\t\t\t\t\tlng: normalizeLongitude(satLib.degreesLong(geo.longitude)),\n   257→\t\t\t\t\talt: geo.height,\n   258→\t\t\t\t});\n   259→\t\t\t} else if (passStart) {\n   260→\t\t\t\t// Pass ended\n   261→\t\t\t\treturn {\n   262→\t\t\t\t\tid: generateEntityId.pass(passStart),\n   263→\t\t\t\t\tstartTime: passStart,\n   264→\t\t\t\t\tendTime: time,\n   265→\t\t\t\t\tduration: (time.getTime() - passStart.getTime()) / 1000 / 60,\n   266→\t\t\t\t\tmaxElevation: maxEl,\n   267→\t\t\t\t\tpath: passPath,\n   268→\t\t\t\t\tquality:\n   269→\t\t\t\t\t\tmaxEl >= 60\n   270→\t\t\t\t\t\t\t? \"excellent\"\n   271→\t\t\t\t\t\t\t: maxEl >= 40\n   272→\t\t\t\t\t\t\t\t? \"good\"\n   273→\t\t\t\t\t\t\t\t: maxEl >= 25\n   274→\t\t\t\t\t\t\t\t\t? \"fair\"\n   275→\t\t\t\t\t\t\t\t\t: \"poor\",\n   276→\t\t\t\t};\n   277→\t\t\t}\n   278→\n   279→\t\t\tcurrentTime += stepSeconds * 1000;\n   280→\t\t}\n   281→\n   282→\t\treturn null; // No pass found\n   283→\t} catch (e) {\n   284→\t\tconsole.error(\"Pass prediction error:\", e);\n   285→\t\treturn null;\n   286→\t}\n   287→};\n   288→\n   289→export const predictNextPass = (\n   290→\tline1: string,\n   291→\tline2: string,\n   292→\tuserLoc: LatLng,\n   293→): PassPrediction | null => {\n   294→\ttry {\n   295→\t\tconst satLib = getSatelliteLib();\n   296→\t\tconst satrec = satLib.twoline2satrec(line1, line2);\n   297→\n   298→\t\t// Observer geodetic position\n   299→\t\tconst observerGd = {\n   300→\t\t\tlatitude: satLib.degreesToRadians(userLoc.lat),\n   301→\t\t\tlongitude: satLib.degreesToRadians(userLoc.lng),\n   302→\t\t\theight: 0.03, // ~30m above sea level\n   303→\t\t};\n   304→\n   305→\t\tconst now = new Date();\n   306→\t\tconst stepSeconds\n\n... [truncated - full output was 12692 chars]",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T03:49:42.926394+00:00",
+          "type": "text",
+          "content": "Now I'll create the gap-filling.ts file with collection-based gap detection and filling. Let me read the types file first to ensure I have all the right types.",
+          "phase": "coding",
+          "subtask_id": "5.2",
+          "session": 23
+        },
+        {
+          "timestamp": "2026-01-03T03:49:44.480152+00:00",
+          "type": "tool_start",
+          "content": "[Grep] pattern: interface ISSPosition|type ISSPosition|export.*ISSPosition",
+          "phase": "coding",
+          "tool_name": "Grep",
+          "tool_input": "pattern: interface ISSPosition|type ISSPosition|export.*ISSPosition",
+          "subtask_id": "5.2",
+          "session": 23
+        },
+        {
+          "timestamp": "2026-01-03T03:49:45.084396+00:00",
+          "type": "tool_start",
+          "content": "[Read] ./src/lib/iss/types.ts",
+          "phase": "coding",
+          "tool_name": "Read",
+          "tool_input": "./src/lib/iss/types.ts",
+          "subtask_id": "5.2",
+          "session": 23
+        },
+        {
+          "timestamp": "2026-01-03T03:49:45.099293+00:00",
+          "type": "tool_end",
+          "content": "[Read] Done",
+          "phase": "coding",
+          "tool_name": "Read",
+          "subtask_id": "5.2",
+          "session": 23,
+          "detail": "     1→/**\n     2→ * ISS Tracker Type Definitions\n     3→ *\n     4→ * Core type definitions for the ISS Tracker feature.\n     5→ * All entities include `id` fields for TanStack DB compatibility.\n     6→ */\n     7→\n     8→// =============================================================================\n     9→// CORE DOMAIN TYPES\n    10→// =============================================================================\n    11→\n    12→/**\n    13→ * Normalized ISS position data used throughout the application\n    14→ */\n    15→export interface ISSPosition {\n    16→\t/** Unique identifier for TanStack DB (timestamp-based) */\n    17→\tid: string;\n    18→\t/** Latitude in degrees (-90 to 90) */\n    19→\tlatitude: number;\n    20→\t/** Longitude in degrees (-180 to 180) */\n    21→\tlongitude: number;\n    22→\t/** Unix timestamp in seconds */\n    23→\ttimestamp: number;\n    24→\t/** Altitude above Earth's surface in kilometers */\n    25→\taltitude: number;\n    26→\t/** Orbital velocity in kilometers per hour */\n    27→\tvelocity: number;\n    28→\t/** Current lighting condition */\n    29→\tvisibility: string;\n    30→}\n    31→\n    32→/**\n    33→ * Two-Line Element set for orbital calculations\n    34→ */\n    35→export type TLEData = [line1: string, line2: string];\n    36→\n    37→/**\n    38→ * Geographic coordinate pair\n    39→ */\n    40→export interface LatLng {\n    41→\tlat: number;\n    42→\tlng: number;\n    43→}\n    44→\n    45→/**\n    46→ * 3D point on orbital path\n    47→ */\n    48→export interface OrbitalPoint {\n    49→\tlat: number;\n    50→\tlng: number;\n    51→\talt: number;\n    52→}\n    53→\n    54→// =============================================================================\n    55→// CREW DATA TYPES\n    56→// =============================================================================\n    57→\n    58→/**\n    59→ * Enriched astronaut profile with mission data\n    60→ */\n    61→export interface Astronaut {\n    62→\t/** Unique identifier for TanStack DB (slugified name) */\n    63→\tid: string;\n    64→\t/** Full name of astronaut */\n    65→\tname: string;\n    66→\t/** Spacecraft currently aboard (\"ISS\") */\n    67→\tcraft: string;\n    68→\t/** Wikipedia portrait URL */\n    69→\timage?: string;\n    70→\t/** Mission role */\n    71→\trole?: string;\n    72→\t/** Space agency affiliation */\n    73→\tagency?: string;\n    74→\t/** Launch date ISO string (YYYY-MM-DD) */\n    75→\tlaunchDate?: string;\n    76→\t/** Expected return date ISO string */\n    77→\tendDate?: string;\n    78→}\n    79→\n    80→/**\n    81→ * Aggregated crew data response\n    82→ */\n    83→export interface CrewData {\n    84→\tmessage: \"success\" | \"error\";\n    85→\tnumber: number;\n    86→\tpeople: Astronaut[];\n    87→}\n    88→\n    89→/**\n    90→ * Local mission database profile for crew enrichment\n    91→ */\n    92→export interface MissionProfile {\n    93→\tstart?: string;\n    94→\tend?: string;\n    95→\trole: string;\n    96→\tagency?: string;\n    97→\timage?: string;\n    98→\taliasFor?: string;\n    99→}\n   100→\n\n<system-reminder>\nWhenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.\n</system-reminder>\n",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T03:49:50.857656+00:00",
+          "type": "tool_start",
+          "content": "[Grep] pattern: getPositionsInRange",
+          "phase": "coding",
+          "tool_name": "Grep",
+          "tool_input": "pattern: getPositionsInRange",
+          "subtask_id": "5.2",
+          "session": 23
+        },
+        {
+          "timestamp": "2026-01-03T03:49:51.214590+00:00",
+          "type": "tool_end",
+          "content": "[Grep] Done",
+          "phase": "coding",
+          "tool_name": "Grep",
+          "subtask_id": "5.2",
+          "session": 23,
+          "detail": "src/hooks/iss/useISSData.ts:16:\tgetPositionsInRange,\nsrc/hooks/iss/useISSData.ts:215:\t\t\tconst result = await getPositionsInRange(startTimestamp, endTimestamp);\nsrc/lib/iss/db.ts:157:export async function getPositionsInRange(\nsrc/lib/iss/storage.ts:11:\tgetPositionsInRange,\nsrc/lib/iss/storage.ts:436:\tconst positions = await getPositionsInRange(startTimestamp, endTimestamp);\n.auto-claude/specs/003-tanstack-db-migration/task_logs.json:225:[Omitted long matching line]\n.auto-claude/specs/003-tanstack-db-migration/task_logs.json:1526:[Omitted long matching line]\n.auto-claude/specs/003-tanstack-db-migration/task_logs.json:4757:[Omitted long matching line]\n.auto-claude/specs/003-tanstack-db-migration/task_logs.json:5429:[Omitted long matching line]\n.auto-claude/specs/003-tanstack-db-migration/task_logs.json:5804:[Omitted long matching line]\n.auto-claude/specs/003-tanstack-db-migration/task_logs.json:9798:[Omitted long matching line]\n.auto-claude/specs/003-tanstack-db-migration/task_logs.json:10289:          \"content\": \"[Grep] pattern: getPositionsInRange\",\n.auto-claude/specs/003-tanstack-db-migration/task_logs.json:10292:          \"tool_input\": \"pattern: getPositionsInRange\",\nspecs/004-tanstack-db-storage/contracts/api-interfaces.ts:217:  getPositionsInRange(startTimestamp: number, endTimestamp: number): Promise<ISSPosition[]>;\nspecs/004-tanstack-db-storage/data-model.md:294:export async function getPositionsInRange(\nspecs/004-tanstack-db-storage/data-model.md:517:async function getPositionsInRange(\nspecs/004-tanstack-db-storage/research.md:448:async function getPositionsInRange(startMs: number, endMs: number) {\nspecs/004-tanstack-db-storage/tasks.md:92:- [X] T022 [US3] Implement getPositionsInRange query function in `src/lib/iss/db.ts`",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T03:49:55.199477+00:00",
+          "type": "tool_start",
+          "content": "[Read] ./src/lib/iss/db.ts",
+          "phase": "coding",
+          "tool_name": "Read",
+          "tool_input": "./src/lib/iss/db.ts",
+          "subtask_id": "5.2",
+          "session": 23
+        },
+        {
+          "timestamp": "2026-01-03T03:49:55.212417+00:00",
+          "type": "tool_end",
+          "content": "[Read] Done",
+          "phase": "coding",
+          "tool_name": "Read",
+          "subtask_id": "5.2",
+          "session": 23,
+          "detail": "   155→ * @returns Promise resolving to array of positions in range\n   156→ */\n   157→export async function getPositionsInRange(\n   158→\tstartTimestamp: number,\n   159→\tendTimestamp: number,\n   160→): Promise<ISSPosition[]> {\n   161→\tif (typeof window === \"undefined\") return [];\n   162→\treturn getDb()\n   163→\t\t.positions.where(\"timestamp\")\n   164→\t\t.between(startTimestamp, endTimestamp)\n   165→\t\t.toArray();\n   166→}\n   167→\n   168→/**\n   169→ * Store a position record (upsert by id)\n   170→ * @param position - Position to store\n   171→ */\n   172→export async function storePosition(position: ISSPosition): Promise<void> {\n   173→\tif (typeof window === \"undefined\") return;\n   174→\tawait getDb().positions.put(position);\n\n<system-reminder>\nWhenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.\n</system-reminder>\n",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T03:50:01.060095+00:00",
+          "type": "text",
+          "content": "Now I'll create the gap-filling.ts file with collection-based gap detection and filling:",
+          "phase": "coding",
+          "subtask_id": "5.2",
+          "session": 23
+        },
+        {
+          "timestamp": "2026-01-03T03:50:25.592344+00:00",
+          "type": "tool_start",
+          "content": "[Write] ./src/lib/iss/collections/gap-filling.ts",
+          "phase": "coding",
+          "tool_name": "Write",
+          "tool_input": "./src/lib/iss/collections/gap-filling.ts",
+          "subtask_id": "5.2",
+          "session": 23
+        },
+        {
+          "timestamp": "2026-01-03T03:50:25.957908+00:00",
+          "type": "tool_end",
+          "content": "[Write] Done",
+          "phase": "coding",
+          "tool_name": "Write",
+          "subtask_id": "5.2",
+          "session": 23,
+          "detail": "File created successfully at: ./src/lib/iss/collections/gap-filling.ts",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T03:51:29.612362+00:00",
+          "type": "text",
+          "content": "Now let me verify that the code compiles correctly:",
+          "phase": "coding",
+          "subtask_id": "5.2",
+          "session": 23
+        },
+        {
+          "timestamp": "2026-01-03T03:51:29.624888+00:00",
+          "type": "tool_start",
+          "content": "[Bash] npm run build 2>&1 | head -100",
+          "phase": "coding",
+          "tool_name": "Bash",
+          "tool_input": "npm run build 2>&1 | head -100",
+          "subtask_id": "5.2",
+          "session": 23
+        },
+        {
+          "timestamp": "2026-01-03T03:51:42.545021+00:00",
+          "type": "tool_end",
+          "content": "[Bash] Done",
+          "phase": "coding",
+          "tool_name": "Bash",
+          "subtask_id": "5.2",
+          "session": 23,
+          "detail": "> build\n> vite build\n\nvite v7.2.7 building client environment for production...\ntransforming...\n\n[@tanstack/devtools-vite] Removed devtools code from: /src/routes/__root.tsx\n\n✓ 3868 modules transformed.\nrendering chunks...\ncomputing gzip size...\ndist/client/assets/styles-DOvygAbi.css            62.36 kB │ gzip:  11.23 kB\ndist/client/assets/x-DugXK9qI.js                   0.16 kB │ gzip:   0.15 kB\ndist/client/assets/zap-84GO-Izr.js                 0.26 kB │ gzip:   0.21 kB\ndist/client/assets/refresh-cw-DTy_WKd_.js          0.63 kB │ gzip:   0.40 kB\ndist/client/assets/MatrixText-BnTpNLfX.js          1.31 kB │ gzip:   0.80 kB\ndist/client/assets/audio-CM5WXBZR.js               4.13 kB │ gzip:   1.45 kB\ndist/client/assets/index-D6xw2f67.js               5.71 kB │ gzip:   1.52 kB\ndist/client/assets/map-C0NofpQ7.js                14.83 kB │ gzip:   3.62 kB\ndist/client/assets/StatsPanel-DIjz3-Li.js         24.74 kB │ gzip:   5.14 kB\ndist/client/assets/copilot-DxG6IMgb.js            26.83 kB │ gzip:   6.68 kB\ndist/client/assets/crew-Dt9ds8Er.js               29.86 kB │ gzip:   5.76 kB\ndist/client/assets/index-CDaR_Sn-.js              36.96 kB │ gzip:   8.51 kB\ndist/client/assets/useISSDataDB-B9um-68o.js       39.00 kB │ gzip:  12.10 kB\ndist/client/assets/useLocation-B-5AkMgu.js        41.83 kB │ gzip:  18.13 kB\ndist/client/assets/useNextPass-BSsWBd4C.js       100.25 kB │ gzip:  33.00 kB\ndist/client/assets/passes-Bg8gCCQD.js            127.57 kB │ gzip:  26.99 kB\ndist/client/assets/ISSLayout-Dv2Roo0u.js         332.87 kB │ gzip:  99.53 kB\ndist/client/assets/main-cZ9GLYGy.js              633.15 kB │ gzip: 196.00 kB\ndist/client/assets/react-globe.gl-BGn7yZb7.js  1,726.64 kB │ gzip: 489.84 kB\n\n(!) Some chunks are larger than 500 kB after minification. Consider:\n- Using dynamic import() to code-split the application\n- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks\n- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.\n✓ built in 5.39s\nvite v7.2.7 building ssr environment for production...\ntransforming...\n\n[@tanstack/devtools-vite] Removed devtools code from: /src/routes/__root.tsx\n\n✓ 4146 modules transformed.\nrendering chunks...\nUsing vars defined in .env.local\ndist/server/.dev.vars                                          0.41 kB\ndist/server/wrangler.json                                      1.42 kB\ndist/server/.vite/manifest.json                               10.59 kB\ndist/server/assets/styles-DOvygAbi.css                        62.36 kB\ndist/server/assets/start-HYkvq4Ni.js                           0.06 kB\ndist/server/index.js                                           0.24 kB\ndist/server/assets/x-wj_KDElV.js                               0.24 kB\ndist/server/assets/zap-is8nrHgT.js                             0.38 kB\ndist/server/assets/refresh-cw-CekP7ZSs.js                      0.95 kB\ndist/server/assets/api-BXVAc33d.js                             1.28 kB\ndist/server/assets/MatrixText-CYZTgREu.js                      1.65 kB\ndist/server/assets/_tanstack-start-manifest_v-CLYLGtWc.js      2.84 kB\ndist/server/assets/prompt-MPVdGKG_.js                          4.58 kB\ndist/server/assets/audio-OX_aqiFJ.js                           6.77 kB\ndist/server/assets/types-BtewSiEj.js                           7.30 kB\ndist/server/assets/index-BdVQ5OGH.js                           7.48 kB\ndist/server/assets/weather-CBbTMBqN.js                         9.27 kB\ndist/server/assets/agent-BAiLLCM3.js                           9.39 kB\ndist/server/assets/ai-client-I8ZIl_5B.js                      10.47 kB\ndist/server/assets/api-DTfygtuH.js                            11.09 kB\ndist/server/assets/map-CdvC9Lq2.js                            18.62 kB\ndist/server/assets/trace-DKnm0qkX.js                          22.62 kB\ndist/server/assets/StatsPanel-CTuKm-p_.js                     31.65 kB\ndist/server/assets/useLocation-5V-selSH.js                    34.42 kB\ndist/server/assets/crew-BPVR8_Xo.js                           38.06 kB\ndist/server/assets/copilot-D-Fnb7sY.js                        40.00 kB\ndist/server/assets/index-BTst6ZB-.js                          45.75 kB\ndist/server/assets/orbital-eJTXSmF2.js                        60.47 kB\ndist/server/assets/useISSDataDB-CbDiL6oO.js                  107.04 kB\ndist/server/assets/passes-Cp3_JdLb.js                        235.28 kB\ndist/server/assets/useNextPass-Bgn1VS-7.js                   252.33 kB\ndist/server/assets/utils-BuCOQhBT.js                         344.99 kB\ndist/server/assets/coerce-QKPnJqnO.js                        430.51 kB\ndist/server/assets/ISSLayout-Dht5FJdR.js                     604.55 kB\ndist/server/assets/router-DhpWErZZ.js                        923.50 kB\ndist/server/assets/worker-entry-L2WArkC1.js                1,152.00 kB\ndist/server/assets/react-globe.gl-BdQu5Ekj.js              3,302.43 kB\n✓ built in 4.70s",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T03:51:46.364913+00:00",
+          "type": "text",
+          "content": "Excellent! The build succeeded. Now let me commit the changes:",
+          "phase": "coding",
+          "subtask_id": "5.2",
+          "session": 23
+        },
+        {
+          "timestamp": "2026-01-03T03:51:46.998146+00:00",
+          "type": "tool_start",
+          "content": "[Bash] git add .",
+          "phase": "coding",
+          "tool_name": "Bash",
+          "tool_input": "git add .",
+          "subtask_id": "5.2",
+          "session": 23
+        },
+        {
+          "timestamp": "2026-01-03T03:51:48.799892+00:00",
+          "type": "tool_start",
+          "content": "[Bash] git commit -m \"auto-claude: 5.2 - Update gap de...",
+          "phase": "coding",
+          "tool_name": "Bash",
+          "tool_input": "git commit -m \"auto-claude: 5.2 - Update gap de...",
+          "subtask_id": "5.2",
+          "session": 23
         }
       ]
     },

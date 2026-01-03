@@ -541,7 +541,7 @@
           "id": "5.1",
           "title": "Migrate retention cleanup to collection-based",
           "description": "Update cleanupOldPositions and cleanupOldTle to use collection delete operations",
-          "status": "pending",
+          "status": "completed",
           "priority": "high",
           "estimated_effort": "1 hour",
           "files_to_create": [
@@ -557,7 +557,8 @@
             "Respects retention policy constants",
             "Runs periodically via scheduler"
           ],
-          "notes": ""
+          "notes": "\u2705 Successfully migrated cleanup utilities to use TanStack DB collection operations:\n- Created src/lib/iss/collections/cleanup.ts with collection-based cleanup functions\n- cleanupOldPositions() uses positionsCollection.utils.getTable() for efficient Dexie queries\n- cleanupOldTle() uses tleCollection.utils.getTable() for efficient Dexie queries\n- Both functions use Dexie bulkDelete() for efficient batch deletion\n- Maintained all retention policy constants (POSITION_RETENTION, TLE_RETENTION)\n- Preserved cleanup scheduler (startCleanupScheduler, stopCleanupScheduler)\n- All TypeScript compilation checks passing\n- Production build succeeded without errors\n- Git commit: 234f656",
+          "updated_at": "2026-01-03T03:48:42.745066+00:00"
         },
         {
           "id": "5.2",
@@ -913,5 +914,5 @@
     }
   },
   "recoveryNote": "Task recovered from stuck state at 2026-01-03T02:50:34.858Z",
-  "last_updated": "2026-01-03T03:46:01.464746+00:00"
+  "last_updated": "2026-01-03T03:48:42.745075+00:00"
 }

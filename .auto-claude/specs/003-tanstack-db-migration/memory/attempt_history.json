@@ -251,11 +251,23 @@
         }
       ],
       "status": "completed"
+    },
+    "5.1": {
+      "attempts": [
+        {
+          "session": 22,
+          "timestamp": "2026-01-02T21:48:59.407775",
+          "approach": "Implemented: Update cleanupOldPositions and cleanupOldTle to use collection delete operations",
+          "success": true,
+          "error": null
+        }
+      ],
+      "status": "completed"
     }
   },
   "stuck_subtasks": [],
   "metadata": {
     "created_at": "2026-01-02T20:50:35.728184",
-    "last_updated": "2026-01-02T21:46:45.182203"
+    "last_updated": "2026-01-02T21:48:59.407797"
   }
 }

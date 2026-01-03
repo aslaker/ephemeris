@@ -9,7 +9,12 @@
       "description": "Created ISS positions collection using tanstack-dexie-db-collection with Zod schema validation. Collection uses lazy initialization pattern compatible with Cloudflare Workers and persists to IndexedDB table 'positions' in database 'ephemeris-iss'",
       "category": "data-layer",
       "discovered_at": "2026-01-03T02:58:21.938247+00:00"
+    },
+    "src/lib/iss/collections/cleanup.ts": {
+      "description": "Created collection-based cleanup utilities using collection.utils.getTable() to access underlying Dexie table for efficient batch queries and deletions. Pattern allows leveraging Dexie's powerful query API (where, orderBy, limit) while maintaining TanStack DB collection integration. Uses bulkDelete() for efficient batch operations.",
+      "category": "architecture",
+      "discovered_at": "2026-01-03T03:48:48.557589+00:00"
     }
   },
-  "last_updated": "2026-01-03T02:58:21.938251+00:00"
+  "last_updated": "2026-01-03T03:48:48.557599+00:00"
 }

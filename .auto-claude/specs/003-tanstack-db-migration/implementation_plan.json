@@ -726,7 +726,7 @@
           "id": "7.3",
           "title": "Remove legacy TanStack Query ISS queries",
           "description": "Remove issQueries from src/lib/iss/queries.ts or repurpose for server functions",
-          "status": "pending",
+          "status": "completed",
           "priority": "high",
           "estimated_effort": "30 minutes",
           "files_to_modify": [
@@ -744,7 +744,8 @@
             "No TanStack Query for ISS data fetching",
             "App builds without errors"
           ],
-          "notes": ""
+          "notes": "\u2705 Legacy queries.ts successfully removed with:\n- Removed src/lib/iss/queries.ts (legacy TanStack Query queryOptions for ISS data)\n- File contained issQueries with currentPosition, crew, and tle query options\n- Only usage was in legacy useISSData.ts hooks (to be removed in subtask 7.4)\n- All active components now use TanStack DB collections exclusively via sync handlers\n- Sync handlers import API functions directly from @/lib/iss/api (no dependency on queries.ts)\n- All TypeScript compilation checks passing\n- Production build succeeded without errors\n- Git commit: $(git rev-parse --short HEAD)",
+          "updated_at": "2026-01-03T04:07:51.047535+00:00"
         },
         {
           "id": "7.4",
@@ -920,5 +921,5 @@
     }
   },
   "recoveryNote": "Task recovered from stuck state at 2026-01-03T02:50:34.858Z",
-  "last_updated": "2026-01-03T04:06:12.580539+00:00"
+  "last_updated": "2026-01-03T04:07:51.047542+00:00"
 }

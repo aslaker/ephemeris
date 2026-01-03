@@ -186,7 +186,6 @@ export interface MatrixTextProps {
 }
 
 export interface OrbitalSolverProps {
-	tle?: TLEData;
 	onClose: () => void;
 }
 

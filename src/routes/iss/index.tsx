@@ -326,7 +326,6 @@ function ISSTracker() {
 				{/* Orbital Solver Modal */}
 				{showOrbitalSolver && (
 					<OrbitalSolver
-						tle={tleData ?? undefined}
 						onClose={() => {
 							terminalAudio.playClick();
 							setShowOrbitalSolver(false);

@@ -58,7 +58,7 @@
           "id": "1.3",
           "title": "Create crew collection with Dexie persistence",
           "description": "Create a TanStack DB collection for astronaut crew data with Dexie adapter",
-          "status": "pending",
+          "status": "completed",
           "priority": "high",
           "estimated_effort": "1 hour",
           "files_to_create": [
@@ -74,7 +74,8 @@
             "Lazy initialization pattern",
             "getKey function returns astronaut.id"
           ],
-          "notes": ""
+          "notes": "\u2705 Collection created successfully with:\n- StoredAstronautSchema Zod schema defining all Astronaut fields plus fetchedAt timestamp\n- Dexie adapter configured for 'crew' table in 'ephemeris-iss' database\n- Lazy initialization via dexieCollectionOptions\n- getKey function returns astronaut.id\n- Follows exact same pattern as positions collection\n- All TypeScript compilation checks passing (pre-existing errors in copilot/agent.ts are unrelated)",
+          "updated_at": "2026-01-03T02:59:48.882710+00:00"
         },
         {
           "id": "1.4",
@@ -894,5 +895,5 @@
     }
   },
   "recoveryNote": "Task recovered from stuck state at 2026-01-03T02:50:34.858Z",
-  "last_updated": "2026-01-03T02:58:13.954841+00:00"
+  "last_updated": "2026-01-03T02:59:48.882715+00:00"
 }

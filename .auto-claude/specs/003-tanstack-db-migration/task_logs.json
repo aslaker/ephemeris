@@ -1,7 +1,7 @@
 {
   "spec_id": "003-tanstack-db-migration",
   "created_at": "2026-01-03T02:50:35.728447+00:00",
-  "updated_at": "2026-01-03T03:45:51.620120+00:00",
+  "updated_at": "2026-01-03T03:48:32.764772+00:00",
   "phases": {
     "planning": {
       "phase": "planning",
@@ -9546,6 +9546,473 @@
           "tool_input": "git commit -m \"auto-claude: 4.6 - Initialize sy...",
           "subtask_id": "4.6",
           "session": 21
+        },
+        {
+          "timestamp": "2026-01-03T03:45:52.641902+00:00",
+          "type": "tool_end",
+          "content": "[Bash] Done",
+          "phase": "coding",
+          "tool_name": "Bash",
+          "subtask_id": "4.6",
+          "session": 21,
+          "detail": "",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T03:45:58.044625+00:00",
+          "type": "text",
+          "content": "Now let me update the implementation plan to mark this subtask as completed:",
+          "phase": "coding",
+          "subtask_id": "4.6",
+          "session": 21
+        },
+        {
+          "timestamp": "2026-01-03T03:46:01.453522+00:00",
+          "type": "tool_start",
+          "content": "[mcp__auto-claude__update_subtask_status]",
+          "phase": "coding",
+          "tool_name": "mcp__auto-claude__update_subtask_status",
+          "subtask_id": "4.6",
+          "session": 21
+        },
+        {
+          "timestamp": "2026-01-03T03:46:01.480721+00:00",
+          "type": "tool_end",
+          "content": "[mcp__auto-claude__update_subtask_status] Done",
+          "phase": "coding",
+          "tool_name": "mcp__auto-claude__update_subtask_status",
+          "subtask_id": "4.6",
+          "session": 21,
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T03:46:04.766879+00:00",
+          "type": "text",
+          "content": "Perfect! Let me verify the implementation plan was updated correctly:",
+          "phase": "coding",
+          "subtask_id": "4.6",
+          "session": 21
+        },
+        {
+          "timestamp": "2026-01-03T03:46:05.819021+00:00",
+          "type": "tool_start",
+          "content": "[Read] ...-tanstack-db-migration/implementation_plan.json",
+          "phase": "coding",
+          "tool_name": "Read",
+          "tool_input": "...-tanstack-db-migration/implementation_plan.json",
+          "subtask_id": "4.6",
+          "session": 21
+        },
+        {
+          "timestamp": "2026-01-03T03:46:05.833432+00:00",
+          "type": "tool_end",
+          "content": "[Read] Done",
+          "phase": "coding",
+          "tool_name": "Read",
+          "subtask_id": "4.6",
+          "session": 21,
+          "detail": "   509→        {\n   510→          \"id\": \"4.6\",\n   511→          \"title\": \"Update layout with sync manager\",\n   512→          \"description\": \"Initialize sync manager at the ISS layout/root level for all pages\",\n   513→          \"status\": \"completed\",\n   514→          \"priority\": \"high\",\n   515→          \"estimated_effort\": \"1 hour\",\n   516→          \"files_to_modify\": [\n   517→            \"src/routes/iss/map.tsx\",\n   518→            \"src/routes/iss/-components/ISSLayout.tsx\"\n   519→          ],\n   520→          \"files_to_create\": [],\n   521→          \"dependencies\": [\n   522→            \"2.4\"\n   523→          ],\n   524→          \"acceptance_criteria\": [\n   525→            \"Sync manager starts on layout mount\",\n   526→            \"Sync manager stops on unmount\",\n   527→            \"Background refresh works for all data types\"\n   528→          ],\n   529→          \"notes\": \"\\u2705 Successfully initialized sync manager at ISS layout level:\\n- Added sync manager initialization to ISSLayout component using getDefaultSyncManager()\\n- Sync starts on component mount, stops on unmount via useEffect cleanup\\n- Background data synchronization configured for:\\n  * Position: 5 second intervals\\n  * Crew: 1 hour intervals\\n  * TLE: 1 hour intervals\\n- Automatic pause/resume when tab visibility changes\\n- Updated map.tsx to use new DB hooks (useISSPositionDB, useISSTLEDB) instead of TanStack Query\\n- All TypeScript compilation checks passing\\n- Production build succeeded without errors\\n- Git commit: df54b08\",\n   530→          \"updated_at\": \"2026-01-03T03:46:01.464738+00:00\"\n   531→        }\n   532→      ]\n   533→    },\n   534→    {\n   535→      \"id\": \"phase-5\",\n   536→      \"name\": \"Storage Utilities Migration\",\n   537→      \"description\": \"Migrate storage utilities to work with TanStack DB collections\",\n   538→      \"status\": \"pending\",\n\n<system-reminder>\nWhenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.\n</system-reminder>\n",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T03:46:08.685754+00:00",
+          "type": "text",
+          "content": "Excellent! Now let me update the build-progress.txt file to document the completion:",
+          "phase": "coding",
+          "subtask_id": "4.6",
+          "session": 21
+        },
+        {
+          "timestamp": "2026-01-03T03:46:09.172500+00:00",
+          "type": "tool_start",
+          "content": "[Read] ...cs/003-tanstack-db-migration/build-progress.txt",
+          "phase": "coding",
+          "tool_name": "Read",
+          "tool_input": "...cs/003-tanstack-db-migration/build-progress.txt",
+          "subtask_id": "4.6",
+          "session": 21
+        },
+        {
+          "timestamp": "2026-01-03T03:46:09.187643+00:00",
+          "type": "tool_end",
+          "content": "[Read] Done",
+          "phase": "coding",
+          "tool_name": "Read",
+          "subtask_id": "4.6",
+          "session": 21,
+          "detail": "     1→# TanStack DB Migration - Build Progress\n     2→\n     3→## Current Status: Phase 4 - Component Integration\n     4→\n     5→### Completed Subtasks\n     6→\n     7→#### Phase 1: Foundation - TanStack DB Collection Infrastructure ✅\n     8→- [x] 1.1 - Research TanStack DB collection patterns\n     9→- [x] 1.2 - Create positions collection with Dexie persistence\n    10→- [x] 1.3 - Create crew collection with Dexie persistence\n    11→- [x] 1.4 - Create TLE collection with Dexie persistence\n    12→- [x] 1.5 - Create briefings collection with Dexie persistence\n    13→- [x] 1.6 - Create collections index with shared Dexie database\n    14→\n    15→#### Phase 2: Data Layer Migration - Replace Dexie Direct Access ✅\n    16→- [x] 2.1 - Create position sync handler for API data\n    17→- [x] 2.2 - Create crew sync handler for API data\n    18→- [x] 2.3 - Create TLE sync handler for API data\n    19→- [x] 2.4 - Create unified sync manager\n    20→\n    21→#### Phase 3: Hook Migration - Replace TanStack Query with Live Queries ✅\n    22→- [x] 3.1 - Create useISSPositionDB hook with live query\n    23→- [x] 3.2 - Create useISSCrewDB hook with live query\n    24→- [x] 3.3 - Create useISSTLEDB hook with live query\n    25→- [x] 3.4 - Create usePositionHistoryDB hook with collection query\n    26→- [x] 3.5 - Create useBriefingDB hooks with live query\n    27→\n    28→#### Phase 4: Component Integration - Update Consumers 🔄\n    29→- [x] 4.1 - Update StatsPanel to use DB hooks\n    30→- [x] 4.2 - Update CrewCard and crew page to use DB hooks\n    31→- [x] 4.3 - Update OrbitalSolver to use DB hooks\n    32→- [x] 4.4 - Update PassesList and usePasses to use DB hooks\n    33→\n    34→### Latest Completion: Subtask 4.4\n    35→\n    36→**Date**: 2026-01-03\n    37→**Subtask**: 4.4 - Update pass prediction components to use TLE from DB collection\n    38→**Status**: ✅ Completed\n    39→\n    40→**Implementation Details**:\n    41→- Updated `src/hooks/iss/usePasses.ts` to fetch TLE data from TanStack DB collection\n    42→- Replaced `useQuery(issQueries.tle())` with `useISSTLEDB()` hook\n    43→- Removed issQueries import (no longer needed)\n    44→- Added useISSTLEDB import from @/hooks/iss/useISSDataDB\n    45→- Updated file header to reflect new DB-based approach\n    46→- PassesList.tsx and passes.tsx require no changes (already use usePasses hook)\n    47→- Pass predictions now use reactive TLE data from IndexedDB\n    48→\n    49→**Verification**:\n    50→- TypeScript compilation: ✅ Passed\n    51→- Production build: ✅ Succeeded\n    52→- Git commit: ✅ bdcbbe3\n    53→\n    54→### Next Steps\n    55→\n    56→Continue with Phase 4 component integration:\n    57→- [ ] 4.5 - Update BriefingCard to use DB hooks\n    58→- [ ] 4.6 - Update layout with sync manager\n    59→\n    60→---\n    61→\n    62→## Notes\n    63→\n    64→- All Phase 1 and Phase 2 subtasks completed successfully\n    65→- Collections and sync handlers are fully implemented and tested\n    66→- Now migrating hooks from TanStack Query to TanStack DB live queries\n    67→- Maintaining backward compatibility with existing hook interfaces\n    68→- No regressions in TypeScript compilation or builds\n    69→\n    70→## [2026-01-03 - Subtask 4.5 COMPLETED] Replace briefing collection functions with useBriefingDB hooks\n    71→\n    72→### Changes Made\n    73→1. Updated BriefingCard.tsx to use useBriefingDB hooks:\n    74→   - Replaced `getBriefingByPassId` with `useBriefingByPassIdDB` hook\n    75→   - Replaced `upsertBriefing` with `upsertBriefingDB` mutation helper\n    76→   - Removed manual state management for briefing data\n    77→   - Removed manual cache reload effect (reactive hook updates automatically)\n    78→\n    79→2. Key Benefits:\n    80→   - Reactive updates when briefing data changes in collection\n    81→   - Automatic IndexedDB persistence\n    82→   - Cross-tab synchronization\n    83→   - Type-safe with Zod schema validation\n    84→   - Instant load from IndexedDB with no network delay\n    85→\n    86→### Verification\n    87→- TypeScript compilation: ✅ PASSING (no new errors)\n    88→- Production build: ✅ PASSING\n    89→- Git commit: f68b6aa\n    90→\n    91→### Next Steps\n    92→- Subtask 4.6: Update layout with sync manager\n    93→\n\n<system-reminder>\nWhenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.\n</system-reminder>\n",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T03:46:16.717484+00:00",
+          "type": "tool_start",
+          "content": "[Edit] ...cs/003-tanstack-db-migration/build-progress.txt",
+          "phase": "coding",
+          "tool_name": "Edit",
+          "tool_input": "...cs/003-tanstack-db-migration/build-progress.txt",
+          "subtask_id": "4.6",
+          "session": 21
+        },
+        {
+          "timestamp": "2026-01-03T03:46:26.554850+00:00",
+          "type": "tool_start",
+          "content": "[Edit] ...cs/003-tanstack-db-migration/build-progress.txt",
+          "phase": "coding",
+          "tool_name": "Edit",
+          "tool_input": "...cs/003-tanstack-db-migration/build-progress.txt",
+          "subtask_id": "4.6",
+          "session": 21
+        },
+        {
+          "timestamp": "2026-01-03T03:46:30.462479+00:00",
+          "type": "tool_start",
+          "content": "[Edit] ...cs/003-tanstack-db-migration/build-progress.txt",
+          "phase": "coding",
+          "tool_name": "Edit",
+          "tool_input": "...cs/003-tanstack-db-migration/build-progress.txt",
+          "subtask_id": "4.6",
+          "session": 21
+        },
+        {
+          "timestamp": "2026-01-03T03:46:36.709445+00:00",
+          "type": "tool_start",
+          "content": "[Edit] ...cs/003-tanstack-db-migration/build-progress.txt",
+          "phase": "coding",
+          "tool_name": "Edit",
+          "tool_input": "...cs/003-tanstack-db-migration/build-progress.txt",
+          "subtask_id": "4.6",
+          "session": 21
+        },
+        {
+          "timestamp": "2026-01-03T03:46:36.729092+00:00",
+          "type": "tool_end",
+          "content": "[Edit] Done",
+          "phase": "coding",
+          "tool_name": "Edit",
+          "subtask_id": "4.6",
+          "session": 21,
+          "detail": "The file ./.auto-claude/specs/003-tanstack-db-migration/build-progress.txt has been updated. Here's the result of running `cat -n` on a snippet of the edited file:\n    24→- [x] 3.3 - Create useISSTLEDB hook with live query\n    25→- [x] 3.4 - Create usePositionHistoryDB hook with collection query\n    26→- [x] 3.5 - Create useBriefingDB hooks with live query\n    27→\n    28→#### Phase 4: Component Integration - Update Consumers ✅\n    29→- [x] 4.1 - Update StatsPanel to use DB hooks\n    30→- [x] 4.2 - Update CrewCard and crew page to use DB hooks\n    31→- [x] 4.3 - Update OrbitalSolver to use DB hooks\n    32→- [x] 4.4 - Update PassesList and usePasses to use DB hooks\n    33→- [x] 4.5 - Update BriefingCard to use DB hooks\n    34→- [x] 4.6 - Update layout with sync manager\n    35→\n    36→### Latest Completion: Subtask 4.6\n    37→\n    38→**Date**: 2026-01-03\n    39→**Subtask**: 4.4 - Update pass prediction components to use TLE from DB collection\n    40→**Status**: ✅ Completed",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T03:46:45.109222+00:00",
+          "type": "text",
+          "content": "Perfect! Subtask 4.6 has been completed successfully. Here's a summary of what was accomplished:\n\n## ✅ Subtask 4.6 Complete - Sync Manager Initialization\n\n### Changes Made:\n\n1. **Updated ISSLayout.tsx** (`src/routes/iss/-components/ISSLayout.tsx`):\n   - Added sync manager initialization using `getDefaultSyncManager()`\n   - Implemented `useEffect` hook to start sync on mount and stop on unmount\n   - Added comprehensive documentation about sync intervals and behavior\n   - All ISS pages now benefit from automatic background data synchronization\n\n2. **Updated map.tsx** (`src/routes/iss/map.tsx`):\n   - Migrated from TanStack Query to TanStack DB hooks\n   - Replaced `useQuery(issQueries.currentPosition())` with `useISSPositionDB()`\n   - Replaced `useQuery(issQueries.tle())` with `useISSTLEDB()`\n   - Removed legacy TanStack Query imports\n\n### Background Sync Configuration:\n- **Position data**: Updates every 5 seconds\n- **Crew data**: Updates every 1 hour\n- **TLE data**: Updates every 1 hour\n- **Smart behavior**: Automatically pauses when tab is hidden, resumes when visible\n\n### Verification:\n- ✅ TypeScript compilation passed\n- ✅ Production build succeeded\n- ✅ Git commit: `df54b08`\n\n### Impact:\n**🎉 Phase 4 Complete!** All ISS components now use TanStack DB collections with reactive live queries and automatic background synchronization. The application is ready to proceed with Phase 5: Storage Utilities Migration.",
+          "phase": "coding",
+          "subtask_id": "4.6",
+          "session": 21
+        },
+        {
+          "timestamp": "2026-01-03T03:46:58.477630+00:00",
+          "type": "text",
+          "content": "I'll help you implement subtask 5.1 - migrating the cleanup utilities to use TanStack DB collection delete operations. Let me start by understanding the context and patterns.",
+          "phase": "coding",
+          "subtask_id": "5.1",
+          "session": 22
+        },
+        {
+          "timestamp": "2026-01-03T03:46:59.107364+00:00",
+          "type": "tool_start",
+          "content": "[Read] ...-claude/specs/003-tanstack-db-migration/spec.md",
+          "phase": "coding",
+          "tool_name": "Read",
+          "tool_input": "...-claude/specs/003-tanstack-db-migration/spec.md",
+          "subtask_id": "5.1",
+          "session": 22
+        },
+        {
+          "timestamp": "2026-01-03T03:46:59.918668+00:00",
+          "type": "tool_start",
+          "content": "[Read] ...-tanstack-db-migration/implementation_plan.json",
+          "phase": "coding",
+          "tool_name": "Read",
+          "tool_input": "...-tanstack-db-migration/implementation_plan.json",
+          "subtask_id": "5.1",
+          "session": 22
+        },
+        {
+          "timestamp": "2026-01-03T03:47:00.061307+00:00",
+          "type": "tool_start",
+          "content": "[mcp__auto-claude__get_session_context]",
+          "phase": "coding",
+          "tool_name": "mcp__auto-claude__get_session_context",
+          "subtask_id": "5.1",
+          "session": 22
+        },
+        {
+          "timestamp": "2026-01-03T03:47:00.092803+00:00",
+          "type": "tool_end",
+          "content": "[mcp__auto-claude__get_session_context] Done",
+          "phase": "coding",
+          "tool_name": "mcp__auto-claude__get_session_context",
+          "subtask_id": "5.1",
+          "session": 22,
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T03:47:06.030215+00:00",
+          "type": "text",
+          "content": "Now let me examine the current cleanup implementation and collection patterns:",
+          "phase": "coding",
+          "subtask_id": "5.1",
+          "session": 22
+        },
+        {
+          "timestamp": "2026-01-03T03:47:06.493074+00:00",
+          "type": "tool_start",
+          "content": "[Read] ./src/lib/iss/storage.ts",
+          "phase": "coding",
+          "tool_name": "Read",
+          "tool_input": "./src/lib/iss/storage.ts",
+          "subtask_id": "5.1",
+          "session": 22
+        },
+        {
+          "timestamp": "2026-01-03T03:47:06.824781+00:00",
+          "type": "tool_start",
+          "content": "[Read] ./src/lib/iss/collections/positions.ts",
+          "phase": "coding",
+          "tool_name": "Read",
+          "tool_input": "./src/lib/iss/collections/positions.ts",
+          "subtask_id": "5.1",
+          "session": 22
+        },
+        {
+          "timestamp": "2026-01-03T03:47:07.155356+00:00",
+          "type": "tool_start",
+          "content": "[Read] ./src/lib/iss/collections/tle.ts",
+          "phase": "coding",
+          "tool_name": "Read",
+          "tool_input": "./src/lib/iss/collections/tle.ts",
+          "subtask_id": "5.1",
+          "session": 22
+        },
+        {
+          "timestamp": "2026-01-03T03:47:07.170992+00:00",
+          "type": "tool_end",
+          "content": "[Read] Done",
+          "phase": "coding",
+          "tool_name": "Read",
+          "subtask_id": "5.1",
+          "session": 22,
+          "detail": "     1→/**\n     2→ * ISS Data Storage Utilities\n     3→ *\n     4→ * Provides retention policy, cleanup helpers, validation schemas,\n     5→ * and corruption recovery for IndexedDB persistence.\n     6→ */\n     7→\n     8→import { z } from \"zod\";\n     9→import {\n    10→\tgetDb,\n    11→\tgetPositionsInRange,\n    12→\ttype StoredAstronaut,\n    13→\ttype StoredTLE,\n    14→} from \"./db\";\n    15→import { calculateOrbitPath } from \"./orbital\";\n    16→import type { ISSPosition, TLEData } from \"./types\";\n    17→\n    18→// =============================================================================\n    19→// RETENTION POLICY CONFIGURATION\n    20→// =============================================================================\n    21→\n    22→/**\n    23→ * Configuration for position data retention\n    24→ */\n    25→export const POSITION_RETENTION = {\n    26→\t/** Maximum age in days for position records */\n    27→\tmaxAgeDays: 30,\n    28→\t/** Maximum number of position records to keep */\n    29→\tmaxRecords: 600_000, // ~35 days at 5s intervals\n    30→\t/** Batch size for cleanup operations */\n    31→\tcleanupBatchSize: 10_000,\n    32→\t/** Interval between cleanup runs in milliseconds */\n    33→\tcleanupIntervalMs: 60_000, // 1 minute\n    34→} as const;\n    35→\n    36→/**\n    37→ * Configuration for TLE data retention\n    38→ */\n    39→export const TLE_RETENTION = {\n    40→\t/** Maximum number of TLE records to keep */\n    41→\tmaxRecords: 7, // 1 week at hourly refresh\n    42→} as const;\n    43→\n    44→/**\n    45→ * Configuration for gap filling\n    46→ */\n    47→export const GAP_FILLING_CONFIG = {\n    48→\t/** Threshold in hours for switching to orbital calculations */\n    49→\torbitalThresholdHours: 24,\n    50→\t/** Step size in seconds for synthetic positions */\n    51→\tsyntheticStepSeconds: 300, // 5 minutes\n    52→\t/** Maximum gap size to fill (hours) */\n    53→\tmaxGapHours: 168, // 1 week\n    54→} as const;\n    55→\n    56→// =============================================================================\n    57→// ZOD VALIDATION SCHEMAS\n    58→// =============================================================================\n    59→\n    60→/**\n    61→ * Schema for validating stored ISS position data\n    62→ */\n    63→export const ISSPositionSchema = z.object({\n    64→\tid: z.string(),\n    65→\tlatitude: z.number().min(-90).max(90),\n    66→\tlongitude: z.number().min(-180).max(180),\n    67→\ttimestamp: z.number().positive(),\n    68→\taltitude: z.number().positive(),\n    69→\tvelocity: z.number().positive(),\n    70→\tvisibility: z.string(),\n    71→});\n    72→\n    73→/**\n    74→ * Schema for validating stored astronaut data\n    75→ */\n    76→export const StoredAstronautSchema = z.object({\n    77→\tid: z.string(),\n    78→\tname: z.string(),\n    79→\tcraft: z.string(),\n    80→\timage: z.string().optional(),\n    81→\trole: z.string().optional(),\n    82→\tagency: z.string().optional(),\n    83→\tlaunchDate: z.string().optional(),\n    84→\tendDate: z.string().optional(),\n    85→\tfetchedAt: z.number().positive(),\n    86→});\n    87→\n    88→/**\n    89→ * Schema for validating stored TLE data\n    90→ */\n    91→export const StoredTLESchema = z.object({\n    92→\tid: z.string(),\n    93→\tline1: z.string(),\n    94→\tline2: z.string(),\n    95→\tfetchedAt: z.number().positive(),\n    96→\tsource: z.enum([\"celestrak\", \"ariss\", \"fallback\"]),\n    97→});\n    98→\n    99→// =============================================================================\n   100→// RETENTION CLEANUP FUNCTIONS\n   101→// =============================================================================\n   102→\n   103→/**\n   104→ * Clean up old position records based on retention policy\n   105→ * @returns Number of records deleted\n   106→ */\n   107→export async function cleanupOldPositions(): Promise<number> {\n   108→\tif (typeof window === \"undefined\") return 0;\n   109→\n   110→\tconst db = getDb();\n   111→\tconst cutoffTimestamp =\n   112→\t\tDate.now() / 1000 - POSITION_RETENTION.maxAgeDays * 86400;\n   113→\n   114→\t// Find and delete old positions in batches\n   115→\tconst oldPositions = await db.positions\n   116→\t\t.where(\"timestamp\")\n   117→\t\t.below(cutoffTimestamp)\n   118→\t\t.limit(POSITION_RETENTION.cleanupBatchSize)\n   119→\t\t.primaryKeys();\n   120→\n   121→\tif (oldPositions.length > 0) {\n   122→\t\tawait db.positions.bulkDelete(oldPositions);\n   123→\t}\n   124→\n   125→\treturn oldPositions.length;\n   126→}\n   127→\n   128→/**\n   129→ * Clean up old TLE records, keeping only the most recent ones\n   130→ * @returns Number of records deleted\n   131→ */\n   132→export async function cleanupOldTle(): Promise<number> {\n   133→\tif (typeof window === \"undefined\") return 0;\n   134→\n   135→\tconst db = getDb();\n   136→\tconst allTle = await db.tle.orderBy(\"fetchedAt\").toArray();\n   137→\n   138→\tif (allTle.length <= TLE_RETENTION.maxRecords) return 0;\n   139→\n   140→\t// Delete oldest records\n   141→\tconst toDelete = allTle.slice(0, allTle.length - TLE_RETENTION.maxRecords);\n   142→\tconst deleteIds = toDelete.map((tle) => tle.id);\n   143→\n   144→\tawait db.tle.bulkDelete(deleteIds);\n   145→\treturn deleteIds.length;\n   146→}\n   147→\n   148→/**\n   149→ * Run all cleanup operations\n   150→ * @returns Object with counts of deleted records\n   151→ */\n   152→export async function runCleanup(): Promise<{\n   153→\tpositions: number;\n   154→\ttle: number;\n   155→}> {\n   156→\tconst positions = await cleanupOldPositions();\n   157→\tconst tle = await cleanupOldTle();\n   158→\treturn { positions, tle };\n   159→}\n   160→\n   161→// =============================================================================\n   162→// CLEANUP SCHEDULER\n   163→// =============================================================================\n   164→\n   165→let cleanupIntervalId: ReturnType<typeof setInterval> | null = null;\n   166→\n   167→/**\n   168→ * Start the cleanup scheduler\n   169→ * Runs cleanup periodically during app activity\n   170→ */\n   171→export function startCleanupScheduler(): void {\n   172→\tif (typeof window === \"undefined\") return;\n   173→\tif (cleanupIntervalId) return; // Already running\n   174→\n   175→\tcleanupIntervalId = setInterval(async () => {\n   176→\t\ttry {\n   177→\t\t\tconst result = await runCleanup();\n   178→\t\t\tif (result.positions > 0 || result.tle > 0) {\n   179→\t\t\t\tconsole.debug(\"[Storage] Cleanup completed:\", result);\n   180→\t\t\t}\n   181→\t\t} catch (error) {\n   182→\t\t\tconsole.warn(\"[Storage] Cleanup failed:\", error);\n   183→\t\t}\n   184→\t}, POSITION_RETENTION.cleanupIntervalMs);\n   185→}\n   186→\n   187→/**\n   188→ * Stop the cleanup scheduler\n   189→ */\n   190→export function stopCleanupScheduler(): void {\n   191→\tif (cleanupIntervalId) {\n   192→\t\tclearInterval(cleanupIntervalId);\n   193→\t\tcleanupIntervalId = null;\n   194→\t}\n   195→}\n   196→\n   197→// =============================================================================\n   198→// CORRUPTION DETECTION AND RECOVERY\n   199→// =============================================================================\n   200→\n   201→/**\n   202→ * Validate a position record and return null if invalid\n   203→ * @param data - Raw data to validate\n   204→ * @returns Valid position or null\n   205→ */\n   206→export function validatePosition(data: unknown): ISSPosition | null {\n   207→\tconst result = ISSPositionSchema.safeParse(data);\n   208→\tif (result.success) {\n   209→\t\treturn result.data;\n   210→\t}\n   211→\tconsole.warn(\"[Storage] Invalid position data:\", result.error.issues);\n   212→\treturn null;\n   213→}\n   214→\n   215→/**\n   216→ * Validate a crew member record and return null if invalid\n   217→ */\n   218→export function validateAstronaut(data: unknown): StoredAstronaut | null {\n   219→\tconst result = StoredAstronautSchema.safeParse(data);\n   220→\tif (result.success) {\n   221→\t\treturn result.data;\n   222→\t}\n   223→\tconsole.warn(\"[Storage] Invalid astronaut data:\", result.error.issues);\n   224→\treturn null;\n   225→}\n   226→\n   227→/**\n   228→ * Validate a TLE record and return null if invalid\n   229→ */\n   230→export function validateTLE(data: unknown): StoredTLE | null {\n   231→\tconst result = StoredTLESchema.safeParse(data);\n   232→\tif (result.success) {\n   233→\t\treturn result.data;\n   234→\t}\n   235→\tconsole.warn(\"[Storage] Invalid TLE data:\", result.error.issues);\n   236→\treturn null;\n   237→}\n   238→\n   239→/**\n   240→ * Remove corrupted records and return whether refetch is needed\n   241→ * @returns Object with corruption info and whether refetch is recommended\n   242→ */\n   243→export async function detectAndRemoveCorruption(): Promise<{\n   244→\tpositionsRemoved: number;\n   245→\tcrewRemoved: number;\n   246→\ttleRemoved: number;\n   247→\tneedsRefetch: boolean;\n   248→}> {\n   249→\tif (typeof window === \"undefined\") {\n   250→\t\treturn {\n   251→\t\t\tpositionsRemoved: 0,\n   252→\t\t\tcrewRemoved: 0,\n   253→\t\t\ttleRemoved: 0,\n   254→\t\t\tneedsRefetch: false,\n   255→\t\t};\n   256→\t}\n   257→\n   258→\tconst db = getDb();\n   259→\tlet positionsRemoved = 0;\n   260→\tlet crewRemoved = 0;\n   261→\tlet tleRemoved = 0;\n   262→\n   263→\t// Check positions (sample first 100 and last 100 for performance)\n   264→\tconst firstPositions = await db.positions.limit(100).toArray();\n   265→\tconst lastPositions = await db.positions\n   266→\t\t.orderBy(\"timestamp\")\n   267→\t\t.reverse()\n   268→\t\t.limit(100)\n   269→\t\t.toArray();\n   270→\tconst positionsToCheck = [...firstPositions, ...lastPositions];\n   271→\n   272→\tconst invalidPositionIds: string[] = [];\n   273→\tfor (const pos of positionsToCheck) {\n   274→\t\tif (!validatePosition(pos)) {\n   275→\t\t\tinvalidPositionIds.push(pos.id);\n   276→\t\t}\n   277→\t}\n   278→\tif (invalidPositionIds.length > 0) {\n   279→\t\tawait db.positions.bulkDelete(invalidPositionIds);\n   280→\t\tpositionsRemoved = invalidPositionIds.length;\n   281→\t}\n   282→\n   283→\t// Check all crew records\n   284→\tconst allCrew = await db.crew.toArray();\n   285→\tconst invalidCrewIds: string[] = [];\n   286→\tfor (const crew of allCrew) {\n   287→\t\tif (!validateAstronaut(crew)) {\n   288→\t\t\tinvalidCrewIds.push(crew.id);\n   289→\t\t}\n   290→\t}\n   291→\tif (invalidCrewIds.length > 0) {\n   292→\t\tawait db.crew.bulkDelete(invalidCrewIds);\n   293→\t\tcrewRemoved = invalidCrewIds.length;\n   294→\t}\n   295→\n   296→\t// Check all TLE records\n   297→\tconst allTle = await db.tle.toArray();\n   298→\tconst invali\n\n... [truncated - full output was 17440 chars]",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T03:47:16.218743+00:00",
+          "type": "text",
+          "content": "Now let me check the research documentation to understand the collection API patterns:",
+          "phase": "coding",
+          "subtask_id": "5.1",
+          "session": 22
+        },
+        {
+          "timestamp": "2026-01-03T03:47:17.396946+00:00",
+          "type": "tool_start",
+          "content": "[Read] ...ude/specs/003-tanstack-db-migration/research.md",
+          "phase": "coding",
+          "tool_name": "Read",
+          "tool_input": "...ude/specs/003-tanstack-db-migration/research.md",
+          "subtask_id": "5.1",
+          "session": 22
+        },
+        {
+          "timestamp": "2026-01-03T03:47:18.888799+00:00",
+          "type": "tool_start",
+          "content": "[Grep] pattern: delete",
+          "phase": "coding",
+          "tool_name": "Grep",
+          "tool_input": "pattern: delete",
+          "subtask_id": "5.1",
+          "session": 22
+        },
+        {
+          "timestamp": "2026-01-03T03:47:18.947973+00:00",
+          "type": "tool_end",
+          "content": "[Grep] Done",
+          "phase": "coding",
+          "tool_name": "Grep",
+          "subtask_id": "5.1",
+          "session": 22,
+          "detail": "     1→# TanStack DB Research Documentation\n     2→\n     3→**Task**: 003-tanstack-db-migration\n     4→**Subtask**: 1.1 - Research TanStack DB collection patterns\n     5→**Date**: 2026-01-02\n     6→\n     7→## Overview\n     8→\n     9→This document captures the research findings for migrating from TanStack Query + Dexie to unified TanStack DB collections with Dexie adapter for reactive, consistent data management.\n    10→\n    11→---\n    12→\n    13→## 1. Collection Creation Patterns\n    14→\n    15→### Basic Collection Structure\n    16→\n    17→TanStack DB collections combine two packages:\n    18→- `@tanstack/react-db` - Core collection and query framework\n    19→- `@tanstack/query-db-collection` - TanStack Query integration\n    20→\n    21→**Standard Pattern**:\n    22→\n    23→```typescript\n    24→import { createCollection } from \"@tanstack/react-db\"\n    25→import { queryCollectionOptions } from \"@tanstack/query-db-collection\"\n    26→import { z } from \"zod\"\n    27→\n    28→const ISSPositionSchema = z.object({\n    29→  id: z.string(),\n    30→  latitude: z.number(),\n    31→  longitude: z.number(),\n    32→  timestamp: z.number(),\n    33→  altitude: z.number(),\n    34→  velocity: z.number(),\n    35→  visibility: z.string(),\n    36→})\n    37→\n    38→const positionsCollection = createCollection(\n    39→  queryCollectionOptions({\n    40→    queryKey: [\"iss\", \"positions\"],\n    41→    queryFn: async () => {\n    42→      const response = await fetch(\"/api/iss/positions\")\n    43→      return response.json()\n    44→    },\n    45→    queryClient,\n    46→    getKey: (item) => item.id,\n    47→    schema: ISSPositionSchema,\n    48→  })\n    49→)\n    50→```\n    51→\n    52→### Required Parameters\n    53→\n    54→| Parameter | Type | Description |\n    55→|-----------|------|-------------|\n    56→| `queryKey` | `string[]` | TanStack Query key identifying cached data |\n    57→| `queryFn` | `() => Promise<T[]>` | Async function fetching data from source |\n    58→| `queryClient` | `QueryClient` | TanStack Query client instance |\n    59→| `getKey` | `(item: T) => string` | Function extracting unique ID from items |\n    60→\n    61→### Optional Parameters\n    62→\n    63→| Parameter | Type | Description |\n    64→|-----------|------|-------------|\n    65→| `schema` | `ZodSchema` | Validates item structure and enables type inference |\n    66→| `enabled` | `boolean` | Controls automatic query execution |\n    67→| `refetchInterval` | `number` | Sets polling frequency (milliseconds) |\n    68→| `staleTime` | `number` | Defines data freshness duration (milliseconds) |\n    69→| `meta` | `object` | Custom context passed to queryFn |\n    70→\n    71→---\n    72→\n    73→## 2. Dexie Adapter Configuration\n    74→\n    75→### Installation\n    76→\n    77→The project already has these dependencies installed:\n    78→```json\n    79→{\n    80→  \"@tanstack/query-db-collection\": \"^0.2.0\",\n    81→  \"@tanstack/react-db\": \"^0.1.1\"\n    82→}\n    83→```\n    84→\n    85→**Third-party Dexie Adapter**:\n    86→```bash\n    87→npm install tanstack-dexie-db-collection\n    88→```\n    89→\n    90→### Dexie Collection Pattern\n    91→\n    92→The `tanstack-dexie-db-collection` package provides `dexieCollectionOptions()` for IndexedDB persistence:\n    93→\n    94→```typescript\n    95→import { createCollection } from \"@tanstack/react-db\"\n    96→import { dexieCollectionOptions } from \"tanstack-dexie-db-collection\"\n    97→import { z } from \"zod\"\n    98→\n    99→const todoSchema = z.object({\n   100→  id: z.string(),\n   101→  text: z.string(),\n   102→  completed: z.boolean(),\n   103→})\n   104→\n   105→const todosCollection = createCollection(\n   106→  dexieCollectionOptions({\n   107→    id: \"todos\",\n   108→    schema: todoSchema,\n   109→    getKey: (item) => item.id,\n   110→  })\n   111→)\n   112→```\n   113→\n   114→### Dexie Configuration Options\n   115→\n   116→| Option | Type | Default | Description |\n   117→|--------|------|---------|-------------|\n   118→| `id` | `string` | **required** | Unique collection identifier (also table name) |\n   119→| `getKey` | `function` | **required** | Extracts unique key from items |\n   120→| `schema` | `ZodSchema` | **required** | Enables type inference and validation |\n   121→| `dbName` | `string` | `'app-db'` | Database name in IndexedDB |\n   122→| `tableName` | `string` | `id` value | Dexie table name (defaults to id) |\n   123→| `syncBatchSize` | `number` | `1000` | Items loaded per batch during sync |\n   124→| `rowUpdateMode` | `'partial' \\| 'full'` | `'partial'` | Update strategy (partial merge vs full replace) |\n   125→| `ackTimeoutMs` | `number` | `2000` | Acknowledgment tracking window |\n   126→| `awaitTimeoutMs` | `number` | `10000` | ID waiting period timeout |\n   127→\n   128→### Data Transformation with Codec\n   129→\n   130→Transform data between storage and in-memory formats:\n   131→\n   132→```typescript\n   133→codec: {\n   134→  parse: (stored) => ({\n   135→    ...stored,\n   136→    date: new Date(stored.date)\n   137→  }),\n   138→  serialize: (item) => ({\n   139→    ...item,\n   140→    date: item.date.toISOString()\n   141→  })\n   142→}\n   143→```\n   144→\n   145→### Lazy Initialization Pattern\n   146→\n   147→For Cloudflare Workers compatibility (matches existing `db.ts` pattern):\n   148→\n   149→```typescript\n   150→// Shared Dexie database instance\n   151→let _db: Dexie | null = null\n   152→\n   153→function getDb(): Dexie {\n   154→  if (typeof window === \"undefined\") {\n   155→    throw new Error(\"Database can only be accessed in browser environment\")\n   156→  }\n   157→\n   158→  if (!_db) {\n   159→    _db = new Dexie(\"ephemeris-iss\")\n   160→    _db.version(1).stores({\n   161→      positions: \"id, timestamp\",\n   162→      crew: \"id, fetchedAt\",\n   163→      tle: \"id, fetchedAt\",\n   164→      briefings: \"passId, timestamp\",\n   165→    })\n   166→  }\n   167→\n   168→  return _db\n   169→}\n   170→\n   171→// Create collection with lazy DB initialization\n   172→const positionsCollection = createCollection(\n   173→  dexieCollectionOptions({\n   174→    id: \"positions\",\n   175→    schema: ISSPositionSchema,\n   176→    getKey: (item) => item.id,\n   177→    dbName: \"ephemeris-iss\",\n   178→    tableName: \"positions\",\n   179→  })\n   180→)\n   181→```\n   182→\n   183→### Utility Methods\n   184→\n   185→Access helpers via `collection.utils`:\n   186→\n   187→```typescript\n   188→// Direct Dexie table access\n   189→const table = positionsCollection.utils.getTable()\n   190→\n   191→// Force live query refresh\n   192→positionsCollection.utils.refresh()\n   193→\n   194→// Async refresh with processing guarantee\n   195→await positionsCollection.utils.refetch()\n   196→\n   197→// Generate sequential IDs (auto-initializes from max)\n   198→const nextId = await positionsCollection.utils.getNextId()\n   199→\n   200→// Bulk insert from server (bootstrap)\n\n<system-reminder>\nWhenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.\n</system-reminder>\n",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T03:47:22.830545+00:00",
+          "type": "text",
+          "content": "Let me see more of the research document for mutation/delete patterns:",
+          "phase": "coding",
+          "subtask_id": "5.1",
+          "session": 22
+        },
+        {
+          "timestamp": "2026-01-03T03:47:23.669393+00:00",
+          "type": "tool_start",
+          "content": "[Read] ...ude/specs/003-tanstack-db-migration/research.md",
+          "phase": "coding",
+          "tool_name": "Read",
+          "tool_input": "...ude/specs/003-tanstack-db-migration/research.md",
+          "subtask_id": "5.1",
+          "session": 22
+        },
+        {
+          "timestamp": "2026-01-03T03:47:25.066006+00:00",
+          "type": "tool_start",
+          "content": "[Grep] pattern: \\.insert|\\.remove|\\.upsert",
+          "phase": "coding",
+          "tool_name": "Grep",
+          "tool_input": "pattern: \\.insert|\\.remove|\\.upsert",
+          "subtask_id": "5.1",
+          "session": 22
+        },
+        {
+          "timestamp": "2026-01-03T03:47:25.129038+00:00",
+          "type": "tool_end",
+          "content": "[Grep] Done",
+          "phase": "coding",
+          "tool_name": "Grep",
+          "subtask_id": "5.1",
+          "session": 22,
+          "detail": "   200→// Bulk insert from server (bootstrap)\n   201→await positionsCollection.utils.bulkInsertLocally(items)\n   202→```\n   203→\n   204→---\n   205→\n   206→## 3. useLiveQuery Hook Patterns\n   207→\n   208→### Basic Usage\n   209→\n   210→The `useLiveQuery` hook creates reactive queries that auto-update on data changes:\n   211→\n   212→```typescript\n   213→import { useLiveQuery } from \"@tanstack/react-db\"\n   214→\n   215→function PositionDisplay() {\n   216→  const { data, status, isLoading } = useLiveQuery((q) =>\n   217→    q.from({ position: positionsCollection })\n   218→  )\n   219→\n   220→  if (isLoading) return <div>Loading...</div>\n   221→\n   222→  return <div>{data?.latitude}</div>\n   223→}\n   224→```\n   225→\n   226→### Query Builder Methods\n   227→\n   228→**from()** - Specify source collection(s):\n   229→```typescript\n   230→q.from({ pos: positionsCollection })\n   231→```\n   232→\n   233→**where()** - Filter records:\n   234→```typescript\n   235→q\n   236→  .from({ pos: positionsCollection })\n   237→  .where(({ pos }) => eq(pos.visibility, \"daylight\"))\n   238→```\n   239→\n   240→**select()** - Transform results:\n   241→```typescript\n   242→q\n   243→  .from({ pos: positionsCollection })\n   244→  .select(({ pos }) => ({\n   245→    lat: pos.latitude,\n   246→    lng: pos.longitude\n   247→  }))\n   248→```\n   249→\n   250→**orderBy()** - Sort results:\n   251→```typescript\n   252→q\n   253→  .from({ pos: positionsCollection })\n   254→  .orderBy(({ pos }) => pos.timestamp, \"desc\")\n   255→```\n   256→\n   257→**findOne()** - Return single result:\n   258→```typescript\n   259→q\n   260→  .from({ pos: positionsCollection })\n   261→  .orderBy(({ pos }) => pos.timestamp, \"desc\")\n   262→  .findOne()\n   263→```\n   264→\n   265→### Dependency Array\n   266→\n   267→Like `useEffect`, re-run query when dependencies change:\n   268→\n   269→```typescript\n   270→const { data } = useLiveQuery((q) =>\n   271→  q\n   272→    .from({ pos: positionsCollection })\n   273→    .where(({ pos }) => gte(pos.timestamp, startTime))\n   274→, [startTime])\n   275→```\n   276→\n   277→### Conditional Queries\n   278→\n   279→Disable queries by returning `undefined`:\n   280→\n   281→```typescript\n   282→const { data, isEnabled } = useLiveQuery((q) => {\n   283→  if (!userId) return undefined\n   284→\n   285→  return q\n   286→    .from({ crew: crewCollection })\n   287→    .where(({ crew }) => eq(crew.userId, userId))\n   288→}, [userId])\n   289→```\n   290→\n   291→When disabled: `isEnabled = false` and `data = undefined`\n   292→\n   293→### Return Object Properties\n   294→\n   295→| Property | Type | Description |\n   296→|----------|------|-------------|\n   297→| `data` | `T[] \\| T \\| undefined` | Query results (array or single with findOne) |\n   298→| `status` | `'success' \\| 'error' \\| 'disabled'` | Query state |\n   299→| `isLoading` | `boolean` | True during initial load |\n   300→| `isEnabled` | `boolean` | Whether query is active |\n   301→| `error` | `Error \\| null` | Error object if query failed |\n   302→\n   303→---\n   304→\n   305→## 4. Sync Handler Patterns for API Data\n   306→\n   307→### Background Sync Architecture\n   308→\n   309→TanStack DB collections can sync with external APIs using background intervals. The pattern involves:\n   310→\n   311→1. **Sync Handler Function** - Fetches from API and inserts into collection\n   312→2. **Sync Manager** - Coordinates intervals for multiple data types\n   313→3. **Lifecycle Integration** - Start/stop on mount/unmount\n   314→\n   315→### Sync Handler Example\n   316→\n   317→```typescript\n   318→// src/lib/iss/sync/position-sync.ts\n   319→import { positionsCollection } from \"@/lib/iss/collections/positions\"\n   320→import { fetchISSPosition } from \"@/lib/iss/api\"\n   321→\n   322→export async function syncPosition() {\n   323→  try {\n   324→    const position = await fetchISSPosition()\n   325→\n   326→    // Insert into collection (triggers useLiveQuery updates)\n   327→    await positionsCollection.insert(position)\n   328→\n   329→    return { success: true, data: position }\n   330→  } catch (error) {\n   331→    console.error(\"Position sync failed:\", error)\n   332→    return { success: false, error }\n   333→  }\n   334→}\n   335→\n   336→export function startPositionSync(intervalMs: number = 5000) {\n   337→  // Initial sync\n   338→  syncPosition()\n   339→\n   340→  // Background sync\n   341→  const intervalId = setInterval(syncPosition, intervalMs)\n   342→\n   343→  return () => clearInterval(intervalId)\n   344→}\n   345→```\n   346→\n   347→### Sync Manager Pattern\n   348→\n   349→Coordinate multiple sync handlers:\n\n<system-reminder>\nWhenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.\n</system-reminder>\n",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T03:47:30.257042+00:00",
+          "type": "tool_start",
+          "content": "[Read] ./src/hooks/useBriefingDB.ts",
+          "phase": "coding",
+          "tool_name": "Read",
+          "tool_input": "./src/hooks/useBriefingDB.ts",
+          "subtask_id": "5.1",
+          "session": 22
+        },
+        {
+          "timestamp": "2026-01-03T03:47:30.281329+00:00",
+          "type": "tool_end",
+          "content": "[Read] Done",
+          "phase": "coding",
+          "tool_name": "Read",
+          "subtask_id": "5.1",
+          "session": 22,
+          "detail": "   280→ * - Cross-tab synchronization\n   281→ * - Type-safe with Zod schema validation\n   282→ *\n   283→ * @param briefing - The briefing to insert or update\n   284→ * @returns Promise resolving to success/error result\n   285→ *\n   286→ * @example\n   287→ * ```typescript\n   288→ * async function saveBriefing(briefing: PassBriefing) {\n   289→ *   const result = await upsertBriefingDB(briefing)\n   290→ *   if (!result.success) {\n   291→ *     console.error('Failed to save briefing:', result.error)\n   292→ *   }\n   293→ * }\n   294→ * ```\n   295→ */\n   296→export async function upsertBriefingDB(\n   297→\tbriefing: PassBriefing,\n   298→): Promise<MutationResult> {\n   299→\ttry {\n   300→\t\t// Insert or update briefing in collection\n   301→\t\t// The collection's getKey function returns briefing.passId, so this will\n   302→\t\t// automatically update existing briefings or insert new ones\n   303→\t\tawait briefingsCollection.insert(briefing);\n   304→\n   305→\t\treturn { success: true };\n   306→\t} catch (error) {\n   307→\t\tconsole.error(\"Failed to upsert briefing:\", error);\n   308→\t\treturn {\n   309→\t\t\tsuccess: false,\n   310→\t\t\terror: error instanceof Error ? error.message : \"Unknown error\",\n   311→\t\t};\n   312→\t}\n   313→}\n   314→\n   315→/**\n   316→ * Delete a briefing from the collection by pass ID\n   317→ *\n   318→ * This function provides optimistic updates by immediately removing from the\n   319→ * collection, which triggers reactive useLiveQuery updates in all components.\n   320→ *\n   321→ * Features:\n   322→ * - Immediate UI updates via reactive queries\n   323→ * - Persistent storage in IndexedDB\n   324→ * - Cross-tab synchronization\n   325→ * - Type-safe operations\n   326→ *\n   327→ * @param passId - The pass ID of the briefing to delete\n   328→ * @returns Promise resolving to success/error result\n   329→ *\n   330→ * @example\n   331→ * ```typescript\n   332→ * async function removeBriefing(passId: string) {\n   333→ *   const result = await deleteBriefingDB(passId)\n   334→ *   if (!result.success) {\n   335→ *     console.error('Failed to delete briefing:', result.error)\n   336→ *   }\n   337→ * }\n   338→ * ```\n   339→ */\n   340→export async function deleteBriefingDB(passId: string): Promise<MutationResult> {\n   341→\ttry {\n   342→\t\t// Delete briefing from collection by passId\n   343→\t\tawait briefingsCollection.delete(passId);\n   344→\n   345→\t\treturn { success: true };\n   346→\t} catch (error) {\n   347→\t\tconsole.error(\"Failed to delete briefing:\", error);\n   348→\t\treturn {\n   349→\t\t\tsuccess: false,\n   350→\t\t\terror: error instanceof Error ? error.message : \"Unknown error\",\n   351→\t\t};\n   352→\t}\n   353→}\n   354→\n   355→/**\n   356→ * Clear all briefings from the collection\n   357→ *\n   358→ * This function provides optimistic updates by immediately clearing the\n   359→ * collection, which triggers reactive useLiveQuery updates in all components.\n   360→ *\n   361→ * Features:\n   362→ * - Immediate UI updates via reactive queries\n   363→ * - Persistent storage in IndexedDB\n   364→ * - Cross-tab synchronization\n   365→ * - Type-safe operations\n   366→ *\n   367→ * @returns Promise resolving to success/error result\n   368→ *\n   369→ * @example\n   370→ * ```typescript\n   371→ * async function clearAllBriefings() {\n   372→ *   const result = await clearBriefingsDB()\n   373→ *   if (!result.success) {\n   374→ *     console.error('Failed to clear briefings:', result.error)\n   375→ *   }\n   376→ * }\n   377→ * ```\n   378→ */\n   379→export async function clearBriefingsDB(): Promise<MutationResult> {\n\n<system-reminder>\nWhenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.\n</system-reminder>\n",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T03:47:37.042244+00:00",
+          "type": "tool_start",
+          "content": "[Read] ./src/hooks/useBriefingDB.ts",
+          "phase": "coding",
+          "tool_name": "Read",
+          "tool_input": "./src/hooks/useBriefingDB.ts",
+          "subtask_id": "5.1",
+          "session": 22
+        },
+        {
+          "timestamp": "2026-01-03T03:47:38.173661+00:00",
+          "type": "tool_start",
+          "content": "[Grep] pattern: collection\\.utils",
+          "phase": "coding",
+          "tool_name": "Grep",
+          "tool_input": "pattern: collection\\.utils",
+          "subtask_id": "5.1",
+          "session": 22
+        },
+        {
+          "timestamp": "2026-01-03T03:47:38.199620+00:00",
+          "type": "tool_end",
+          "content": "[Grep] Done",
+          "phase": "coding",
+          "tool_name": "Grep",
+          "subtask_id": "5.1",
+          "session": 22,
+          "detail": "   379→export async function clearBriefingsDB(): Promise<MutationResult> {\n   380→\ttry {\n   381→\t\t// Get all briefings to find their IDs\n   382→\t\tconst table = briefingsCollection.utils.getTable();\n   383→\t\tconst allRecords = await table.toArray();\n   384→\n   385→\t\t// Delete each briefing individually\n   386→\t\tfor (const record of allRecords) {\n   387→\t\t\tawait briefingsCollection.delete(record.id as string);\n   388→\t\t}\n   389→\n   390→\t\treturn { success: true };\n   391→\t} catch (error) {\n   392→\t\tconsole.error(\"Failed to clear briefings:\", error);\n   393→\t\treturn {\n   394→\t\t\tsuccess: false,\n   395→\t\t\terror: error instanceof Error ? error.message : \"Unknown error\",\n   396→\t\t};\n   397→\t}\n   398→}\n   399→\n   400→// =============================================================================\n   401→// BULK OPERATIONS - For efficient batch mutations\n   402→// =============================================================================\n   403→\n   404→/**\n   405→ * Insert multiple briefings in a single batch operation\n   406→ *\n   407→ * This is more efficient than calling upsertBriefingDB multiple times\n   408→ * when you need to insert many briefings at once.\n   409→ *\n   410→ * Features:\n   411→ * - Single transaction for all inserts\n   412→ * - Immediate UI updates via reactive queries\n   413→ * - Persistent storage in IndexedDB\n   414→ * - Cross-tab synchronization\n   415→ *\n   416→ * @param briefings - Array of briefings to insert\n   417→ * @returns Promise resolving to success/error result\n   418→ *\n   419→ * @example\n   420→ * ```typescript\n   421→ * async function importBriefings(briefings: PassBriefing[]) {\n   422→ *   const result = await bulkInsertBriefingsDB(briefings)\n   423→ *   if (!result.success) {\n   424→ *     console.error('Failed to import briefings:', result.error)\n   425→ *   }\n   426→ * }\n   427→ * ```\n   428→ */\n\n<system-reminder>\nWhenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.\n</system-reminder>\n",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T03:47:48.538894+00:00",
+          "type": "text",
+          "content": "Perfect! Now I understand the pattern. Let me create the cleanup utilities file using TanStack DB collection operations:",
+          "phase": "coding",
+          "subtask_id": "5.1",
+          "session": 22
+        },
+        {
+          "timestamp": "2026-01-03T03:48:07.364579+00:00",
+          "type": "tool_start",
+          "content": "[Write] ./src/lib/iss/collections/cleanup.ts",
+          "phase": "coding",
+          "tool_name": "Write",
+          "tool_input": "./src/lib/iss/collections/cleanup.ts",
+          "subtask_id": "5.1",
+          "session": 22
+        },
+        {
+          "timestamp": "2026-01-03T03:48:07.724639+00:00",
+          "type": "tool_end",
+          "content": "[Write] Done",
+          "phase": "coding",
+          "tool_name": "Write",
+          "subtask_id": "5.1",
+          "session": 22,
+          "detail": "File created successfully at: ./src/lib/iss/collections/cleanup.ts",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T03:48:12.194659+00:00",
+          "type": "text",
+          "content": "Now let me verify the implementation by checking TypeScript compilation:",
+          "phase": "coding",
+          "subtask_id": "5.1",
+          "session": 22
+        },
+        {
+          "timestamp": "2026-01-03T03:48:13.009841+00:00",
+          "type": "tool_start",
+          "content": "[Bash] npm run build",
+          "phase": "coding",
+          "tool_name": "Bash",
+          "tool_input": "npm run build",
+          "subtask_id": "5.1",
+          "session": 22
+        },
+        {
+          "timestamp": "2026-01-03T03:48:25.267955+00:00",
+          "type": "tool_end",
+          "content": "[Bash] Done",
+          "phase": "coding",
+          "tool_name": "Bash",
+          "subtask_id": "5.1",
+          "session": 22,
+          "detail": "> build\n> vite build\n\nvite v7.2.7 building client environment for production...\ntransforming...\n\n[@tanstack/devtools-vite] Removed devtools code from: /src/routes/__root.tsx\n\n✓ 3868 modules transformed.\nrendering chunks...\ncomputing gzip size...\ndist/client/assets/styles-DOvygAbi.css            62.36 kB │ gzip:  11.23 kB\ndist/client/assets/x-DugXK9qI.js                   0.16 kB │ gzip:   0.15 kB\ndist/client/assets/zap-84GO-Izr.js                 0.26 kB │ gzip:   0.21 kB\ndist/client/assets/refresh-cw-DTy_WKd_.js          0.63 kB │ gzip:   0.40 kB\ndist/client/assets/MatrixText-BnTpNLfX.js          1.31 kB │ gzip:   0.80 kB\ndist/client/assets/audio-CM5WXBZR.js               4.13 kB │ gzip:   1.45 kB\ndist/client/assets/index-D6xw2f67.js               5.71 kB │ gzip:   1.52 kB\ndist/client/assets/map-C0NofpQ7.js                14.83 kB │ gzip:   3.62 kB\ndist/client/assets/StatsPanel-DIjz3-Li.js         24.74 kB │ gzip:   5.14 kB\ndist/client/assets/copilot-DxG6IMgb.js            26.83 kB │ gzip:   6.68 kB\ndist/client/assets/crew-Dt9ds8Er.js               29.86 kB │ gzip:   5.76 kB\ndist/client/assets/index-CDaR_Sn-.js              36.96 kB │ gzip:   8.51 kB\ndist/client/assets/useISSDataDB-B9um-68o.js       39.00 kB │ gzip:  12.10 kB\ndist/client/assets/useLocation-B-5AkMgu.js        41.83 kB │ gzip:  18.13 kB\ndist/client/assets/useNextPass-BSsWBd4C.js       100.25 kB │ gzip:  33.00 kB\ndist/client/assets/passes-Bg8gCCQD.js            127.57 kB │ gzip:  26.99 kB\ndist/client/assets/ISSLayout-Dv2Roo0u.js         332.87 kB │ gzip:  99.53 kB\ndist/client/assets/main-cZ9GLYGy.js              633.15 kB │ gzip: 196.00 kB\ndist/client/assets/react-globe.gl-BGn7yZb7.js  1,726.64 kB │ gzip: 489.84 kB\n✓ built in 5.31s\nvite v7.2.7 building ssr environment for production...\ntransforming...\n\n[@tanstack/devtools-vite] Removed devtools code from: /src/routes/__root.tsx\n\n✓ 4146 modules transformed.\nrendering chunks...\nUsing vars defined in .env.local\ndist/server/.dev.vars                                          0.41 kB\ndist/server/wrangler.json                                      1.42 kB\ndist/server/.vite/manifest.json                               10.59 kB\ndist/server/assets/styles-DOvygAbi.css                        62.36 kB\ndist/server/assets/start-HYkvq4Ni.js                           0.06 kB\ndist/server/index.js                                           0.24 kB\ndist/server/assets/x-rcODX-xK.js                               0.24 kB\ndist/server/assets/zap-BuMFJf-r.js                             0.38 kB\ndist/server/assets/refresh-cw-VgyDgC4-.js                      0.95 kB\ndist/server/assets/api-B_2z3zlU.js                             1.28 kB\ndist/server/assets/MatrixText-mb3yHhXi.js                      1.65 kB\ndist/server/assets/_tanstack-start-manifest_v-CLYLGtWc.js      2.84 kB\ndist/server/assets/prompt-pDc2Y5cW.js                          4.58 kB\ndist/server/assets/audio-lnQMZwVM.js                           6.77 kB\ndist/server/assets/types-ByKsqVQ0.js                           7.30 kB\ndist/server/assets/index-DpxYuQ9H.js                           7.48 kB\ndist/server/assets/weather-Cu-yi7Tv.js                         9.27 kB\ndist/server/assets/agent-C62CTUNn.js                           9.39 kB\ndist/server/assets/ai-client-BMa4wftv.js                      10.47 kB\ndist/server/assets/api-hsdKC8U_.js                            11.09 kB\ndist/server/assets/map-B9Nys4hX.js                            18.62 kB\ndist/server/assets/trace-jSpUBSVt.js                          22.62 kB\ndist/server/assets/StatsPanel-BGzOddg7.js                     31.65 kB\ndist/server/assets/useLocation-DzhmQAvA.js                    34.42 kB\ndist/server/assets/crew-8Ur_DuHY.js                           38.06 kB\ndist/server/assets/copilot-CDlaWySv.js                        40.00 kB\ndist/server/assets/index-BXi4iDx7.js                          45.75 kB\ndist/server/assets/orbital-S-BWpwxt.js                        60.47 kB\ndist/server/assets/useISSDataDB-BSf8R5x0.js                  107.04 kB\ndist/server/assets/passes-C1ebYoks.js                        235.28 kB\ndist/server/assets/useNextPass-nG1K1zLv.js                   252.33 kB\ndist/server/assets/utils-tMAIYO9S.js                         344.99 kB\ndist/server/assets/coerce-BpfGRWu8.js                        430.51 kB\ndist/server/assets/ISSLayout-BTrxgzHu.js                     604.55 kB\ndist/server/assets/router-Cf6I41DJ.js                        923.50 kB\ndist/server/assets/worker-entry-D1ZNSVhP.js                1,152.00 kB\ndist/server/assets/react-globe.gl-BW5idzlN.js              3,302.43 kB\n✓ built in 4.73s\n\n(!) Some chunks are larger than 500 kB after minification. Consider:\n- Using dynamic import() to code-split the application\n- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks\n- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T03:48:30.431111+00:00",
+          "type": "text",
+          "content": "Perfect! The build succeeded without errors. Now let me commit the changes:",
+          "phase": "coding",
+          "subtask_id": "5.1",
+          "session": 22
+        },
+        {
+          "timestamp": "2026-01-03T03:48:31.041170+00:00",
+          "type": "tool_start",
+          "content": "[Bash] git add .",
+          "phase": "coding",
+          "tool_name": "Bash",
+          "tool_input": "git add .",
+          "subtask_id": "5.1",
+          "session": 22
+        },
+        {
+          "timestamp": "2026-01-03T03:48:32.764748+00:00",
+          "type": "tool_start",
+          "content": "[Bash] git commit -m \"auto-claude: 5.1 - Update cleanu...",
+          "phase": "coding",
+          "tool_name": "Bash",
+          "tool_input": "git commit -m \"auto-claude: 5.1 - Update cleanu...",
+          "subtask_id": "5.1",
+          "session": 22
         }
       ]
     },

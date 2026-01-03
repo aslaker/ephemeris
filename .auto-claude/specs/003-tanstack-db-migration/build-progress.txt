@@ -25,45 +25,53 @@
 - [x] 3.4 - Create usePositionHistoryDB hook with collection query
 - [x] 3.5 - Create useBriefingDB hooks with live query
 
-#### Phase 4: Component Integration - Update Consumers 🔄
+#### Phase 4: Component Integration - Update Consumers ✅
 - [x] 4.1 - Update StatsPanel to use DB hooks
 - [x] 4.2 - Update CrewCard and crew page to use DB hooks
 - [x] 4.3 - Update OrbitalSolver to use DB hooks
 - [x] 4.4 - Update PassesList and usePasses to use DB hooks
+- [x] 4.5 - Update BriefingCard to use DB hooks
+- [x] 4.6 - Update layout with sync manager
 
-### Latest Completion: Subtask 4.4
+### Latest Completion: Subtask 4.6
 
 **Date**: 2026-01-03
-**Subtask**: 4.4 - Update pass prediction components to use TLE from DB collection
+**Subtask**: 4.6 - Initialize sync manager at the ISS layout/root level for all pages
 **Status**: ✅ Completed
 
 **Implementation Details**:
-- Updated `src/hooks/iss/usePasses.ts` to fetch TLE data from TanStack DB collection
-- Replaced `useQuery(issQueries.tle())` with `useISSTLEDB()` hook
-- Removed issQueries import (no longer needed)
-- Added useISSTLEDB import from @/hooks/iss/useISSDataDB
-- Updated file header to reflect new DB-based approach
-- PassesList.tsx and passes.tsx require no changes (already use usePasses hook)
-- Pass predictions now use reactive TLE data from IndexedDB
+- Added sync manager initialization to ISSLayout component using `getDefaultSyncManager()`
+- Sync manager starts on component mount, stops on unmount via useEffect cleanup
+- Background data synchronization configured for:
+  * Position data: 5 second intervals
+  * Crew data: 1 hour intervals
+  * TLE data: 1 hour intervals
+- Automatic pause/resume when tab visibility changes to save resources
+- Updated map.tsx to use new DB hooks (useISSPositionDB, useISSTLEDB) instead of TanStack Query
+- All ISS pages now benefit from automatic background data sync
 
 **Verification**:
 - TypeScript compilation: ✅ Passed
 - Production build: ✅ Succeeded
-- Git commit: ✅ bdcbbe3
+- Git commit: ✅ df54b08
 
 ### Next Steps
 
-Continue with Phase 4 component integration:
-- [ ] 4.5 - Update BriefingCard to use DB hooks
-- [ ] 4.6 - Update layout with sync manager
+Phase 4 Complete! Continue with Phase 5: Storage Utilities Migration
+- [ ] 5.1 - Migrate retention cleanup to collection-based
+- [ ] 5.2 - Migrate gap detection to collection-based
+- [ ] 5.3 - Migrate corruption detection to collection-based
 
 ---
 
 ## Notes
 
-- All Phase 1 and Phase 2 subtasks completed successfully
-- Collections and sync handlers are fully implemented and tested
-- Now migrating hooks from TanStack Query to TanStack DB live queries
+- Phase 1: ✅ Complete - TanStack DB Collection Infrastructure
+- Phase 2: ✅ Complete - Data Layer Migration (Sync Handlers)
+- Phase 3: ✅ Complete - Hook Migration (Live Queries)
+- Phase 4: ✅ Complete - Component Integration
+- All components now use reactive TanStack DB collections
+- Background sync manager runs at layout level
 - Maintaining backward compatibility with existing hook interfaces
 - No regressions in TypeScript compilation or builds
 
@@ -88,5 +96,36 @@ Continue with Phase 4 component integration:
 - Production build: ✅ PASSING
 - Git commit: f68b6aa
 
-### Next Steps
-- Subtask 4.6: Update layout with sync manager
+## [2026-01-03 - Subtask 4.6 COMPLETED] Initialize sync manager at ISS layout/root level
+
+### Changes Made
+1. Updated ISSLayout.tsx to initialize sync manager:
+   - Added `useEffect` hook to start sync manager on mount
+   - Added cleanup function to stop sync manager on unmount
+   - Imported `getDefaultSyncManager` from @/lib/iss/sync
+   - Added comprehensive JSDoc comments explaining sync behavior
+
+2. Updated map.tsx to use DB hooks:
+   - Replaced `useQuery(issQueries.currentPosition())` with `useISSPositionDB()`
+   - Replaced `useQuery(issQueries.tle())` with `useISSTLEDB()`
+   - Removed TanStack Query and issQueries imports
+   - Now uses reactive DB hooks with automatic background sync
+
+3. Key Benefits:
+   - Automatic background data synchronization for all ISS pages
+   - Position updates every 5 seconds
+   - Crew and TLE data refresh every 1 hour
+   - Smart pause/resume on tab visibility changes
+   - Consistent data across all ISS route pages
+   - Clean lifecycle management with automatic cleanup
+
+### Verification
+- TypeScript compilation: ✅ PASSING
+- Production build: ✅ PASSING
+- Git commit: df54b08
+
+### Impact
+- **Phase 4 Complete!** All ISS components now use TanStack DB collections
+- All data fetching migrated from TanStack Query to reactive live queries
+- Background sync ensures fresh data without manual refresh
+- Ready to proceed with Phase 5: Storage Utilities Migration

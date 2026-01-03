@@ -464,7 +464,7 @@
           "id": "4.4",
           "title": "Update PassesList and usePasses to use DB hooks",
           "description": "Update pass prediction components to use TLE from DB collection",
-          "status": "pending",
+          "status": "completed",
           "priority": "high",
           "estimated_effort": "1 hour",
           "files_to_modify": [
@@ -481,7 +481,8 @@
             "Pass predictions work correctly",
             "PassesList displays passes"
           ],
-          "notes": ""
+          "notes": "\u2705 Successfully migrated usePasses hook to use useISSTLEDB from TanStack DB collection:\n- Replaced useQuery(issQueries.tle()) with useISSTLEDB() hook\n- Removed issQueries import (no longer needed)\n- Added useISSTLEDB import from @/hooks/iss/useISSDataDB\n- Updated file header to reflect new DB-based approach\n- PassesList.tsx and passes.tsx require no changes (already use usePasses hook)\n- All TypeScript compilation checks passing\n- Production build succeeded without errors\n- Git commit: bdcbbe3",
+          "updated_at": "2026-01-03T03:40:35.075754+00:00"
         },
         {
           "id": "4.5",
@@ -910,5 +911,5 @@
     }
   },
   "recoveryNote": "Task recovered from stuck state at 2026-01-03T02:50:34.858Z",
-  "last_updated": "2026-01-03T03:37:55.695658+00:00"
+  "last_updated": "2026-01-03T03:40:35.075761+00:00"
 }

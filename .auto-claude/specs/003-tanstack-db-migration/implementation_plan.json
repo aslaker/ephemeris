@@ -854,7 +854,7 @@
           "id": "8.3",
           "title": "Update developer documentation",
           "description": "Document new data layer architecture and patterns",
-          "status": "pending",
+          "status": "completed",
           "priority": "medium",
           "estimated_effort": "2 hours",
           "files_to_create": [
@@ -872,15 +872,57 @@
             "Documents live query hooks",
             "Includes code examples"
           ],
-          "notes": ""
+          "notes": "\u2705 Documentation complete with:\n- Created comprehensive docs/data-layer.md (1000+ lines) covering:\n  * Architecture overview with diagram\n  * Core concepts (Collections, Sync Handlers, Live Query Hooks, Sync Manager)\n  * Collections reference (positions, crew, TLE, briefings)\n  * Hooks reference (useISSPositionDB, useISSCrewDB, useISSTLEDB, usePositionHistoryDB, useBriefingByPassIdDB)\n  * Mutation helpers (upsertBriefingDB, deleteBriefingDB, clearBriefingsDB, bulkInsertBriefingsDB)\n  * Utilities reference (cleanup, gap filling, validation)\n  * Performance characteristics with benchmarks\n  * Migration guide from legacy TanStack Query + Dexie\n  * Best practices and troubleshooting\n  * Usage examples and code snippets\n- Updated README.md with Data Layer Architecture section\n- Added quick example with useISSPositionDB hook\n- Added architecture overview linking to comprehensive docs\n- All acceptance criteria met:\n  \u2705 Documents TanStack DB collection setup\n  \u2705 Documents sync manager usage\n  \u2705 Documents live query hooks\n  \u2705 Includes code examples\n- Production build succeeds without errors\n- Git commit: 3764b95",
+          "updated_at": "2026-01-03T04:27:16.126667+00:00"
         }
       ]
     }
   ],
   "qa_signoff": {
-    "status": "pending",
-    "issues": "",
-    "tests_passed": ""
+    "status": "rejected",
+    "timestamp": "2026-01-02T21:00:00Z",
+    "qa_session": 1,
+    "issues_found": [
+      {
+        "type": "critical",
+        "title": "Missing type annotation in cleanup.ts",
+        "location": "src/lib/iss/collections/cleanup.ts:94",
+        "fix_required": "Add type annotation: (tle: StoredTLE) => tle.id"
+      },
+      {
+        "type": "critical",
+        "title": "Missing type annotations in gap-filling.ts",
+        "location": "src/lib/iss/collections/gap-filling.ts:180",
+        "fix_required": "Add type annotations: (a: ISSPosition, b: ISSPosition)"
+      },
+      {
+        "type": "critical",
+        "title": "Incorrect Zod type inference in validation.ts",
+        "location": "src/lib/iss/collections/validation.ts:19-21",
+        "fix_required": "Use z.infer<typeof Schema> instead of Schema._type"
+      },
+      {
+        "type": "critical",
+        "title": "Broken export chain in sync/index.ts",
+        "location": "src/lib/iss/sync/index.ts:16-18",
+        "fix_required": "Export DEFAULT_*_SYNC_INTERVAL from source files instead of sync-manager"
+      },
+      {
+        "type": "minor",
+        "title": "Unused variables in components",
+        "location": "OrbitalSolver.tsx:42, index.tsx:104, map.tsx:128",
+        "fix_required": "Remove unused tleLoading, tleError, fromCache, isLoading variables"
+      }
+    ],
+    "fix_request_file": "QA_FIX_REQUEST.md",
+    "report_file": "qa_report.md",
+    "tests_passed": {
+      "unit": "N/A",
+      "integration": "N/A",
+      "e2e": "N/A",
+      "build": "PASS",
+      "type_check": "FAIL - 9 critical errors"
+    }
   },
   "metadata": {
     "total_subtasks": 33,
@@ -925,5 +967,54 @@
     }
   },
   "recoveryNote": "Task recovered from stuck state at 2026-01-03T02:50:34.858Z",
-  "last_updated": "2026-01-03T04:22:16.534829+00:00"
+  "last_updated": "2026-01-03T04:27:16.126677+00:00",
+  "qa_iteration_history": [
+    {
+      "iteration": 1,
+      "status": "rejected",
+      "timestamp": "2026-01-03T04:34:08.731389+00:00",
+      "issues": [
+        {
+          "type": "critical",
+          "title": "Missing type annotation in cleanup.ts",
+          "location": "src/lib/iss/collections/cleanup.ts:94",
+          "fix_required": "Add type annotation: (tle: StoredTLE) => tle.id"
+        },
+        {
+          "type": "critical",
+          "title": "Missing type annotations in gap-filling.ts",
+          "location": "src/lib/iss/collections/gap-filling.ts:180",
+          "fix_required": "Add type annotations: (a: ISSPosition, b: ISSPosition)"
+        },
+        {
+          "type": "critical",
+          "title": "Incorrect Zod type inference in validation.ts",
+          "location": "src/lib/iss/collections/validation.ts:19-21",
+          "fix_required": "Use z.infer<typeof Schema> instead of Schema._type"
+        },
+        {
+          "type": "critical",
+          "title": "Broken export chain in sync/index.ts",
+          "location": "src/lib/iss/sync/index.ts:16-18",
+          "fix_required": "Export DEFAULT_*_SYNC_INTERVAL from source files instead of sync-manager"
+        },
+        {
+          "type": "minor",
+          "title": "Unused variables in components",
+          "location": "OrbitalSolver.tsx:42, index.tsx:104, map.tsx:128",
+          "fix_required": "Remove unused tleLoading, tleError, fromCache, isLoading variables"
+        }
+      ],
+      "duration_seconds": 395.47
+    }
+  ],
+  "qa_stats": {
+    "total_iterations": 1,
+    "last_iteration": 1,
+    "last_status": "rejected",
+    "issues_by_type": {
+      "critical": 4,
+      "minor": 1
+    }
+  }
 }

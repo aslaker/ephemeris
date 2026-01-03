@@ -9,21 +9,20 @@
 // SYNC MANAGER
 // =============================================================================
 
+export type { SyncConfig, SyncManager } from "./sync-manager";
 export {
 	createSyncManager,
+	DEFAULT_CREW_SYNC_INTERVAL,
+	DEFAULT_POSITION_SYNC_INTERVAL,
+	DEFAULT_TLE_SYNC_INTERVAL,
 	getDefaultSyncManager,
 	resetDefaultSyncManager,
-	DEFAULT_POSITION_SYNC_INTERVAL,
-	DEFAULT_CREW_SYNC_INTERVAL,
-	DEFAULT_TLE_SYNC_INTERVAL,
 } from "./sync-manager";
-
-export type { SyncConfig, SyncManager } from "./sync-manager";
 
 // =============================================================================
 // INDIVIDUAL SYNC HANDLERS
 // =============================================================================
 
-export { syncPosition, startPositionSync } from "./position-sync";
-export { syncCrew, startCrewSync } from "./crew-sync";
-export { syncTLE, startTLESync } from "./tle-sync";
+export { startCrewSync, syncCrew } from "./crew-sync";
+export { startPositionSync, syncPosition } from "./position-sync";
+export { startTLESync, syncTLE } from "./tle-sync";

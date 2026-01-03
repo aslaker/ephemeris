@@ -19,17 +19,17 @@
  */
 
 import Dexie, { type EntityTable } from "dexie";
-import {
-	positionsCollection,
-	crewCollection,
-	tleCollection,
-	briefingsCollection,
-} from "../collections";
-import { ISSPositionSchema } from "../collections/positions";
-import { StoredAstronautSchema } from "../collections/crew";
-import { StoredTLESchema } from "../collections/tle";
-import { PassBriefingSchema } from "../../briefing/types";
 import type { PassBriefing } from "../../briefing/types";
+import { PassBriefingSchema } from "../../briefing/types";
+import {
+	briefingsCollection,
+	crewCollection,
+	positionsCollection,
+	tleCollection,
+} from "../collections";
+import { StoredAstronautSchema } from "../collections/crew";
+import { ISSPositionSchema } from "../collections/positions";
+import { StoredTLESchema } from "../collections/tle";
 
 // =============================================================================
 // MIGRATION STATE TRACKING
@@ -80,7 +80,9 @@ export function isMigrationComplete(): boolean {
 /**
  * Mark migration as complete
  */
-function markMigrationComplete(recordCounts: MigrationState["recordCounts"]): void {
+function markMigrationComplete(
+	recordCounts: MigrationState["recordCounts"],
+): void {
 	if (typeof window === "undefined") return;
 
 	const state: MigrationState = {
@@ -522,8 +524,7 @@ export async function runMigration(): Promise<MigrationResult> {
 		return result;
 	} catch (error) {
 		const durationMs = Date.now() - startTime;
-		const errorMessage =
-			error instanceof Error ? error.message : String(error);
+		const errorMessage = error instanceof Error ? error.message : String(error);
 
 		console.error("[Migration] Failed:", errorMessage);
 		markMigrationFailed(errorMessage);

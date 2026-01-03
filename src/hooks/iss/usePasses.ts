@@ -6,10 +6,10 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { useStore } from "@tanstack/react-store";
+import { useISSTLEDB } from "@/hooks/iss/useISSDataDB";
 import { type PredictPassesOptions, predictPasses } from "@/lib/iss/orbital";
 import type { PassPrediction } from "@/lib/iss/types";
 import { locationStore } from "@/lib/location/store";
-import { useISSTLEDB } from "@/hooks/iss/useISSDataDB";
 
 // =============================================================================
 // TYPES

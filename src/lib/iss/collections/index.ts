@@ -17,24 +17,6 @@
 // =============================================================================
 
 /**
- * ISS Position Collection
- * Real-time position data with 5-second refresh interval
- */
-export { positionsCollection, ISSPositionSchema } from "./positions";
-
-/**
- * ISS Crew Collection
- * Astronaut roster data with 1-hour refresh interval
- */
-export { crewCollection, StoredAstronautSchema } from "./crew";
-
-/**
- * TLE Collection
- * Two-Line Element orbital data with 1-hour refresh interval
- */
-export { tleCollection, StoredTLESchema } from "./tle";
-
-/**
  * Briefings Collection
  * AI-generated pass briefings stored in IndexedDB
  *
@@ -42,6 +24,22 @@ export { tleCollection, StoredTLESchema } from "./tle";
  * Re-exported here for convenience
  */
 export { briefingsCollection } from "../../briefing/collections";
+
+/**
+ * ISS Crew Collection
+ * Astronaut roster data with 1-hour refresh interval
+ */
+export { crewCollection, StoredAstronautSchema } from "./crew";
+/**
+ * ISS Position Collection
+ * Real-time position data with 5-second refresh interval
+ */
+export { ISSPositionSchema, positionsCollection } from "./positions";
+/**
+ * TLE Collection
+ * Two-Line Element orbital data with 1-hour refresh interval
+ */
+export { StoredTLESchema, tleCollection } from "./tle";
 
 // =============================================================================
 // TYPE UTILITIES
@@ -54,8 +52,8 @@ export { briefingsCollection } from "../../briefing/collections";
  *   import type { ISSPosition, StoredAstronaut, StoredTLE } from '@/lib/iss/collections'
  */
 import type { z } from "zod";
-import type { ISSPositionSchema } from "./positions";
 import type { StoredAstronautSchema } from "./crew";
+import type { ISSPositionSchema } from "./positions";
 import type { StoredTLESchema } from "./tle";
 
 export type ISSPosition = z.infer<typeof ISSPositionSchema>;

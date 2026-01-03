@@ -11,10 +11,10 @@
  * 3. Import and run: `import('./src/lib/iss/testing/performance-benchmark').then(m => m.runAllBenchmarks())`
  */
 
-import { positionsCollection } from "../collections/positions";
-import { crewCollection } from "../collections/crew";
-import { tleCollection } from "../collections/tle";
 import { briefingsCollection } from "../../briefing/collections";
+import { crewCollection } from "../collections/crew";
+import { positionsCollection } from "../collections/positions";
+import { tleCollection } from "../collections/tle";
 
 // =============================================================================
 // BENCHMARK CONFIGURATION
@@ -86,7 +86,9 @@ async function benchmarkLatestQuery(): Promise<BenchmarkResult> {
 		duration,
 		target: TARGETS.LATEST_QUERY,
 		status: duration < TARGETS.LATEST_QUERY ? "pass" : "warning",
-		details: latest ? `Found position at ${new Date(latest.timestamp * 1000).toISOString()}` : "No data",
+		details: latest
+			? `Found position at ${new Date(latest.timestamp * 1000).toISOString()}`
+			: "No data",
 	};
 }
 
@@ -97,7 +99,11 @@ async function benchmarkSmallRange(): Promise<BenchmarkResult> {
 	const table = positionsCollection.utils.getTable();
 
 	const start = performance.now();
-	const results = await table.orderBy("timestamp").reverse().limit(100).toArray();
+	const results = await table
+		.orderBy("timestamp")
+		.reverse()
+		.limit(100)
+		.toArray();
 	const duration = performance.now() - start;
 
 	return {
@@ -127,14 +133,23 @@ async function benchmarkLargeRange(): Promise<BenchmarkResult> {
 	}
 
 	const start = performance.now();
-	const results = await table.orderBy("timestamp").reverse().limit(1000).toArray();
+	const results = await table
+		.orderBy("timestamp")
+		.reverse()
+		.limit(1000)
+		.toArray();
 	const duration = performance.now() - start;
 
 	return {
 		name: "Large range query (1000 positions)",
 		duration,
 		target: TARGETS.LARGE_RANGE,
-		status: duration < TARGETS.LARGE_RANGE ? "pass" : duration < TARGETS.LARGE_RANGE * 1.5 ? "warning" : "fail",
+		status:
+			duration < TARGETS.LARGE_RANGE
+				? "pass"
+				: duration < TARGETS.LARGE_RANGE * 1.5
+					? "warning"
+					: "fail",
 		details: `${results.length} positions retrieved`,
 	};
 }
@@ -148,7 +163,10 @@ async function benchmarkTimeRange(): Promise<BenchmarkResult> {
 	const oneHourAgo = now - 60 * 60;
 
 	const start = performance.now();
-	const results = await table.where("timestamp").between(oneHourAgo, now, true, true).toArray();
+	const results = await table
+		.where("timestamp")
+		.between(oneHourAgo, now, true, true)
+		.toArray();
 	const duration = performance.now() - start;
 
 	return {
@@ -269,14 +287,18 @@ async function analyzeStorage(): Promise<void> {
 	console.log(`  Crew:       ${crewCount}`);
 	console.log(`  TLE:        ${tleCount}`);
 	console.log(`  Briefings:  ${briefCount}`);
-	console.log(`  Total:      ${posCount + crewCount + tleCount + briefCount}\n`);
+	console.log(
+		`  Total:      ${posCount + crewCount + tleCount + briefCount}\n`,
+	);
 
 	// Estimate storage size
 	if (posCount > 0) {
 		const samplePos = await posTable.limit(10).toArray();
 		const avgPosSize = JSON.stringify(samplePos).length / 10;
 		const estimatedPosSize = (avgPosSize * posCount) / 1024;
-		console.log(`Estimated positions storage: ${estimatedPosSize.toFixed(2)} KB\n`);
+		console.log(
+			`Estimated positions storage: ${estimatedPosSize.toFixed(2)} KB\n`,
+		);
 	}
 
 	// Check storage quota
@@ -284,14 +306,22 @@ async function analyzeStorage(): Promise<void> {
 		const estimate = await navigator.storage.estimate();
 		const usageInMB = ((estimate.usage ?? 0) / 1024 / 1024).toFixed(2);
 		const quotaInMB = ((estimate.quota ?? 0) / 1024 / 1024).toFixed(2);
-		const percentUsed = (((estimate.usage ?? 0) / (estimate.quota ?? 1)) * 100).toFixed(2);
+		const percentUsed = (
+			((estimate.usage ?? 0) / (estimate.quota ?? 1)) *
+			100
+		).toFixed(2);
 
 		console.log("Storage quota:");
 		console.log(`  Used:    ${usageInMB} MB`);
 		console.log(`  Quota:   ${quotaInMB} MB`);
 		console.log(`  Percent: ${percentUsed}%`);
 
-		const status = Number.parseFloat(percentUsed) < 50 ? "✅ GOOD" : Number.parseFloat(percentUsed) < 80 ? "⚠️  WARNING" : "❌ CRITICAL";
+		const status =
+			Number.parseFloat(percentUsed) < 50
+				? "✅ GOOD"
+				: Number.parseFloat(percentUsed) < 80
+					? "⚠️  WARNING"
+					: "❌ CRITICAL";
 		console.log(`  Status:  ${status}\n`);
 	}
 }
@@ -347,8 +377,14 @@ export async function runAllBenchmarks(): Promise<BenchmarkSummary> {
 	console.log("===================\n");
 
 	for (const result of results) {
-		const icon = result.status === "pass" ? "✅" : result.status === "warning" ? "⚠️ " : "❌";
-		const durationStr = result.duration > 0 ? `${result.duration.toFixed(2)}ms` : "N/A";
+		const icon =
+			result.status === "pass"
+				? "✅"
+				: result.status === "warning"
+					? "⚠️ "
+					: "❌";
+		const durationStr =
+			result.duration > 0 ? `${result.duration.toFixed(2)}ms` : "N/A";
 		console.log(`${icon} ${result.name}`);
 		console.log(`   Duration: ${durationStr} (target: <${result.target}ms)`);
 		if (result.details) {
@@ -365,7 +401,12 @@ export async function runAllBenchmarks(): Promise<BenchmarkSummary> {
 	console.log(`⚠️  Warnings:  ${summary.warnings}`);
 	console.log(`❌ Failed:    ${summary.failed}\n`);
 
-	const overallStatus = summary.failed === 0 && summary.warnings <= 2 ? "✅ PASS" : summary.failed === 0 ? "⚠️  PASS WITH WARNINGS" : "❌ FAIL";
+	const overallStatus =
+		summary.failed === 0 && summary.warnings <= 2
+			? "✅ PASS"
+			: summary.failed === 0
+				? "⚠️  PASS WITH WARNINGS"
+				: "❌ FAIL";
 	console.log(`Overall status: ${overallStatus}\n`);
 
 	// Run storage analysis
@@ -380,13 +421,19 @@ export async function runAllBenchmarks(): Promise<BenchmarkSummary> {
 	const smallQuery = results.find((r) => r.name.includes("100"));
 
 	console.log(`1. Initial load <100ms with cached data:`);
-	console.log(`   ${initialLoad ? (initialLoad.duration < 100 ? "✅ PASS" : "❌ FAIL") : "⚠️  N/A"} (${initialLoad?.duration.toFixed(2)}ms)\n`);
+	console.log(
+		`   ${initialLoad ? (initialLoad.duration < 100 ? "✅ PASS" : "❌ FAIL") : "⚠️  N/A"} (${initialLoad?.duration.toFixed(2)}ms)\n`,
+	);
 
 	console.log(`2. Position range queries <500ms for 1000+ records:`);
-	console.log(`   ${rangeQuery ? (rangeQuery.duration < 500 ? "✅ PASS" : "❌ FAIL") : "⚠️  N/A"} (${rangeQuery?.duration.toFixed(2)}ms)\n`);
+	console.log(
+		`   ${rangeQuery ? (rangeQuery.duration < 500 ? "✅ PASS" : "❌ FAIL") : "⚠️  N/A"} (${rangeQuery?.duration.toFixed(2)}ms)\n`,
+	);
 
 	console.log(`3. No visible lag in UI updates:`);
-	console.log(`   ${smallQuery ? (smallQuery.duration < 16 ? "✅ PASS" : "⚠️  ACCEPTABLE") : "⚠️  N/A"} (${smallQuery?.duration.toFixed(2)}ms for 100 records)\n`);
+	console.log(
+		`   ${smallQuery ? (smallQuery.duration < 16 ? "✅ PASS" : "⚠️  ACCEPTABLE") : "⚠️  N/A"} (${smallQuery?.duration.toFixed(2)}ms for 100 records)\n`,
+	);
 
 	console.log(`4. Memory usage within acceptable bounds:`);
 	console.log(`   ✅ Check DevTools → Memory tab for detailed analysis\n`);

@@ -10,12 +10,12 @@
  * unified TanStack DB collections for simpler, reactive data management.
  */
 
-import { useCallback, useState } from "react";
 import { useLiveQuery } from "@tanstack/react-db";
-import { positionsCollection } from "@/lib/iss/collections/positions";
+import { useCallback, useState } from "react";
 import { crewCollection } from "@/lib/iss/collections/crew";
+import { positionsCollection } from "@/lib/iss/collections/positions";
 import { tleCollection } from "@/lib/iss/collections/tle";
-import type { ISSPosition, Astronaut, TLEData } from "@/lib/iss/types";
+import type { Astronaut, ISSPosition, TLEData } from "@/lib/iss/types";
 
 // =============================================================================
 // useISSPositionDB - Reactive position loading from collection
@@ -79,7 +79,9 @@ export function useISSPositionDB(): UseISSPositionResult {
 		// For DB collections, isFetching is same as isLoading
 		isFetching: query.isLoading,
 		// Convert isError boolean to Error | null
-		error: query.isError ? new Error("Failed to query position collection") : null,
+		error: query.isError
+			? new Error("Failed to query position collection")
+			: null,
 	};
 }
 
@@ -290,7 +292,9 @@ export function usePositionHistoryDB(): UsePositionHistoryResult {
 			? (query.data as ISSPosition[]).filter((pos) => {
 					const startTimestamp = timeRange.start / 1000;
 					const endTimestamp = timeRange.end / 1000;
-					return pos.timestamp >= startTimestamp && pos.timestamp <= endTimestamp;
+					return (
+						pos.timestamp >= startTimestamp && pos.timestamp <= endTimestamp
+					);
 				})
 			: [];
 

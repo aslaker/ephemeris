@@ -5,7 +5,7 @@
  */
 
 import { ChevronDown, ChevronUp, Clock, Gauge, Sparkles } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useBriefingByPassIdDB } from "@/hooks/useBriefingDB";
 import { derivePassQuality } from "@/lib/briefing/types";
 import type { PassPrediction } from "@/lib/iss/types";

@@ -5,9 +5,9 @@
  * Uses orbital calculations from satellite.js to fill large gaps in position history.
  */
 
-import { positionsCollection } from "./positions";
 import { calculateOrbitPath } from "../orbital";
 import type { ISSPosition, TLEData } from "../types";
+import { positionsCollection } from "./positions";
 
 // =============================================================================
 // GAP FILLING CONFIGURATION

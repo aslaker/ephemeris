@@ -11,12 +11,12 @@ import {
 } from "lucide-react";
 import { type ReactNode, useEffect, useState } from "react";
 import { terminalAudio } from "@/lib/iss/audio";
-import { getDefaultSyncManager } from "@/lib/iss/sync";
 import {
-	runMigration,
 	isMigrationComplete,
 	type MigrationResult,
+	runMigration,
 } from "@/lib/iss/migrations/dexie-to-tanstack";
+import { getDefaultSyncManager } from "@/lib/iss/sync";
 import { ScanlineOverlay } from "./ScanlineOverlay";
 
 // =============================================================================

@@ -11,8 +11,8 @@
  * unified TanStack DB collections for persistent, reactive data management.
  */
 
-import { useCallback } from "react";
 import { useLiveQuery } from "@tanstack/react-db";
+import { useCallback } from "react";
 import { briefingsCollection } from "@/lib/briefing/collections";
 import type { PassBriefing } from "@/lib/briefing/types";
 
@@ -337,7 +337,9 @@ export async function upsertBriefingDB(
  * }
  * ```
  */
-export async function deleteBriefingDB(passId: string): Promise<MutationResult> {
+export async function deleteBriefingDB(
+	passId: string,
+): Promise<MutationResult> {
 	try {
 		// Delete briefing from collection by passId
 		await briefingsCollection.delete(passId);
@@ -515,12 +517,9 @@ export function useBriefingDB(passId: string): UseBriefingDBResult {
 	const { data, isLoading, error } = useBriefingByPassIdDB(passId);
 
 	// Create memoized mutation helpers
-	const upsert = useCallback(
-		async (briefing: PassBriefing) => {
-			return await upsertBriefingDB(briefing);
-		},
-		[],
-	);
+	const upsert = useCallback(async (briefing: PassBriefing) => {
+		return await upsertBriefingDB(briefing);
+	}, []);
 
 	const deleteBriefingFn = useCallback(async () => {
 		return await deleteBriefingDB(passId);

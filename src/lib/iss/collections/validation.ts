@@ -5,15 +5,20 @@
  * Uses Zod schemas to validate data integrity and remove corrupted records.
  */
 
-import { positionsCollection, ISSPositionSchema } from "./positions";
-import { crewCollection, StoredAstronautSchema } from "./crew";
-import { tleCollection, StoredTLESchema } from "./tle";
 import { briefingsCollection } from "../../briefing/collections";
 import { PassBriefingSchema } from "../../briefing/types";
 import type { ISSPosition } from "../types";
+import { crewCollection, StoredAstronautSchema } from "./crew";
+import { ISSPositionSchema, positionsCollection } from "./positions";
+import { StoredTLESchema, tleCollection } from "./tle";
 
 // Re-export schemas for external use
-export { ISSPositionSchema, StoredAstronautSchema, StoredTLESchema, PassBriefingSchema };
+export {
+	ISSPositionSchema,
+	StoredAstronautSchema,
+	StoredTLESchema,
+	PassBriefingSchema,
+};
 
 // Infer types from schemas
 export type StoredAstronaut = typeof StoredAstronautSchema._type;

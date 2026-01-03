@@ -5,12 +5,12 @@
  * Manages lifecycle for position, crew, and TLE syncs with visibility handling.
  */
 
+import { DEFAULT_CREW_SYNC_INTERVAL, startCrewSync } from "./crew-sync";
 import {
-	startPositionSync,
 	DEFAULT_POSITION_SYNC_INTERVAL,
+	startPositionSync,
 } from "./position-sync";
-import { startCrewSync, DEFAULT_CREW_SYNC_INTERVAL } from "./crew-sync";
-import { startTLESync, DEFAULT_TLE_SYNC_INTERVAL } from "./tle-sync";
+import { DEFAULT_TLE_SYNC_INTERVAL, startTLESync } from "./tle-sync";
 
 // =============================================================================
 // SYNC MANAGER CONFIGURATION
@@ -200,7 +200,9 @@ export function createSyncManager(config: SyncConfig = {}): SyncManager {
 		} else {
 			// Page is visible - resume syncing
 			if (state.isRunning && state.cleanups.length === 0) {
-				const positionCleanup = startPositionSync(state.config.positionInterval);
+				const positionCleanup = startPositionSync(
+					state.config.positionInterval,
+				);
 				const crewCleanup = startCrewSync(state.config.crewInterval);
 				const tleCleanup = startTLESync(state.config.tleInterval);
 

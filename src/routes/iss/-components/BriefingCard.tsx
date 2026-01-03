@@ -17,9 +17,9 @@ import {
 	X,
 } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { upsertBriefingDB, useBriefingByPassIdDB } from "@/hooks/useBriefingDB";
 import { useLocation } from "@/hooks/useLocation";
 import { generateBriefing } from "@/lib/briefing/ai-client";
-import { useBriefingByPassIdDB, upsertBriefingDB } from "@/hooks/useBriefingDB";
 import { getWeatherForPass } from "@/lib/briefing/weather";
 import type { PassPrediction } from "@/lib/iss/types";
 
@@ -52,8 +52,9 @@ export function BriefingCard({
 	const previousStatusRef = useRef<BriefingStatus>("idle");
 
 	// Query briefing from TanStack DB collection
-	const { data: briefing, isLoading: briefingLoading } =
-		useBriefingByPassIdDB(pass.id);
+	const { data: briefing, isLoading: briefingLoading } = useBriefingByPassIdDB(
+		pass.id,
+	);
 
 	// Local state for generation status
 	const [status, setStatus] = useState<BriefingStatus>(

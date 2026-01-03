@@ -586,7 +586,7 @@
           "id": "5.3",
           "title": "Migrate corruption detection to collection-based",
           "description": "Update corruption detection to validate and clean collection data",
-          "status": "pending",
+          "status": "in_progress",
           "priority": "medium",
           "estimated_effort": "1 hour",
           "files_to_create": [
@@ -603,7 +603,8 @@
             "Removes corrupted records from collection",
             "Triggers sync refresh after cleanup"
           ],
-          "notes": ""
+          "notes": "Creating validation.ts with collection-based corruption detection",
+          "updated_at": "2026-01-03T03:53:56.950280+00:00"
         }
       ]
     },
@@ -915,5 +916,5 @@
     }
   },
   "recoveryNote": "Task recovered from stuck state at 2026-01-03T02:50:34.858Z",
-  "last_updated": "2026-01-03T03:52:02.488646+00:00"
+  "last_updated": "2026-01-03T03:53:56.950290+00:00"
 }

@@ -1,0 +1,81 @@
+/**
+ * ISS Data Hooks with TanStack DB Live Queries
+ *
+ * These hooks provide reactive data loading by:
+ * 1. Using TanStack DB useLiveQuery for reactive collection queries
+ * 2. Automatically updating when collection data changes
+ * 3. Providing consistent loading and error states
+ *
+ * These hooks replace the legacy TanStack Query + Dexie hooks with
+ * unified TanStack DB collections for simpler, reactive data management.
+ */
+
+import { useLiveQuery } from "@tanstack/react-db";
+import { positionsCollection } from "@/lib/iss/collections/positions";
+import type { ISSPosition } from "@/lib/iss/types";
+
+// =============================================================================
+// useISSPositionDB - Reactive position loading from collection
+// =============================================================================
+
+export interface UseISSPositionResult {
+	/** Current position data from collection */
+	data: ISSPosition | null;
+	/** Whether initial data is loading (collection not ready) */
+	isLoading: boolean;
+	/** Whether data came from cache (always true for DB collections) */
+	fromCache: boolean;
+	/** Whether a background fetch is in progress (same as isLoading for DB) */
+	isFetching: boolean;
+	/** Any error from the query */
+	error: Error | null;
+}
+
+/**
+ * Hook for ISS position with reactive TanStack DB live query
+ *
+ * Queries the latest position from the positions collection and
+ * automatically updates when new positions are synced.
+ *
+ * Features:
+ * - Reactive updates when collection changes (via sync handler)
+ * - Instant load from IndexedDB (no network delay)
+ * - Consistent interface with legacy useISSPosition hook
+ * - Type-safe with Zod schema validation
+ *
+ * @returns Latest ISS position with loading/error states
+ *
+ * @example
+ * ```typescript
+ * function StatsPanel() {
+ *   const { data: position, isLoading } = useISSPositionDB()
+ *
+ *   if (isLoading) return <div>Loading...</div>
+ *   if (!position) return <div>No position data</div>
+ *
+ *   return <div>{position.latitude}° N</div>
+ * }
+ * ```
+ */
+export function useISSPositionDB(): UseISSPositionResult {
+	// Query latest position from collection (ordered by timestamp descending)
+	const query = useLiveQuery((q) =>
+		q
+			.from({ pos: positionsCollection })
+			.orderBy(({ pos }) => pos.timestamp, "desc")
+			.findOne(),
+	);
+
+	return {
+		// Convert undefined to null for compatibility with legacy interface
+		data: query.data ?? null,
+		// isLoading is true until first data is ready
+		isLoading: query.isLoading,
+		// DB collections always serve from cache (IndexedDB)
+		fromCache: true,
+		// For DB collections, isFetching is same as isLoading
+		isFetching: query.isLoading,
+		// Convert isError boolean to Error | null
+		error: query.isError ? new Error("Failed to query position collection") : null,
+	};
+}

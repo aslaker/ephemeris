@@ -751,7 +751,7 @@
           "id": "7.4",
           "title": "Remove legacy hooks",
           "description": "Remove old hooks from src/hooks/iss/useISSData.ts",
-          "status": "pending",
+          "status": "completed",
           "priority": "high",
           "estimated_effort": "30 minutes",
           "files_to_modify": [],
@@ -771,7 +771,8 @@
             "All consumers use new DB hooks",
             "App builds without errors"
           ],
-          "notes": ""
+          "notes": "\u2705 Legacy useISSData.ts successfully removed with:\n- Removed src/hooks/iss/useISSData.ts (legacy TanStack Query + Dexie hooks file)\n- File contained useISSPosition, useISSCrew, useISSTLE, usePositionHistory, useGapFilling, useStorageCleanup hooks\n- All hooks depended on removed dependencies:\n  * @/lib/iss/db (removed in subtask 7.1)\n  * @/lib/iss/queries (removed in subtask 7.3)\n  * @/lib/iss/storage (removed in subtask 7.2)\n- Verified no remaining imports or usages in codebase\n- All components successfully migrated to new DB hooks (useISSDataDB.ts) in phase 4\n- All TypeScript compilation checks passing\n- Production build succeeded without errors\n- Git commit: 9bf8b00",
+          "updated_at": "2026-01-03T04:09:14.471284+00:00"
         },
         {
           "id": "7.5",
@@ -921,5 +922,5 @@
     }
   },
   "recoveryNote": "Task recovered from stuck state at 2026-01-03T02:50:34.858Z",
-  "last_updated": "2026-01-03T04:07:51.047542+00:00"
+  "last_updated": "2026-01-03T04:09:14.471290+00:00"
 }

@@ -5,8 +5,8 @@
  */
 
 import { ChevronDown, ChevronUp, Clock, Gauge, Sparkles } from "lucide-react";
-import { useState } from "react";
-import { getBriefingByPassId } from "@/lib/briefing/collection";
+import { useState, useEffect } from "react";
+import { useBriefingByPassIdDB } from "@/hooks/useBriefingDB";
 import { derivePassQuality } from "@/lib/briefing/types";
 import type { PassPrediction } from "@/lib/iss/types";
 import { BriefingCard } from "./BriefingCard";
@@ -72,10 +72,19 @@ function formatDate(date: Date): string {
  */
 export function PassCard({ pass, className = "" }: PassCardProps) {
 	const [isExpanded, setIsExpanded] = useState(false);
+
+	// Check if a briefing already exists for this pass using DB hook
+	const { data: existingBriefing } = useBriefingByPassIdDB(pass.id);
+
 	// Auto-show briefing if one already exists for this pass
-	const [showBriefing, setShowBriefing] = useState(
-		() => !!getBriefingByPassId(pass.id),
-	);
+	const [showBriefing, setShowBriefing] = useState(false);
+
+	// Update showBriefing when existingBriefing becomes available (reactive)
+	useEffect(() => {
+		if (existingBriefing) {
+			setShowBriefing(true);
+		}
+	}, [existingBriefing]);
 
 	const quality = derivePassQuality(pass.maxElevation);
 	const qualityColor = getQualityColor(quality);

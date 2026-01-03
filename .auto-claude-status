@@ -1,0 +1,25 @@
+{
+  "active": true,
+  "spec": "003-tanstack-db-migration",
+  "state": "building",
+  "subtasks": {
+    "completed": 1,
+    "total": 34,
+    "in_progress": 1,
+    "failed": 0
+  },
+  "phase": {
+    "current": "Foundation - TanStack DB Collection Infrastructure",
+    "id": null,
+    "total": 6
+  },
+  "workers": {
+    "active": 0,
+    "max": 1
+  },
+  "session": {
+    "number": 2,
+    "started_at": "2026-01-02T20:50:35.728324"
+  },
+  "last_update": "2026-01-02T20:54:02.665679"
+}

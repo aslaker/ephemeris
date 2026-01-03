@@ -186,7 +186,9 @@ export const fetchCrewData = async (): Promise<Astronaut[]> => {
 	return Sentry.startSpan({ name: "Fetching Crew Data" }, async () => {
 		const basicData = await fetchCrewFromApi();
 
-		const issCrew = basicData.people.filter((p) => p.craft === "ISS");
+		// Defensive null check to prevent runtime errors if API returns unexpected data
+		const people = basicData?.people ?? [];
+		const issCrew = people.filter((p) => p.craft === "ISS");
 
 		const enrichedCrew: Astronaut[] = issCrew.map((basicAstronaut) => {
 			const dbData = findMissionProfile(basicAstronaut.name);

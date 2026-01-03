@@ -41,7 +41,7 @@ export function ensureSentryInitialized(): void {
 		undefined;
 
 	// Debug logging (will appear in Cloudflare logs)
-	console.error(
+	console.info(
 		"[Sentry Init] Checking DSN availability:",
 		JSON.stringify({
 			hasEnvSentryDsn: !!envObj?.SENTRY_DSN,
@@ -77,11 +77,11 @@ export function ensureSentryInitialized(): void {
 				environment:
 					typeof process !== "undefined" ? "development" : "production",
 			});
-			console.error(
+			console.info(
 				"[Sentry Init] @sentry/tanstackstart-react initialized successfully",
 			);
 		} else {
-			console.error(
+			console.warn(
 				"[Sentry Init] Sentry.init is not a function - SDK may not be compatible",
 			);
 		}

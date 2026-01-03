@@ -394,3 +394,4 @@ Before logging to Sentry:
 | User location | ✓ (from locationStore) | ✓ (city-level only) |
 | Exact coordinates | ✓ | ✗ (rounded) |
 
+

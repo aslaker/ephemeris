@@ -35,11 +35,35 @@
         }
       ],
       "status": "completed"
+    },
+    "1.4": {
+      "attempts": [
+        {
+          "session": 4,
+          "timestamp": "2026-01-02T21:01:26.976020",
+          "approach": "Implemented: Create a TanStack DB collection for TLE (Two-Line Element) orbital data with Dexie adapter",
+          "success": true,
+          "error": null
+        }
+      ],
+      "status": "completed"
+    },
+    "1.5": {
+      "attempts": [
+        {
+          "session": 5,
+          "timestamp": "2026-01-02T21:03:02.359337",
+          "approach": "Implemented: Create a TanStack DB collection for AI pass briefings, replacing localStorage-based collection",
+          "success": true,
+          "error": null
+        }
+      ],
+      "status": "completed"
     }
   },
   "stuck_subtasks": [],
   "metadata": {
     "created_at": "2026-01-02T20:50:35.728184",
-    "last_updated": "2026-01-02T20:59:58.611896"
+    "last_updated": "2026-01-02T21:03:02.359355"
   }
 }

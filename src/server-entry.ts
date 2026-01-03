@@ -9,7 +9,9 @@ const handler = createStartHandler(defaultStreamHandler);
 export { CopilotAgent };
 
 export default {
-	async fetch(request: Request, env: Cloudflare.Env, ctx: ExecutionContext) {
-		return await handler(request, env, ctx);
+	// biome-ignore lint/suspicious/noExplicitAny: Handler types from TanStack Start aren't fully typed
+	async fetch(request: Request, env: any, ctx: any) {
+		// biome-ignore lint/suspicious/noExplicitAny: Handler types from TanStack Start aren't fully typed
+		return await (handler as any)(request, env, ctx);
 	},
 };

@@ -61,11 +61,8 @@ export async function syncCrew(): Promise<SyncResult> {
 			fetchedAt,
 		}));
 
-		// Bulk insert into collection (triggers useLiveQuery updates)
-		// Insert each crew member individually to ensure proper collection handling
-		for (const astronaut of storedCrew) {
-			await crewCollection.insert(astronaut);
-		}
+		// Bulk insert into collection (atomic, efficient batch operation)
+		await crewCollection.utils.bulkInsertLocally(storedCrew);
 
 		return {
 			success: true,
@@ -107,8 +104,10 @@ export async function syncCrew(): Promise<SyncResult> {
 export function startCrewSync(
 	intervalMs: number = DEFAULT_CREW_SYNC_INTERVAL,
 ): () => void {
-	// Initial sync (fire and forget)
-	syncCrew();
+	// Initial sync with error logging
+	syncCrew().catch((err) =>
+		console.warn("[CrewSync] Initial sync failed:", err),
+	);
 
 	// Background sync
 	const intervalId = setInterval(() => {

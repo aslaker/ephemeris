@@ -487,10 +487,16 @@ export async function runMigration(): Promise<MigrationResult> {
 			...(briefingsResult.errors || []),
 		];
 
-		const hasErrors = allErrors.length > 0;
+		// Calculate total records and success rate
+		const totalRead = positionsResult.read + crewResult.read + tleResult.read + briefingsResult.read;
+		const totalInserted = positionsResult.inserted + crewResult.inserted + tleResult.inserted + briefingsResult.inserted;
+		const successRate = totalRead > 0 ? (totalInserted / totalRead) * 100 : 100;
+
+		// Consider migration successful if >90% of data migrated successfully
+		const isSuccessful = successRate >= 90;
 
 		const result: MigrationResult = {
-			success: !hasErrors,
+			success: isSuccessful,
 			positions: positionsResult,
 			crew: crewResult,
 			tle: tleResult,
@@ -498,10 +504,31 @@ export async function runMigration(): Promise<MigrationResult> {
 			durationMs,
 		};
 
-		if (hasErrors) {
-			result.error = `Migration completed with ${allErrors.length} validation errors`;
-			console.warn("[Migration] Completed with errors:", allErrors);
+		if (!isSuccessful) {
+			result.error = `Migration failed: only ${successRate.toFixed(1)}% of data migrated (${totalInserted}/${totalRead} records)`;
+			console.error("[Migration] Failed:", result.error);
 			markMigrationFailed(result.error);
+		} else if (allErrors.length > 0) {
+			// Migration successful overall, but log validation errors
+			result.error = `Migration completed with ${allErrors.length} validation errors (${successRate.toFixed(1)}% success rate)`;
+			console.warn("[Migration] Completed with warnings:", allErrors);
+
+			// Mark as complete despite warnings since >90% succeeded
+			markMigrationComplete({
+				positions: positionsResult.inserted,
+				crew: crewResult.inserted,
+				tle: tleResult.inserted,
+				briefings: briefingsResult.inserted,
+			});
+
+			console.log(
+				"[Migration] Completed with warnings:",
+				`${positionsResult.inserted} positions,`,
+				`${crewResult.inserted} crew,`,
+				`${tleResult.inserted} TLE,`,
+				`${briefingsResult.inserted} briefings`,
+				`(${durationMs}ms, ${allErrors.length} validation errors)`,
+			);
 		} else {
 			// Mark migration as complete
 			markMigrationComplete({

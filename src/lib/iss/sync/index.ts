@@ -12,12 +12,14 @@
 export type { SyncConfig, SyncManager } from "./sync-manager";
 export {
 	createSyncManager,
-	DEFAULT_CREW_SYNC_INTERVAL,
-	DEFAULT_POSITION_SYNC_INTERVAL,
-	DEFAULT_TLE_SYNC_INTERVAL,
 	getDefaultSyncManager,
 	resetDefaultSyncManager,
 } from "./sync-manager";
+
+// Export sync interval constants from their source files
+export { DEFAULT_CREW_SYNC_INTERVAL } from "./crew-sync";
+export { DEFAULT_POSITION_SYNC_INTERVAL } from "./position-sync";
+export { DEFAULT_TLE_SYNC_INTERVAL } from "./tle-sync";
 
 // =============================================================================
 // INDIVIDUAL SYNC HANDLERS

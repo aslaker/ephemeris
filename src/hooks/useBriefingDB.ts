@@ -386,7 +386,7 @@ export async function clearBriefingsDB(): Promise<MutationResult> {
 
 		// Delete each briefing individually
 		for (const record of allRecords) {
-			await briefingsCollection.delete(record.id as string);
+			await briefingsCollection.delete(record.passId);
 		}
 
 		return { success: true };

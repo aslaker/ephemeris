@@ -67,6 +67,7 @@ interface SyncState {
 	config: Required<SyncConfig>;
 	cleanups: Array<() => void>;
 	visibilityHandler?: () => void;
+	isHandlingVisibilityChange: boolean;
 }
 
 // =============================================================================
@@ -132,6 +133,7 @@ export function createSyncManager(config: SyncConfig = {}): SyncManager {
 			...config,
 		},
 		cleanups: [],
+		isHandlingVisibilityChange: false,
 	};
 
 	/**
@@ -183,31 +185,43 @@ export function createSyncManager(config: SyncConfig = {}): SyncManager {
 	/**
 	 * Handle visibility change events
 	 * Pause syncing when page is hidden, resume when visible
+	 * Uses a flag to prevent race conditions from rapid visibility changes
 	 */
 	const handleVisibilityChange = (): void => {
 		if (typeof document === "undefined") {
 			return;
 		}
 
-		if (document.hidden) {
-			// Page is hidden - stop syncing to save resources
-			if (state.isRunning) {
-				for (const cleanup of state.cleanups) {
-					cleanup();
-				}
-				state.cleanups = [];
-			}
-		} else {
-			// Page is visible - resume syncing
-			if (state.isRunning && state.cleanups.length === 0) {
-				const positionCleanup = startPositionSync(
-					state.config.positionInterval,
-				);
-				const crewCleanup = startCrewSync(state.config.crewInterval);
-				const tleCleanup = startTLESync(state.config.tleInterval);
+		// Prevent concurrent visibility handling to avoid race conditions
+		if (state.isHandlingVisibilityChange) {
+			return;
+		}
 
-				state.cleanups = [positionCleanup, crewCleanup, tleCleanup];
+		state.isHandlingVisibilityChange = true;
+
+		try {
+			if (document.hidden) {
+				// Page is hidden - stop syncing to save resources
+				if (state.isRunning) {
+					for (const cleanup of state.cleanups) {
+						cleanup();
+					}
+					state.cleanups = [];
+				}
+			} else {
+				// Page is visible - resume syncing
+				if (state.isRunning && state.cleanups.length === 0) {
+					const positionCleanup = startPositionSync(
+						state.config.positionInterval,
+					);
+					const crewCleanup = startCrewSync(state.config.crewInterval);
+					const tleCleanup = startTLESync(state.config.tleInterval);
+
+					state.cleanups = [positionCleanup, crewCleanup, tleCleanup];
+				}
 			}
+		} finally {
+			state.isHandlingVisibilityChange = false;
 		}
 	};
 

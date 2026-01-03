@@ -120,33 +120,44 @@ export function fillGapWithOrbital(gap: GapInfo, tle: TLEData): ISSPosition[] {
 		return [];
 	}
 
+	// Generate array of specific timestamps within the gap
+	const timestamps: number[] = [];
+	for (
+		let t = gap.startTimestamp;
+		t <= gap.endTimestamp;
+		t += GAP_FILLING_CONFIG.syntheticStepSeconds
+	) {
+		timestamps.push(t);
+	}
+
+	// Calculate current time once for consistent offset calculation
+	const now = Date.now();
 	const [line1, line2] = tle;
-	const startMins = Math.ceil(
-		(gap.startTimestamp * 1000 - Date.now()) / (1000 * 60),
-	);
-	const endMins = Math.floor(
-		(gap.endTimestamp * 1000 - Date.now()) / (1000 * 60),
-	);
-	const stepMins = GAP_FILLING_CONFIG.syntheticStepSeconds / 60;
 
-	const orbitalPoints = calculateOrbitPath(
-		line1,
-		line2,
-		startMins,
-		endMins,
-		stepMins,
-	);
+	// Calculate orbital positions at each specific timestamp
+	const syntheticPositions: ISSPosition[] = [];
+	for (const timestamp of timestamps) {
+		// Calculate minute offset from now for this specific timestamp
+		const offsetMins = (timestamp * 1000 - now) / (1000 * 60);
 
-	return orbitalPoints.map((point, idx) => ({
-		id: `synthetic-${gap.startTimestamp + idx * GAP_FILLING_CONFIG.syntheticStepSeconds}`,
-		latitude: point.lat,
-		longitude: point.lng,
-		altitude: point.alt,
-		timestamp:
-			gap.startTimestamp + idx * GAP_FILLING_CONFIG.syntheticStepSeconds,
-		velocity: 27600, // Average ISS velocity
-		visibility: "synthetic",
-	}));
+		// Get orbital position at this exact time
+		const orbitalPoints = calculateOrbitPath(line1, line2, offsetMins, offsetMins, 1);
+
+		if (orbitalPoints.length > 0) {
+			const point = orbitalPoints[0];
+			syntheticPositions.push({
+				id: `synthetic-${timestamp}`,
+				latitude: point.lat,
+				longitude: point.lng,
+				altitude: point.alt,
+				timestamp: timestamp, // Use the exact timestamp we calculated for
+				velocity: 27600, // Average ISS velocity
+				visibility: "synthetic",
+			});
+		}
+	}
+
+	return syntheticPositions;
 }
 
 /**

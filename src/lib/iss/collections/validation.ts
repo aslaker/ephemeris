@@ -5,6 +5,7 @@
  * Uses Zod schemas to validate data integrity and remove corrupted records.
  */
 
+import { z } from "zod";
 import { briefingsCollection } from "../../briefing/collections";
 import { PassBriefingSchema } from "../../briefing/types";
 import type { ISSPosition } from "../types";
@@ -21,9 +22,9 @@ export {
 };
 
 // Infer types from schemas
-export type StoredAstronaut = typeof StoredAstronautSchema._type;
-export type StoredTLE = typeof StoredTLESchema._type;
-export type PassBriefing = typeof PassBriefingSchema._type;
+export type StoredAstronaut = z.infer<typeof StoredAstronautSchema>;
+export type StoredTLE = z.infer<typeof StoredTLESchema>;
+export type PassBriefing = z.infer<typeof PassBriefingSchema>;
 
 // =============================================================================
 // VALIDATION FUNCTIONS
@@ -166,7 +167,8 @@ export async function detectAndRemoveCorruption(): Promise<CorruptionResult> {
 		.reverse()
 		.limit(100)
 		.toArray();
-	const positionsToCheck = [...firstPositions, ...lastPositions];
+	// Deduplicate positions in case table has fewer than 200 records
+	const positionsToCheck = [...new Map([...firstPositions, ...lastPositions].map(p => [p.id, p])).values()];
 
 	const invalidPositionIds: string[] = [];
 	for (const pos of positionsToCheck) {

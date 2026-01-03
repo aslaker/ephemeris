@@ -270,33 +270,28 @@ export function usePositionHistoryDB(): UsePositionHistoryResult {
 		end: number;
 	} | null>(null);
 
-	// Query positions in time range (reactive to timeRange changes)
+	// Query positions in time range using Dexie's efficient indexed range query
 	const query = useLiveQuery(
-		(q) => {
+		async () => {
 			// Return undefined if no range set (disables query)
 			if (!timeRange) return undefined;
 
-			// Query all positions and order by timestamp
-			// Note: We'll filter by range in the return statement below
-			return q
-				.from({ pos: positionsCollection })
-				.orderBy(({ pos }) => pos.timestamp, "asc");
+			// Use Dexie's indexed range query for efficient filtering
+			const table = positionsCollection.utils.getTable();
+			const startTimestamp = timeRange.start / 1000;
+			const endTimestamp = timeRange.end / 1000;
+
+			// Efficient indexed query using Dexie's where().between()
+			return await table
+				.where("timestamp")
+				.between(startTimestamp, endTimestamp)
+				.toArray();
 		},
 		[timeRange],
 	);
 
-	// Filter positions by time range in JavaScript
-	// (TanStack DB where clauses don't support comparison operators directly)
-	const filteredPositions =
-		query.data && timeRange
-			? (query.data as ISSPosition[]).filter((pos) => {
-					const startTimestamp = timeRange.start / 1000;
-					const endTimestamp = timeRange.end / 1000;
-					return (
-						pos.timestamp >= startTimestamp && pos.timestamp <= endTimestamp
-					);
-				})
-			: [];
+	// Data is already filtered by the indexed query
+	const filteredPositions = query.data ? (query.data as ISSPosition[]) : [];
 
 	// Callback to update time range (triggers query re-run)
 	const fetchRange = useCallback((startMs: number, endMs: number) => {

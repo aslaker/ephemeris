@@ -104,6 +104,28 @@ const fetchTLEFromUrl = async (
 };
 
 /**
+ * Extract TLE epoch date and calculate age in days
+ */
+const getTLEAge = (line1: string): number => {
+	// TLE epoch is in format YYDDD.DDDDDDDD (year + day of year)
+	// Example: "24140.59865741" = day 140 of 2024
+	const epochStr = line1.substring(18, 32).trim();
+	const year = Number.parseInt(epochStr.substring(0, 2), 10);
+	const dayOfYear = Number.parseFloat(epochStr.substring(2));
+
+	// Convert to full year (20YY for 00-99)
+	const fullYear = year < 57 ? 2000 + year : 1900 + year;
+
+	// Calculate epoch date
+	const epochDate = new Date(fullYear, 0, 1);
+	epochDate.setDate(dayOfYear);
+
+	// Calculate age in days
+	const ageMs = Date.now() - epochDate.getTime();
+	return ageMs / (1000 * 60 * 60 * 24);
+};
+
+/**
  * Fetch TLE with source tracking
  * Fallback chain: CelesTrak → ARISS → Hardcoded
  */
@@ -129,6 +151,18 @@ const fetchTLEWithSource = async (): Promise<{
 	}
 
 	// Use hardcoded fallback
+	console.warn(
+		"[TLE] Using hardcoded fallback TLE - API sources unavailable",
+	);
+
+	// Check TLE age and warn if stale
+	const ageInDays = getTLEAge(FALLBACK_TLE.line1);
+	if (ageInDays > 7) {
+		console.warn(
+			`[TLE] WARNING: Fallback TLE is ${Math.floor(ageInDays)} days old! Orbital predictions will be increasingly inaccurate. TLE should be updated.`,
+		);
+	}
+
 	return { ...FALLBACK_TLE, source: "fallback" };
 };
 
@@ -202,8 +236,8 @@ export async function syncTLE(): Promise<SyncResult> {
 export function startTLESync(
 	intervalMs: number = DEFAULT_TLE_SYNC_INTERVAL,
 ): () => void {
-	// Initial sync (fire and forget)
-	syncTLE();
+	// Initial sync with error logging
+	syncTLE().catch((err) => console.warn("[TLESync] Initial sync failed:", err));
 
 	// Background sync
 	const intervalId = setInterval(() => {

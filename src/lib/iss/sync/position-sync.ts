@@ -102,8 +102,10 @@ export async function syncPosition(): Promise<SyncResult> {
 export function startPositionSync(
 	intervalMs: number = DEFAULT_POSITION_SYNC_INTERVAL,
 ): () => void {
-	// Initial sync (fire and forget)
-	syncPosition();
+	// Initial sync with error logging
+	syncPosition().catch((err) =>
+		console.warn("[PositionSync] Initial sync failed:", err),
+	);
 
 	// Background sync
 	const intervalId = setInterval(() => {

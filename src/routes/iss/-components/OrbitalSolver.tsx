@@ -1,5 +1,6 @@
 import { Activity, Calculator, Cpu, X } from "lucide-react";
 import { useMemo } from "react";
+import { useISSTLEDB } from "@/hooks/iss/useISSDataDB";
 import { terminalAudio } from "@/lib/iss/audio";
 import { calculateOrbitalParameters } from "@/lib/iss/orbital";
 import type { OrbitalSolverProps } from "@/lib/iss/types";
@@ -36,7 +37,10 @@ const SolverRow = ({ label, value, unit, desc }: SolverRowProps) => (
 /**
  * OrbitalSolver - Modal displaying Keplerian orbital elements
  */
-export const OrbitalSolver = ({ tle, onClose }: OrbitalSolverProps) => {
+export const OrbitalSolver = ({ onClose }: OrbitalSolverProps) => {
+	// Fetch TLE data from DB collection
+	const { data: tle } = useISSTLEDB();
+
 	const params = useMemo(() => {
 		if (!tle || tle.length !== 2) return null;
 		return calculateOrbitalParameters(tle[0], tle[1]);

@@ -1,7 +1,7 @@
 import { Activity, Clock, Globe, Navigation, Radio, Zap } from "lucide-react";
 import { useEffect } from "react";
+import { useISSPositionDB } from "@/hooks/iss/useISSDataDB";
 import { terminalAudio } from "@/lib/iss/audio";
-import type { StatsPanelProps } from "@/lib/iss/types";
 import { formatCoordinate } from "@/lib/iss/types";
 import { MatrixText } from "./MatrixText";
 
@@ -49,9 +49,13 @@ const StatBox = ({
 
 /**
  * StatsPanel - Responsive telemetry display panel showing ISS position data
+ * Uses TanStack DB live query to reactively display position data from collection
  * Shows more data on larger screens
  */
-export const StatsPanel = ({ data, isLoading, fromCache }: StatsPanelProps) => {
+export const StatsPanel = () => {
+	// Fetch ISS position from TanStack DB collection
+	const { data, isLoading, fromCache, error } = useISSPositionDB();
+
 	// Play sound when data updates
 	useEffect(() => {
 		if (data) {
@@ -59,6 +63,21 @@ export const StatsPanel = ({ data, isLoading, fromCache }: StatsPanelProps) => {
 		}
 	}, [data]);
 
+	// Error state
+	if (error) {
+		return (
+			<div className="h-full w-full flex items-center justify-center p-2">
+				<div className="text-center">
+					<p className="text-sm text-matrix-alert">SIGNAL_LOST</p>
+					<p className="text-[10px] text-matrix-dim mt-1">
+						ERROR: {error.message}
+					</p>
+				</div>
+			</div>
+		);
+	}
+
+	// Loading state
 	if (isLoading || !data) {
 		return (
 			<div className="h-full w-full flex items-center justify-center p-2">

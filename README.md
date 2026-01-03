@@ -132,6 +132,60 @@ The `<TanStackRouterDevtools />` component is not required so you can remove it 
 More information on layouts can be found in the [Layouts documentation](https://tanstack.com/router/latest/docs/framework/react/guide/routing-concepts#layouts).
 
 
+## Data Layer Architecture
+
+This application uses **TanStack DB** with **Dexie adapter** for a unified, reactive, and offline-first data layer. This provides:
+
+- ✅ **Reactive updates** - Components automatically re-render when data changes
+- ✅ **Offline-first** - All data persists to IndexedDB for instant loads
+- ✅ **Cross-tab sync** - Data changes sync across browser tabs
+- ✅ **Type-safe** - Full TypeScript support with Zod schema validation
+
+### Quick Example
+
+```tsx
+import { useISSPositionDB } from "@/hooks/iss/useISSDataDB";
+
+function StatsPanel() {
+  const { data: position, isLoading, error } = useISSPositionDB();
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+
+  return (
+    <div>
+      <p>Latitude: {position.latitude}°</p>
+      <p>Longitude: {position.longitude}°</p>
+    </div>
+  );
+}
+```
+
+### Architecture Overview
+
+The data layer consists of:
+
+1. **Collections** - TanStack DB collections with Dexie persistence (positions, crew, TLE, briefings)
+2. **Sync Handlers** - Background API fetching at configured intervals (5s for positions, 1h for crew/TLE)
+3. **Live Query Hooks** - Reactive hooks that automatically update when data changes
+4. **Sync Manager** - Coordinates all sync handlers with lifecycle management
+
+### Documentation
+
+For comprehensive documentation on the data layer architecture, patterns, and best practices, see:
+
+📖 **[Data Layer Documentation](./docs/data-layer.md)**
+
+Topics covered:
+- Collections reference and schemas
+- Sync handlers and background updates
+- Live query hooks and reactive patterns
+- Mutation helpers for data updates
+- Utilities (cleanup, gap filling, validation)
+- Performance characteristics and benchmarks
+- Migration guide from legacy code
+- Best practices and troubleshooting
+
 ## Data Fetching
 
 There are multiple ways to fetch data in your application. You can use TanStack Query to fetch data from a server. But you can also use the `loader` functionality built into TanStack Router to load the data for a route before it's rendered.

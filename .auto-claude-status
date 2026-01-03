@@ -1,25 +1,25 @@
 {
   "active": true,
-  "spec": "001-we-have-a-bug-where-locally-we-can-run-our-co-pilo",
-  "state": "building",
+  "spec": "003-tanstack-db-migration",
+  "state": "complete",
   "subtasks": {
-    "completed": 13,
-    "total": 14,
-    "in_progress": 1,
+    "completed": 34,
+    "total": 34,
+    "in_progress": 0,
     "failed": 0
   },
   "phase": {
-    "current": "Harden and Verify",
+    "current": "Testing & Documentation",
     "id": null,
-    "total": 4
+    "total": 3
   },
   "workers": {
     "active": 0,
     "max": 1
   },
   "session": {
-    "number": 12,
-    "started_at": "2026-01-02T11:46:53.656540"
+    "number": 34,
+    "started_at": "2026-01-02T20:50:35.728324"
   },
-  "last_update": "2026-01-02T12:23:32.519301"
+  "last_update": "2026-01-02T22:27:33.299552"
 }

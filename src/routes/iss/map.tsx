@@ -1,10 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
+import { useISSPositionDB, useISSTLEDB } from "@/hooks/iss/useISSDataDB";
 import { useLocation } from "@/hooks/useLocation";
 import { useNextPass } from "@/hooks/useNextPass";
 import { calculateOrbitPath } from "@/lib/iss/orbital";
-import { issQueries } from "@/lib/iss/queries";
 import { FlyoverControl } from "./-components/FlyoverControl";
 import { ISSLayout } from "./-components/ISSLayout";
 import { StatsPanel } from "./-components/StatsPanel";
@@ -126,8 +125,8 @@ const createSafePathSegments = (points: { lat: number; lng: number }[]) => {
 };
 
 function MapView() {
-	const { data, isLoading } = useQuery(issQueries.currentPosition());
-	const { data: tleData } = useQuery(issQueries.tle());
+	const { data } = useISSPositionDB();
+	const { data: tleData } = useISSTLEDB();
 	const { coordinates: userLocation } = useLocation();
 	const { nextPass } = useNextPass();
 	const [mapError, setMapError] = useState(false);
@@ -380,7 +379,7 @@ function MapView() {
 
 			{/* Stats Panel */}
 			<div className="w-full md:w-56 lg:w-72 xl:w-80 flex-none h-[35vh] md:h-auto border-t md:border-t-0 border-matrix-dim overflow-y-auto custom-scrollbar">
-				<StatsPanel data={data} isLoading={isLoading} />
+				<StatsPanel />
 			</div>
 		</div>
 	);

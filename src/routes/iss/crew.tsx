@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useISSCrew } from "@/hooks/iss/useISSData";
+import { useISSCrewDB } from "@/hooks/iss/useISSDataDB";
 import { CrewCard } from "./-components/CrewCard";
 import { ISSLayout } from "./-components/ISSLayout";
 
@@ -60,7 +60,7 @@ function CrewPage() {
 }
 
 function CrewManifest() {
-	const { data: crew, isLoading, error } = useISSCrew();
+	const { data: crew, isLoading, error } = useISSCrewDB();
 	const isError = !!error;
 
 	const crewCount = crew?.length || 0;

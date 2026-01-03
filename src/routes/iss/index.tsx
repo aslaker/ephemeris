@@ -2,12 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Calculator, Minimize, RotateCw } from "lucide-react";
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import type { GlobeMethods } from "react-globe.gl";
-import {
-	useISSPosition,
-	useISSTLE,
-	useStorageCleanup,
-	useWindowFocusRefetch,
-} from "@/hooks/iss/useISSData";
+import { useISSPositionDB, useISSTLEDB } from "@/hooks/iss/useISSDataDB";
 import { useLocation } from "@/hooks/useLocation";
 import { useNextPass } from "@/hooks/useNextPass";
 import { terminalAudio } from "@/lib/iss/audio";
@@ -105,16 +100,12 @@ function ISSTracker() {
 	const { coordinates: userLocation } = useLocation();
 	const { nextPass } = useNextPass();
 
-	// Live ISS Position with cache-first loading
-	const { data, isLoading, error, fromCache } = useISSPosition();
+	// Live ISS Position from TanStack DB collection
+	const { data, isLoading, error } = useISSPositionDB();
 	const isError = !!error;
 
-	// TLE Data for orbital path calculations with cache-first loading
-	const { data: tleData } = useISSTLE();
-
-	// Initialize storage cleanup scheduler and window focus refetch
-	useStorageCleanup();
-	useWindowFocusRefetch();
+	// TLE Data for orbital path calculations from TanStack DB collection
+	const { data: tleData } = useISSTLEDB();
 
 	// Handle window resize with delayed initial measurement
 	useEffect(() => {
@@ -326,7 +317,6 @@ function ISSTracker() {
 				{/* Orbital Solver Modal */}
 				{showOrbitalSolver && (
 					<OrbitalSolver
-						tle={tleData ?? undefined}
 						onClose={() => {
 							terminalAudio.playClick();
 							setShowOrbitalSolver(false);
@@ -427,7 +417,7 @@ function ISSTracker() {
 
 			{/* Stats Panel Sidebar */}
 			<div className="w-full md:w-56 lg:w-72 xl:w-80 flex-none flex flex-col h-[35vh] md:h-auto border-t md:border-t-0 border-matrix-dim overflow-y-auto custom-scrollbar bg-matrix-bg">
-				<StatsPanel data={data} isLoading={isLoading} fromCache={fromCache} />
+				<StatsPanel />
 			</div>
 		</div>
 	);

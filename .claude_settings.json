@@ -11,24 +11,19 @@
       "Edit(./**)",
       "Glob(./**)",
       "Grep(./**)",
-      "Read(/Users/adamslaker/projects/personal/ephemeris/**)",
-      "Write(/Users/adamslaker/projects/personal/ephemeris/**)",
-      "Edit(/Users/adamslaker/projects/personal/ephemeris/**)",
-      "Glob(/Users/adamslaker/projects/personal/ephemeris/**)",
-      "Grep(/Users/adamslaker/projects/personal/ephemeris/**)",
-      "Read(/Users/adamslaker/projects/personal/ephemeris/.auto-claude/roadmap/**)",
-      "Write(/Users/adamslaker/projects/personal/ephemeris/.auto-claude/roadmap/**)",
-      "Edit(/Users/adamslaker/projects/personal/ephemeris/.auto-claude/roadmap/**)",
+      "Read(/Users/adamslaker/projects/personal/ephemeris/.worktrees/003-tanstack-db-migration/**)",
+      "Write(/Users/adamslaker/projects/personal/ephemeris/.worktrees/003-tanstack-db-migration/**)",
+      "Edit(/Users/adamslaker/projects/personal/ephemeris/.worktrees/003-tanstack-db-migration/**)",
+      "Glob(/Users/adamslaker/projects/personal/ephemeris/.worktrees/003-tanstack-db-migration/**)",
+      "Grep(/Users/adamslaker/projects/personal/ephemeris/.worktrees/003-tanstack-db-migration/**)",
+      "Read(/Users/adamslaker/projects/personal/ephemeris/.worktrees/003-tanstack-db-migration/.auto-claude/specs/003-tanstack-db-migration/**)",
+      "Write(/Users/adamslaker/projects/personal/ephemeris/.worktrees/003-tanstack-db-migration/.auto-claude/specs/003-tanstack-db-migration/**)",
+      "Edit(/Users/adamslaker/projects/personal/ephemeris/.worktrees/003-tanstack-db-migration/.auto-claude/specs/003-tanstack-db-migration/**)",
       "Bash(*)",
       "WebFetch(*)",
       "WebSearch(*)",
       "mcp__context7__resolve-library-id(*)",
-      "mcp__context7__get-library-docs(*)",
-      "mcp__graphiti-memory__search_nodes(*)",
-      "mcp__graphiti-memory__search_facts(*)",
-      "mcp__graphiti-memory__add_episode(*)",
-      "mcp__graphiti-memory__get_episodes(*)",
-      "mcp__graphiti-memory__get_entity_edge(*)"
+      "mcp__context7__get-library-docs(*)"
     ]
   }
 }

@@ -1,13 +1,30 @@
 /**
  * Database Collections Index
  *
- * This file previously contained demo TanStack DB collections.
- * Demo code has been removed as part of the ISS storage implementation.
+ * Central re-export for all TanStack DB collections.
+ * This provides a unified entry point for application-wide data storage.
  *
- * For ISS data persistence, see:
- * - src/lib/iss/db.ts - Dexie database setup
- * - src/lib/iss/storage.ts - Storage utilities
+ * Collections are organized by feature:
+ * - ISS collections: src/lib/iss/collections/
+ * - Briefing collections: src/lib/briefing/collections.ts
  */
 
-// Placeholder export to maintain module structure
-export {};
+// =============================================================================
+// ISS COLLECTIONS
+// =============================================================================
+
+export {
+	briefingsCollection,
+	crewCollection,
+	// Types
+	type ISSPosition,
+	// Schemas
+	ISSPositionSchema,
+	// Collections
+	positionsCollection,
+	type StoredAstronaut,
+	StoredAstronautSchema,
+	type StoredTLE,
+	StoredTLESchema,
+	tleCollection,
+} from "../lib/iss/collections";

@@ -67,4 +67,3 @@ export function useNextPass() {
 		hasLocation: coordinates !== null,
 	};
 }
-

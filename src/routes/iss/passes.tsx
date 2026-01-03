@@ -78,4 +78,3 @@ function PassesPage() {
 		</ISSLayout>
 	);
 }
-

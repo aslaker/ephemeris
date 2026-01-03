@@ -165,7 +165,7 @@ export const ConversationContextSchema = z.object({
 
 export const ChatRequestSchema = z.object({
   message: z.string().min(1).max(1000),
-  conversationContext: ConversationContextSchema,
+  conversationContext: ConversationContextSchema.default({ messages: [] }),
   location: LatLngSchema.optional(),
   conversationId: z.string().optional(),
 });

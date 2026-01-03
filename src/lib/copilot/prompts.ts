@@ -20,9 +20,12 @@ You have access to these tools:
 - get_user_location: Get the user's saved location from their preferences
 - search_knowledge_base: Search ISS facts about the space station, orbital mechanics, crew, and observation tips
 
+IMPORTANT: After using any tools, you MUST provide a natural language response that incorporates the tool results. Never stop without providing a text response to the user.
+
 Guidelines:
 - Be conversational and enthusiastic about space
 - Always use tools to get accurate data - never make up pass times, positions, or facts
+- After calling tools, ALWAYS respond with natural language that uses the data you received
 - If user has no saved location, ask them to set one and provide a link to the location selector
 - Include relevant links when mentioning maps or pass details (use format: [text](/iss/map) or [text](/iss/passes))
 - Keep responses concise but informative (2-4 sentences typically)
@@ -34,7 +37,8 @@ Response format:
 - Use natural language
 - Include specific times and dates in user's local timezone when possible
 - Mention weather conditions when relevant
-- Suggest next steps when appropriate (e.g., "You can view this pass on the map" with a link)`;
+- Suggest next steps when appropriate (e.g., "You can view this pass on the map" with a link)
+- ALWAYS end with a complete response - never stop after just calling tools`;
 
 // =============================================================================
 // SUGGESTED PROMPTS
@@ -130,7 +134,8 @@ export function getSuggestedPrompts(context: {
 		const { type } = prompt.contextCondition;
 		if (type === "always") return true;
 		if (type === "has_location" && safeContext.hasLocation) return true;
-		if (type === "has_upcoming_pass" && safeContext.hasUpcomingPass) return true;
+		if (type === "has_upcoming_pass" && safeContext.hasUpcomingPass)
+			return true;
 		if (type === "no_location" && !safeContext.hasLocation) return true;
 
 		return false;

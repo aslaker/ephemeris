@@ -32,7 +32,15 @@ export function searchKnowledgeBase(params: {
 		let score = 0;
 
 		// Defensive check for entry properties
-		if (!entry) return { ...entry, relevanceScore: 0 };
+		if (!entry)
+			return {
+				id: "",
+				title: "",
+				content: "",
+				category: "specifications" as const,
+				keywords: [],
+				relevanceScore: 0,
+			};
 
 		// Check title match (highest weight)
 		if (entry.title?.toLowerCase().includes(queryLower)) {

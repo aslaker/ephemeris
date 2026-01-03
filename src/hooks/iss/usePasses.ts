@@ -70,4 +70,3 @@ export function usePasses(options: UsePassesOptions = {}) {
 		hasLocation: coordinates !== null,
 	};
 }
-

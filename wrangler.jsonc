@@ -1,6 +1,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "ephemeris",
+  "account_id": "fd0959ad036db90872d816e677309cbe",
   "compatibility_date": "2025-12-10",
   "compatibility_flags": ["nodejs_compat"],
   "main": "src/server-entry.ts",

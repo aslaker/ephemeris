@@ -167,4 +167,3 @@ export class BriefingErrorBoundary extends Component<
 		return this.props.children;
 	}
 }
-

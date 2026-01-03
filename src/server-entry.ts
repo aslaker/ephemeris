@@ -9,7 +9,7 @@ const handler = createStartHandler(defaultStreamHandler);
 export { CopilotAgent };
 
 export default {
-	async fetch(request: Request, env: any, ctx: any) {
-		return await (handler as any)(request, env, ctx);
+	async fetch(request: Request, env: Cloudflare.Env, ctx: ExecutionContext) {
+		return await handler(request, env, ctx);
 	},
 };

@@ -6,7 +6,10 @@ import type { AIConfig } from "../../../specs/008-tanstack-ai-migration/contract
  * @see FR-004: Unified AI configuration across features
  */
 export const AI_CONFIG: AIConfig = {
-	modelId: "@cf/meta/llama-3.1-8b-instruct",
+	// Use Hermes 2 Pro - specifically fine-tuned for function calling
+	// This is the model Cloudflare recommends for function calling in their docs
+	// See: https://developers.cloudflare.com/workers-ai/features/function-calling/
+	modelId: "@hf/nousresearch/hermes-2-pro-mistral-7b",
 	maxIterations: 5,
 	timeoutMs: 30000,
 	retry: {

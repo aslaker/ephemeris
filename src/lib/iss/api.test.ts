@@ -5,7 +5,7 @@
  * to prevent runtime errors like "Cannot read properties of undefined (reading 'filter')"
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 // Mock Sentry before importing the module under test
 vi.mock("@sentry/tanstackstart-react", () => ({
@@ -14,20 +14,29 @@ vi.mock("@sentry/tanstackstart-react", () => ({
 }));
 
 // Mock the server function factory to return a controllable mock
-const mockFetchCrewFromApi = vi.fn();
+// Use factory function to avoid hoisting issues
 
-vi.mock("@tanstack/react-start", () => ({
-	createServerFn: () => ({
-		handler: () => mockFetchCrewFromApi,
-	}),
-}));
+vi.mock("@tanstack/react-start", () => {
+	const mock = vi.fn();
+	return {
+		createServerFn: () => ({
+			handler: () => mock,
+		}),
+		__mockFn: mock,
+	};
+});
 
+import * as ReactStart from "@tanstack/react-start";
 // Import after mocks are set up
 import { fetchCrewData } from "./api";
+
+// Get reference to the mock function
+const getMockFn = () => (ReactStart as any).__mockFn;
 
 describe("fetchCrewData", () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
+		getMockFn().mockReset();
 	});
 
 	afterEach(() => {
@@ -36,7 +45,7 @@ describe("fetchCrewData", () => {
 
 	describe("defensive null/undefined handling", () => {
 		it("should handle undefined API response gracefully", async () => {
-			mockFetchCrewFromApi.mockResolvedValue(undefined);
+			getMockFn().mockResolvedValue(undefined);
 
 			const result = await fetchCrewData();
 
@@ -44,7 +53,7 @@ describe("fetchCrewData", () => {
 		});
 
 		it("should handle null API response gracefully", async () => {
-			mockFetchCrewFromApi.mockResolvedValue(null);
+			getMockFn().mockResolvedValue(null);
 
 			const result = await fetchCrewData();
 
@@ -52,7 +61,7 @@ describe("fetchCrewData", () => {
 		});
 
 		it("should handle response with undefined people array", async () => {
-			mockFetchCrewFromApi.mockResolvedValue({
+			getMockFn().mockResolvedValue({
 				message: "success",
 				number: 0,
 				people: undefined,
@@ -64,7 +73,7 @@ describe("fetchCrewData", () => {
 		});
 
 		it("should handle response with null people array", async () => {
-			mockFetchCrewFromApi.mockResolvedValue({
+			getMockFn().mockResolvedValue({
 				message: "success",
 				number: 0,
 				people: null,
@@ -76,7 +85,7 @@ describe("fetchCrewData", () => {
 		});
 
 		it("should handle response with empty people array", async () => {
-			mockFetchCrewFromApi.mockResolvedValue({
+			getMockFn().mockResolvedValue({
 				message: "success",
 				number: 0,
 				people: [],
@@ -88,7 +97,7 @@ describe("fetchCrewData", () => {
 		});
 
 		it("should handle response missing people property entirely", async () => {
-			mockFetchCrewFromApi.mockResolvedValue({
+			getMockFn().mockResolvedValue({
 				message: "success",
 				number: 0,
 			});
@@ -101,7 +110,7 @@ describe("fetchCrewData", () => {
 
 	describe("filtering ISS crew", () => {
 		it("should filter only ISS crew members from mixed spacecraft", async () => {
-			mockFetchCrewFromApi.mockResolvedValue({
+			getMockFn().mockResolvedValue({
 				message: "success",
 				number: 3,
 				people: [
@@ -118,7 +127,7 @@ describe("fetchCrewData", () => {
 		});
 
 		it("should return empty array when no ISS crew present", async () => {
-			mockFetchCrewFromApi.mockResolvedValue({
+			getMockFn().mockResolvedValue({
 				message: "success",
 				number: 2,
 				people: [
@@ -135,7 +144,7 @@ describe("fetchCrewData", () => {
 
 	describe("astronaut enrichment", () => {
 		it("should enrich astronaut data with id and default values", async () => {
-			mockFetchCrewFromApi.mockResolvedValue({
+			getMockFn().mockResolvedValue({
 				message: "success",
 				number: 1,
 				people: [{ name: "Test Astronaut", craft: "ISS" }],
@@ -154,7 +163,7 @@ describe("fetchCrewData", () => {
 		});
 
 		it("should generate correct id from astronaut name with special characters", async () => {
-			mockFetchCrewFromApi.mockResolvedValue({
+			getMockFn().mockResolvedValue({
 				message: "success",
 				number: 1,
 				people: [{ name: "Dr. Jane O'Connor-Smith III", craft: "ISS" }],
@@ -171,14 +180,14 @@ describe("fetchCrewData", () => {
 	describe("error propagation", () => {
 		it("should propagate API errors to caller", async () => {
 			const apiError = new Error("Network error");
-			mockFetchCrewFromApi.mockRejectedValue(apiError);
+			getMockFn().mockRejectedValue(apiError);
 
 			await expect(fetchCrewData()).rejects.toThrow("Network error");
 		});
 
 		it("should propagate timeout errors to caller", async () => {
 			const timeoutError = new Error("Request timeout");
-			mockFetchCrewFromApi.mockRejectedValue(timeoutError);
+			getMockFn().mockRejectedValue(timeoutError);
 
 			await expect(fetchCrewData()).rejects.toThrow("Request timeout");
 		});

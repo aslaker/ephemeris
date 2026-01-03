@@ -9,8 +9,9 @@ import {
 	Volume2,
 	VolumeX,
 } from "lucide-react";
-import { type ReactNode, useState } from "react";
+import { type ReactNode, useEffect, useState } from "react";
 import { terminalAudio } from "@/lib/iss/audio";
+import { getDefaultSyncManager } from "@/lib/iss/sync";
 import { ScanlineOverlay } from "./ScanlineOverlay";
 
 // =============================================================================
@@ -26,6 +27,12 @@ interface ISSLayoutProps {
  *
  * Location state has been moved to TanStack Store (@/lib/location/store.ts)
  * Components should use useLocation and useNextPass hooks directly.
+ *
+ * Initializes the TanStack DB sync manager for background data synchronization:
+ * - Position data syncs every 5 seconds
+ * - Crew data syncs every 1 hour
+ * - TLE data syncs every 1 hour
+ * - Automatically pauses when tab is hidden to save resources
  */
 export const ISSLayout = ({ children }: ISSLayoutProps) => {
 	// Current route location for active link styling
@@ -36,6 +43,17 @@ export const ISSLayout = ({ children }: ISSLayoutProps) => {
 
 	// Error boundary state
 	const [hasError, setHasError] = useState(false);
+
+	// Initialize sync manager for background data synchronization
+	useEffect(() => {
+		const syncManager = getDefaultSyncManager();
+		syncManager.start();
+
+		// Cleanup on unmount
+		return () => {
+			syncManager.stop();
+		};
+	}, []);
 
 	const toggleMute = () => {
 		const newMuted = terminalAudio.toggleMute();

@@ -427,7 +427,7 @@ function ISSTracker() {
 
 			{/* Stats Panel Sidebar */}
 			<div className="w-full md:w-56 lg:w-72 xl:w-80 flex-none flex flex-col h-[35vh] md:h-auto border-t md:border-t-0 border-matrix-dim overflow-y-auto custom-scrollbar bg-matrix-bg">
-				<StatsPanel data={data} isLoading={isLoading} fromCache={fromCache} />
+				<StatsPanel />
 			</div>
 		</div>
 	);

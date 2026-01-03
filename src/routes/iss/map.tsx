@@ -125,7 +125,7 @@ const createSafePathSegments = (points: { lat: number; lng: number }[]) => {
 };
 
 function MapView() {
-	const { data, isLoading } = useISSPositionDB();
+	const { data } = useISSPositionDB();
 	const { data: tleData } = useISSTLEDB();
 	const { coordinates: userLocation } = useLocation();
 	const { nextPass } = useNextPass();

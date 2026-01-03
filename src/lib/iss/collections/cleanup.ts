@@ -7,6 +7,7 @@
 
 import { positionsCollection } from "./positions";
 import { tleCollection } from "./tle";
+import type { StoredTLE } from "./validation";
 
 // =============================================================================
 // RETENTION POLICY CONFIGURATION
@@ -91,7 +92,7 @@ export async function cleanupOldTle(): Promise<number> {
 
 	// Delete oldest records, keep only the most recent
 	const toDelete = allTle.slice(0, allTle.length - TLE_RETENTION.maxRecords);
-	const deleteIds = toDelete.map((tle) => tle.id);
+	const deleteIds = toDelete.map((tle: StoredTLE) => tle.id);
 
 	// Use Dexie bulkDelete for efficient batch deletion
 	await table.bulkDelete(deleteIds);

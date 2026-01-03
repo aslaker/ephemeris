@@ -120,42 +120,34 @@ export function fillGapWithOrbital(gap: GapInfo, tle: TLEData): ISSPosition[] {
 		return [];
 	}
 
-	// Generate array of specific timestamps within the gap
-	const timestamps: number[] = [];
-	for (
-		let t = gap.startTimestamp;
-		t <= gap.endTimestamp;
-		t += GAP_FILLING_CONFIG.syntheticStepSeconds
-	) {
-		timestamps.push(t);
-	}
-
 	// Calculate current time once for consistent offset calculation
 	const now = Date.now();
 	const [line1, line2] = tle;
 
-	// Calculate orbital positions at each specific timestamp
-	const syntheticPositions: ISSPosition[] = [];
-	for (const timestamp of timestamps) {
-		// Calculate minute offset from now for this specific timestamp
-		const offsetMins = (timestamp * 1000 - now) / (1000 * 60);
+	// Calculate minute offsets for start and end of gap
+	const startOffsetMins = (gap.startTimestamp * 1000 - now) / (1000 * 60);
+	const endOffsetMins = (gap.endTimestamp * 1000 - now) / (1000 * 60);
+	const stepMins = GAP_FILLING_CONFIG.syntheticStepSeconds / 60;
 
-		// Get orbital position at this exact time
-		const orbitalPoints = calculateOrbitPath(line1, line2, offsetMins, offsetMins, 1);
+	// Batch calculate all orbital positions for the gap in a single call
+	// This is much more efficient than calling calculateOrbitPath once per timestamp
+	const orbitalPoints = calculateOrbitPath(line1, line2, startOffsetMins, endOffsetMins, stepMins);
 
-		if (orbitalPoints.length > 0) {
-			const point = orbitalPoints[0];
-			syntheticPositions.push({
-				id: `synthetic-${timestamp}`,
-				latitude: point.lat,
-				longitude: point.lng,
-				altitude: point.alt,
-				timestamp: timestamp, // Use the exact timestamp we calculated for
-				velocity: 27600, // Average ISS velocity
-				visibility: "synthetic",
-			});
-		}
-	}
+	// Map orbital points to synthetic positions with correct timestamps
+	const syntheticPositions: ISSPosition[] = orbitalPoints.map((point, idx) => {
+		// Calculate the exact timestamp for this orbital point
+		const timestamp = gap.startTimestamp + idx * GAP_FILLING_CONFIG.syntheticStepSeconds;
+
+		return {
+			id: `synthetic-${timestamp}`,
+			latitude: point.lat,
+			longitude: point.lng,
+			altitude: point.alt,
+			timestamp: timestamp,
+			velocity: 27600, // Average ISS velocity
+			visibility: "synthetic",
+		};
+	});
 
 	return syntheticPositions;
 }
@@ -188,7 +180,7 @@ export async function fillGapsInRange(
 		.toArray();
 
 	// Sort by timestamp
-	positions.sort((a, b) => a.timestamp - b.timestamp);
+	positions.sort((a: ISSPosition, b: ISSPosition) => a.timestamp - b.timestamp);
 
 	const gaps = detectGaps(positions);
 	const largeGaps = gaps.filter((g) => g.useOrbitalCalculation);

@@ -7,6 +7,8 @@
 
 import { fetchISSPosition } from "@/lib/iss/api";
 import { positionsCollection } from "@/lib/iss/collections/positions";
+import type { SyncResult } from "./types";
+import { createSyncSuccess, createSyncError } from "./types";
 
 // =============================================================================
 // SYNC CONFIGURATION
@@ -19,26 +21,19 @@ import { positionsCollection } from "@/lib/iss/collections/positions";
 export const DEFAULT_POSITION_SYNC_INTERVAL = 5000;
 
 // =============================================================================
-// SYNC RESULT TYPES
+// SYNC RESULT TYPE
 // =============================================================================
 
-interface SyncSuccess {
-	success: true;
-	timestamp: number;
-	position: {
-		latitude: number;
-		longitude: number;
-		altitude: number;
-	};
+/**
+ * Position sync result payload
+ */
+interface PositionSyncData {
+	latitude: number;
+	longitude: number;
+	altitude: number;
 }
 
-interface SyncError {
-	success: false;
-	error: Error;
-	timestamp: number;
-}
-
-type SyncResult = SyncSuccess | SyncError;
+type PositionSyncResult = SyncResult<PositionSyncData>;
 
 // =============================================================================
 // SYNC HANDLER
@@ -52,28 +47,22 @@ type SyncResult = SyncSuccess | SyncError;
  *
  * @returns Promise resolving to sync result with success status
  */
-export async function syncPosition(): Promise<SyncResult> {
+export async function syncPosition(): Promise<PositionSyncResult> {
 	try {
 		const position = await fetchISSPosition();
 
 		// Insert into collection (triggers useLiveQuery updates)
 		await positionsCollection.insert(position);
 
-		return {
-			success: true,
-			timestamp: Date.now(),
-			position: {
-				latitude: position.latitude,
-				longitude: position.longitude,
-				altitude: position.altitude,
-			},
-		};
+		return createSyncSuccess({
+			latitude: position.latitude,
+			longitude: position.longitude,
+			altitude: position.altitude,
+		});
 	} catch (error) {
-		return {
-			success: false,
-			error: error instanceof Error ? error : new Error(String(error)),
-			timestamp: Date.now(),
-		};
+		return createSyncError(
+			error instanceof Error ? error : new Error(String(error)),
+		);
 	}
 }
 

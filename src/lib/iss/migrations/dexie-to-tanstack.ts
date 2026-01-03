@@ -507,11 +507,39 @@ export async function runMigration(): Promise<MigrationResult> {
 		if (!isSuccessful) {
 			result.error = `Migration failed: only ${successRate.toFixed(1)}% of data migrated (${totalInserted}/${totalRead} records)`;
 			console.error("[Migration] Failed:", result.error);
+
+			// Log detailed breakdown of failed records by data type for debugging
+			console.error("[Migration] Failed records breakdown:");
+			if (positionsResult.invalidRecords > 0) {
+				console.error(`  - Positions: ${positionsResult.invalidRecords} failed`, positionsResult.errors);
+			}
+			if (crewResult.invalidRecords > 0) {
+				console.error(`  - Crew: ${crewResult.invalidRecords} failed`, crewResult.errors);
+			}
+			if (tleResult.invalidRecords > 0) {
+				console.error(`  - TLE: ${tleResult.invalidRecords} failed`, tleResult.errors);
+			}
+			if (briefingsResult.invalidRecords > 0) {
+				console.error(`  - Briefings: ${briefingsResult.invalidRecords} failed`, briefingsResult.errors);
+			}
+
 			markMigrationFailed(result.error);
 		} else if (allErrors.length > 0) {
-			// Migration successful overall, but log validation errors
+			// Migration successful overall, but log validation errors for debugging
 			result.error = `Migration completed with ${allErrors.length} validation errors (${successRate.toFixed(1)}% success rate)`;
-			console.warn("[Migration] Completed with warnings:", allErrors);
+			console.warn("[Migration] Completed with warnings - validation errors by type:");
+			if (positionsResult.errors && positionsResult.errors.length > 0) {
+				console.warn(`  - Positions (${positionsResult.invalidRecords} failed):`, positionsResult.errors);
+			}
+			if (crewResult.errors && crewResult.errors.length > 0) {
+				console.warn(`  - Crew (${crewResult.invalidRecords} failed):`, crewResult.errors);
+			}
+			if (tleResult.errors && tleResult.errors.length > 0) {
+				console.warn(`  - TLE (${tleResult.invalidRecords} failed):`, tleResult.errors);
+			}
+			if (briefingsResult.errors && briefingsResult.errors.length > 0) {
+				console.warn(`  - Briefings (${briefingsResult.invalidRecords} failed):`, briefingsResult.errors);
+			}
 
 			// Mark as complete despite warnings since >90% succeeded
 			markMigrationComplete({

@@ -39,7 +39,7 @@ const SolverRow = ({ label, value, unit, desc }: SolverRowProps) => (
  */
 export const OrbitalSolver = ({ onClose }: OrbitalSolverProps) => {
 	// Fetch TLE data from DB collection
-	const { data: tle, isLoading: tleLoading, error: tleError } = useISSTLEDB();
+	const { data: tle } = useISSTLEDB();
 
 	const params = useMemo(() => {
 		if (!tle || tle.length !== 2) return null;

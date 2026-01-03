@@ -7,6 +7,8 @@
 
 import { fetchCrewData } from "@/lib/iss/api";
 import { crewCollection } from "@/lib/iss/collections/crew";
+import type { SyncResult } from "./types";
+import { createSyncSuccess, createSyncError } from "./types";
 
 // =============================================================================
 // SYNC CONFIGURATION
@@ -19,23 +21,18 @@ import { crewCollection } from "@/lib/iss/collections/crew";
 export const DEFAULT_CREW_SYNC_INTERVAL = 3600000; // 1 hour
 
 // =============================================================================
-// SYNC RESULT TYPES
+// SYNC RESULT TYPE
 // =============================================================================
 
-interface SyncSuccess {
-	success: true;
-	timestamp: number;
+/**
+ * Crew sync result payload
+ */
+interface CrewSyncData {
 	crewCount: number;
 	crew: Array<{ id: string; name: string }>;
 }
 
-interface SyncError {
-	success: false;
-	error: Error;
-	timestamp: number;
-}
-
-type SyncResult = SyncSuccess | SyncError;
+type CrewSyncResult = SyncResult<CrewSyncData>;
 
 // =============================================================================
 // SYNC HANDLER
@@ -50,7 +47,7 @@ type SyncResult = SyncSuccess | SyncError;
  *
  * @returns Promise resolving to sync result with success status
  */
-export async function syncCrew(): Promise<SyncResult> {
+export async function syncCrew(): Promise<CrewSyncResult> {
 	try {
 		const crew = await fetchCrewData();
 		const fetchedAt = Date.now();
@@ -64,18 +61,14 @@ export async function syncCrew(): Promise<SyncResult> {
 		// Bulk insert into collection (atomic, efficient batch operation)
 		await crewCollection.utils.bulkInsertLocally(storedCrew);
 
-		return {
-			success: true,
-			timestamp: fetchedAt,
+		return createSyncSuccess({
 			crewCount: crew.length,
 			crew: crew.map((a) => ({ id: a.id, name: a.name })),
-		};
+		});
 	} catch (error) {
-		return {
-			success: false,
-			error: error instanceof Error ? error : new Error(String(error)),
-			timestamp: Date.now(),
-		};
+		return createSyncError(
+			error instanceof Error ? error : new Error(String(error)),
+		);
 	}
 }
 

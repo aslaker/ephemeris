@@ -7,6 +7,8 @@
 
 import { tleCollection } from "@/lib/iss/collections/tle";
 import { generateEntityId } from "@/lib/iss/types";
+import type { SyncResult } from "./types";
+import { createSyncSuccess, createSyncError } from "./types";
 
 // =============================================================================
 // SYNC CONFIGURATION
@@ -28,31 +30,28 @@ const TLE_API_BACKUP = "https://live.ariss.org/iss.txt";
 const PROXY_URL = "https://api.allorigins.win/raw?url=";
 
 // Hardcoded fallback TLE (updated periodically)
+// Last updated: 2026-01-03 (day 003 of 2026)
+// Note: TLE data becomes inaccurate after ~7-14 days. Update this fallback regularly.
 const FALLBACK_TLE = {
 	line1:
-		"1 25544U 98067A   24140.59865741  .00016717  00000+0  30076-3 0  9995",
+		"1 25544U 98067A   26003.21020602  .00015578  00000+0  28954-3 0  9990",
 	line2:
-		"2 25544  51.6396 235.1195 0005470 216.5982 256.4024 15.49818898442371",
+		"2 25544  51.6329  36.1624 0007549 334.7101  25.3517 15.49059586546183",
 };
 
 // =============================================================================
-// SYNC RESULT TYPES
+// SYNC RESULT TYPE
 // =============================================================================
 
-interface SyncSuccess {
-	success: true;
-	timestamp: number;
+/**
+ * TLE sync result payload
+ */
+interface TLESyncData {
 	source: "celestrak" | "ariss" | "fallback";
 	tleId: string;
 }
 
-interface SyncError {
-	success: false;
-	error: Error;
-	timestamp: number;
-}
-
-type SyncResult = SyncSuccess | SyncError;
+type TLESyncResult = SyncResult<TLESyncData>;
 
 // =============================================================================
 // TLE FETCHING WITH SOURCE TRACKING
@@ -116,9 +115,9 @@ const getTLEAge = (line1: string): number => {
 	// Convert to full year (20YY for 00-99)
 	const fullYear = year < 57 ? 2000 + year : 1900 + year;
 
-	// Calculate epoch date
-	const epochDate = new Date(fullYear, 0, 1);
-	epochDate.setDate(dayOfYear);
+	// Calculate epoch date using explicit UTC date calculation
+	// This is more clear than using setDate() which can be confusing
+	const epochDate = new Date(Date.UTC(fullYear, 0, dayOfYear));
 
 	// Calculate age in days
 	const ageMs = Date.now() - epochDate.getTime();
@@ -179,7 +178,7 @@ const fetchTLEWithSource = async (): Promise<{
  *
  * @returns Promise resolving to sync result with success status
  */
-export async function syncTLE(): Promise<SyncResult> {
+export async function syncTLE(): Promise<TLESyncResult> {
 	try {
 		const { line1, line2, source } = await fetchTLEWithSource();
 		const fetchedAt = Date.now();
@@ -196,18 +195,14 @@ export async function syncTLE(): Promise<SyncResult> {
 		// Insert into collection (triggers useLiveQuery updates)
 		await tleCollection.insert(storedTLE);
 
-		return {
-			success: true,
-			timestamp: fetchedAt,
+		return createSyncSuccess({
 			source,
 			tleId: storedTLE.id,
-		};
+		});
 	} catch (error) {
-		return {
-			success: false,
-			error: error instanceof Error ? error : new Error(String(error)),
-			timestamp: Date.now(),
-		};
+		return createSyncError(
+			error instanceof Error ? error : new Error(String(error)),
+		);
 	}
 }
 

@@ -11,7 +11,7 @@
  */
 
 import { useLiveQuery } from "@tanstack/react-db";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { crewCollection } from "@/lib/iss/collections/crew";
 import { positionsCollection } from "@/lib/iss/collections/positions";
 import { tleCollection } from "@/lib/iss/collections/tle";
@@ -270,28 +270,40 @@ export function usePositionHistoryDB(): UsePositionHistoryResult {
 		end: number;
 	} | null>(null);
 
+	// State to hold filtered positions from Dexie query
+	const [positions, setPositions] = useState<ISSPosition[]>([]);
+	const [isLoading, setIsLoading] = useState(false);
+
 	// Query positions in time range using Dexie's efficient indexed range query
-	const query = useLiveQuery(
-		async () => {
-			// Return undefined if no range set (disables query)
-			if (!timeRange) return undefined;
+	useEffect(() => {
+		if (!timeRange) {
+			setPositions([]);
+			return;
+		}
 
-			// Use Dexie's indexed range query for efficient filtering
-			const table = positionsCollection.utils.getTable();
-			const startTimestamp = timeRange.start / 1000;
-			const endTimestamp = timeRange.end / 1000;
+		setIsLoading(true);
 
-			// Efficient indexed query using Dexie's where().between()
-			return await table
-				.where("timestamp")
-				.between(startTimestamp, endTimestamp)
-				.toArray();
-		},
-		[timeRange],
-	);
+		// Use Dexie's indexed range query for efficient filtering
+		const table = positionsCollection.utils.getTable();
+		const startTimestamp = timeRange.start / 1000;
+		const endTimestamp = timeRange.end / 1000;
 
-	// Data is already filtered by the indexed query
-	const filteredPositions = query.data ? (query.data as ISSPosition[]) : [];
+		// Efficient indexed query using Dexie's where().between()
+		// Use inclusive bounds (true, true) to include positions exactly at start/end timestamps
+		table
+			.where("timestamp")
+			.between(startTimestamp, endTimestamp, true, true)
+			.toArray()
+			.then((results: unknown) => {
+				setPositions(results as ISSPosition[]);
+				setIsLoading(false);
+			})
+			.catch((error: unknown) => {
+				console.error("Error querying position history:", error);
+				setPositions([]);
+				setIsLoading(false);
+			});
+	}, [timeRange]);
 
 	// Callback to update time range (triggers query re-run)
 	const fetchRange = useCallback((startMs: number, endMs: number) => {
@@ -300,13 +312,11 @@ export function usePositionHistoryDB(): UsePositionHistoryResult {
 
 	return {
 		// Return filtered positions by time range
-		positions: filteredPositions,
-		// isLoading is true until first data is ready (or false if query disabled)
-		isLoading: query.isLoading,
-		// Convert isError boolean to Error | null
-		error: query.isError
-			? new Error("Failed to query position history from collection")
-			: null,
+		positions,
+		// isLoading is true while query is running
+		isLoading,
+		// No error handling in this implementation
+		error: null,
 		// Provide range query function
 		fetchRange,
 	};

@@ -101,7 +101,7 @@ function ISSTracker() {
 	const { nextPass } = useNextPass();
 
 	// Live ISS Position from TanStack DB collection
-	const { data, isLoading, error, fromCache } = useISSPositionDB();
+	const { data, isLoading, error } = useISSPositionDB();
 	const isError = !!error;
 
 	// TLE Data for orbital path calculations from TanStack DB collection

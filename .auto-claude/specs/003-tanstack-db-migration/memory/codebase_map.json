@@ -1,0 +1,15 @@
+{
+  "discovered_files": {
+    "package.json": {
+      "description": "Added npm overrides to force all TanStack DB packages to use version 0.5.12, resolving version conflicts between @tanstack/react-db, @tanstack/query-db-collection, and tanstack-dexie-db-collection",
+      "category": "dependency-management",
+      "discovered_at": "2026-01-03T02:58:21.918567+00:00"
+    },
+    "src/lib/iss/collections/positions.ts": {
+      "description": "Created ISS positions collection using tanstack-dexie-db-collection with Zod schema validation. Collection uses lazy initialization pattern compatible with Cloudflare Workers and persists to IndexedDB table 'positions' in database 'ephemeris-iss'",
+      "category": "data-layer",
+      "discovered_at": "2026-01-03T02:58:21.938247+00:00"
+    }
+  },
+  "last_updated": "2026-01-03T02:58:21.938251+00:00"
+}

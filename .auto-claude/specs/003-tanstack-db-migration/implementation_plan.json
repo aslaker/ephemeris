@@ -1,0 +1,897 @@
+{
+  "feature": "TanStack DB Migration",
+  "description": "Migrate from the current TanStack Query + Dexie combination to unified TanStack DB collections for reactive, consistent data management. This simplifies the data layer and enables more powerful offline-first patterns.",
+  "created_at": "2026-01-02T20:45:33.714Z",
+  "updated_at": "2026-01-03T02:50:34.909Z",
+  "status": "in_progress",
+  "planStatus": "in_progress",
+  "phases": [
+    {
+      "id": "phase-1",
+      "name": "Foundation - TanStack DB Collection Infrastructure",
+      "description": "Set up TanStack DB collections with Dexie adapter for IndexedDB persistence",
+      "status": "pending",
+      "subtasks": [
+        {
+          "id": "1.1",
+          "title": "Research TanStack DB collection patterns",
+          "description": "Research TanStack DB collection API, Dexie adapter configuration, and live query patterns using Context7 documentation",
+          "status": "completed",
+          "priority": "high",
+          "estimated_effort": "1 hour",
+          "files_to_create": [],
+          "files_to_modify": [],
+          "dependencies": [],
+          "acceptance_criteria": [
+            "Document collection creation patterns",
+            "Document Dexie adapter configuration",
+            "Document useLiveQuery hook patterns",
+            "Document sync handler patterns for API data"
+          ],
+          "notes": "Research completed and documented in research.md. All acceptance criteria met: collection creation patterns, Dexie adapter configuration, useLiveQuery hook patterns, and sync handler patterns fully documented with code examples.",
+          "updated_at": "2026-01-03T02:53:27.210958+00:00"
+        },
+        {
+          "id": "1.2",
+          "title": "Create positions collection with Dexie persistence",
+          "description": "Create a TanStack DB collection for ISS position data with Dexie adapter for IndexedDB storage",
+          "status": "pending",
+          "priority": "high",
+          "estimated_effort": "2 hours",
+          "files_to_create": [
+            "src/lib/iss/collections/positions.ts"
+          ],
+          "files_to_modify": [],
+          "dependencies": [
+            "1.1"
+          ],
+          "acceptance_criteria": [
+            "Collection created with proper type definitions",
+            "Dexie adapter configured for 'positions' table",
+            "Lazy initialization for Cloudflare Workers compatibility",
+            "getKey function returns position.id"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "1.3",
+          "title": "Create crew collection with Dexie persistence",
+          "description": "Create a TanStack DB collection for astronaut crew data with Dexie adapter",
+          "status": "pending",
+          "priority": "high",
+          "estimated_effort": "1 hour",
+          "files_to_create": [
+            "src/lib/iss/collections/crew.ts"
+          ],
+          "files_to_modify": [],
+          "dependencies": [
+            "1.1"
+          ],
+          "acceptance_criteria": [
+            "Collection created with StoredAstronaut type",
+            "Dexie adapter configured for 'crew' table",
+            "Lazy initialization pattern",
+            "getKey function returns astronaut.id"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "1.4",
+          "title": "Create TLE collection with Dexie persistence",
+          "description": "Create a TanStack DB collection for TLE (Two-Line Element) orbital data with Dexie adapter",
+          "status": "pending",
+          "priority": "high",
+          "estimated_effort": "1 hour",
+          "files_to_create": [
+            "src/lib/iss/collections/tle.ts"
+          ],
+          "files_to_modify": [],
+          "dependencies": [
+            "1.1"
+          ],
+          "acceptance_criteria": [
+            "Collection created with StoredTLE type",
+            "Dexie adapter configured for 'tle' table",
+            "Lazy initialization pattern",
+            "getKey function returns tle.id"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "1.5",
+          "title": "Create briefings collection with Dexie persistence",
+          "description": "Create a TanStack DB collection for AI pass briefings, replacing localStorage-based collection",
+          "status": "pending",
+          "priority": "medium",
+          "estimated_effort": "1 hour",
+          "files_to_create": [
+            "src/lib/briefing/collections.ts"
+          ],
+          "files_to_modify": [],
+          "dependencies": [
+            "1.1"
+          ],
+          "acceptance_criteria": [
+            "Collection created with PassBriefing type",
+            "Dexie adapter configured for 'briefings' table",
+            "Lazy initialization pattern",
+            "getKey function returns briefing.passId"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "1.6",
+          "title": "Create collections index with shared Dexie database",
+          "description": "Create a central index file that exports all collections and manages shared Dexie database instance",
+          "status": "pending",
+          "priority": "high",
+          "estimated_effort": "1 hour",
+          "files_to_create": [
+            "src/lib/iss/collections/index.ts"
+          ],
+          "files_to_modify": [
+            "src/db-collections/index.ts"
+          ],
+          "dependencies": [
+            "1.2",
+            "1.3",
+            "1.4",
+            "1.5"
+          ],
+          "acceptance_criteria": [
+            "Central exports for all collections",
+            "Shared Dexie database instance across collections",
+            "Proper TypeScript exports",
+            "Updated db-collections/index.ts to re-export"
+          ],
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "phase-2",
+      "name": "Data Layer Migration - Replace Dexie Direct Access",
+      "description": "Migrate from direct Dexie access to TanStack DB collection operations",
+      "status": "pending",
+      "subtasks": [
+        {
+          "id": "2.1",
+          "title": "Create position sync handler for API data",
+          "description": "Implement sync handler that fetches ISS position from API and inserts into collection",
+          "status": "pending",
+          "priority": "high",
+          "estimated_effort": "2 hours",
+          "files_to_create": [
+            "src/lib/iss/sync/position-sync.ts"
+          ],
+          "files_to_modify": [],
+          "dependencies": [
+            "1.2"
+          ],
+          "acceptance_criteria": [
+            "Sync handler fetches from ISS API",
+            "Inserts/updates position in collection",
+            "Handles errors gracefully",
+            "Configurable refresh interval"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "2.2",
+          "title": "Create crew sync handler for API data",
+          "description": "Implement sync handler that fetches crew data from API and inserts into collection",
+          "status": "pending",
+          "priority": "high",
+          "estimated_effort": "1 hour",
+          "files_to_create": [
+            "src/lib/iss/sync/crew-sync.ts"
+          ],
+          "files_to_modify": [],
+          "dependencies": [
+            "1.3"
+          ],
+          "acceptance_criteria": [
+            "Sync handler fetches from crew API",
+            "Bulk inserts/updates crew in collection",
+            "Adds fetchedAt timestamp",
+            "Handles errors gracefully"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "2.3",
+          "title": "Create TLE sync handler for API data",
+          "description": "Implement sync handler that fetches TLE data from CelesTrak and inserts into collection",
+          "status": "pending",
+          "priority": "high",
+          "estimated_effort": "1 hour",
+          "files_to_create": [
+            "src/lib/iss/sync/tle-sync.ts"
+          ],
+          "files_to_modify": [],
+          "dependencies": [
+            "1.4"
+          ],
+          "acceptance_criteria": [
+            "Sync handler fetches TLE from CelesTrak",
+            "Inserts TLE record with fetchedAt",
+            "Handles fallback sources",
+            "Handles errors gracefully"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "2.4",
+          "title": "Create unified sync manager",
+          "description": "Create a sync manager that coordinates all sync handlers with configurable intervals",
+          "status": "pending",
+          "priority": "high",
+          "estimated_effort": "2 hours",
+          "files_to_create": [
+            "src/lib/iss/sync/sync-manager.ts",
+            "src/lib/iss/sync/index.ts"
+          ],
+          "files_to_modify": [],
+          "dependencies": [
+            "2.1",
+            "2.2",
+            "2.3"
+          ],
+          "acceptance_criteria": [
+            "Manages sync intervals for all data types",
+            "Position: 5 second interval",
+            "Crew: 1 hour interval",
+            "TLE: 1 hour interval",
+            "Start/stop sync lifecycle methods",
+            "Handles visibility change events"
+          ],
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "phase-3",
+      "name": "Hook Migration - Replace TanStack Query with Live Queries",
+      "description": "Replace custom cache-first hooks with TanStack DB useLiveQuery hooks",
+      "status": "pending",
+      "subtasks": [
+        {
+          "id": "3.1",
+          "title": "Create useISSPositionDB hook with live query",
+          "description": "Create new hook using TanStack DB useLiveQuery for reactive position data",
+          "status": "pending",
+          "priority": "high",
+          "estimated_effort": "2 hours",
+          "files_to_create": [
+            "src/hooks/iss/useISSDataDB.ts"
+          ],
+          "files_to_modify": [],
+          "dependencies": [
+            "1.2",
+            "2.1"
+          ],
+          "acceptance_criteria": [
+            "useLiveQuery returns latest position from collection",
+            "Reactive updates when collection changes",
+            "Returns loading and error states",
+            "Compatible with existing useISSPosition interface"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "3.2",
+          "title": "Create useISSCrewDB hook with live query",
+          "description": "Create new hook using TanStack DB useLiveQuery for reactive crew data",
+          "status": "pending",
+          "priority": "high",
+          "estimated_effort": "1 hour",
+          "files_to_modify": [
+            "src/hooks/iss/useISSDataDB.ts"
+          ],
+          "files_to_create": [],
+          "dependencies": [
+            "1.3",
+            "2.2",
+            "3.1"
+          ],
+          "acceptance_criteria": [
+            "useLiveQuery returns crew array from collection",
+            "Reactive updates when collection changes",
+            "Returns loading and error states",
+            "Compatible with existing useISSCrew interface"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "3.3",
+          "title": "Create useISSTLEDB hook with live query",
+          "description": "Create new hook using TanStack DB useLiveQuery for reactive TLE data",
+          "status": "pending",
+          "priority": "high",
+          "estimated_effort": "1 hour",
+          "files_to_modify": [
+            "src/hooks/iss/useISSDataDB.ts"
+          ],
+          "files_to_create": [],
+          "dependencies": [
+            "1.4",
+            "2.3",
+            "3.1"
+          ],
+          "acceptance_criteria": [
+            "useLiveQuery returns latest TLE from collection",
+            "Reactive updates when collection changes",
+            "Converts StoredTLE to TLEData format",
+            "Compatible with existing useISSTLE interface"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "3.4",
+          "title": "Create usePositionHistoryDB hook with collection query",
+          "description": "Create new hook for historical position queries using collection range queries",
+          "status": "pending",
+          "priority": "medium",
+          "estimated_effort": "1 hour",
+          "files_to_modify": [
+            "src/hooks/iss/useISSDataDB.ts"
+          ],
+          "files_to_create": [],
+          "dependencies": [
+            "1.2",
+            "3.1"
+          ],
+          "acceptance_criteria": [
+            "Queries positions by time range from collection",
+            "Efficient range queries using timestamp index",
+            "Compatible with existing usePositionHistory interface"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "3.5",
+          "title": "Create useBriefingDB hooks with live query",
+          "description": "Create hooks for briefing data using TanStack DB collection",
+          "status": "pending",
+          "priority": "medium",
+          "estimated_effort": "1 hour",
+          "files_to_create": [
+            "src/hooks/useBriefingDB.ts"
+          ],
+          "files_to_modify": [],
+          "dependencies": [
+            "1.5"
+          ],
+          "acceptance_criteria": [
+            "useLiveQuery returns briefings from collection",
+            "Supports getBriefingByPassId query",
+            "Supports findBriefingByTime query",
+            "Supports upsert/delete mutations"
+          ],
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "phase-4",
+      "name": "Component Integration - Update Consumers",
+      "description": "Update all components that consume data to use new TanStack DB hooks",
+      "status": "pending",
+      "subtasks": [
+        {
+          "id": "4.1",
+          "title": "Update StatsPanel to use DB hooks",
+          "description": "Replace useISSPosition with useISSPositionDB in StatsPanel component",
+          "status": "pending",
+          "priority": "high",
+          "estimated_effort": "30 minutes",
+          "files_to_modify": [
+            "src/routes/iss/-components/StatsPanel.tsx"
+          ],
+          "files_to_create": [],
+          "dependencies": [
+            "3.1"
+          ],
+          "acceptance_criteria": [
+            "Uses useISSPositionDB hook",
+            "Displays position data correctly",
+            "Shows loading state on first visit",
+            "Handles error state"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "4.2",
+          "title": "Update CrewCard and crew page to use DB hooks",
+          "description": "Replace useISSCrew with useISSCrewDB in crew components",
+          "status": "pending",
+          "priority": "high",
+          "estimated_effort": "30 minutes",
+          "files_to_modify": [
+            "src/routes/iss/crew.tsx",
+            "src/routes/iss/-components/CrewCard.tsx"
+          ],
+          "files_to_create": [],
+          "dependencies": [
+            "3.2"
+          ],
+          "acceptance_criteria": [
+            "Uses useISSCrewDB hook",
+            "Displays crew data correctly",
+            "Handles loading and error states"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "4.3",
+          "title": "Update OrbitalSolver to use DB hooks",
+          "description": "Replace useISSTLE with useISSTLEDB in OrbitalSolver component",
+          "status": "pending",
+          "priority": "high",
+          "estimated_effort": "30 minutes",
+          "files_to_modify": [
+            "src/routes/iss/-components/OrbitalSolver.tsx"
+          ],
+          "files_to_create": [],
+          "dependencies": [
+            "3.3"
+          ],
+          "acceptance_criteria": [
+            "Uses useISSTLEDB hook",
+            "Orbital calculations work correctly",
+            "Handles loading and error states"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "4.4",
+          "title": "Update PassesList and usePasses to use DB hooks",
+          "description": "Update pass prediction components to use TLE from DB collection",
+          "status": "pending",
+          "priority": "high",
+          "estimated_effort": "1 hour",
+          "files_to_modify": [
+            "src/hooks/iss/usePasses.ts",
+            "src/routes/iss/-components/PassesList.tsx",
+            "src/routes/iss/passes.tsx"
+          ],
+          "files_to_create": [],
+          "dependencies": [
+            "3.3"
+          ],
+          "acceptance_criteria": [
+            "usePasses uses TLE from DB collection",
+            "Pass predictions work correctly",
+            "PassesList displays passes"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "4.5",
+          "title": "Update BriefingCard to use DB hooks",
+          "description": "Replace briefing collection functions with useBriefingDB hooks",
+          "status": "pending",
+          "priority": "medium",
+          "estimated_effort": "30 minutes",
+          "files_to_modify": [
+            "src/routes/iss/-components/BriefingCard.tsx"
+          ],
+          "files_to_create": [],
+          "dependencies": [
+            "3.5"
+          ],
+          "acceptance_criteria": [
+            "Uses useBriefingDB hook",
+            "Displays briefings correctly",
+            "Updates briefings reactively"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "4.6",
+          "title": "Update layout with sync manager",
+          "description": "Initialize sync manager at the ISS layout/root level for all pages",
+          "status": "pending",
+          "priority": "high",
+          "estimated_effort": "1 hour",
+          "files_to_modify": [
+            "src/routes/iss/map.tsx",
+            "src/routes/iss/-components/ISSLayout.tsx"
+          ],
+          "files_to_create": [],
+          "dependencies": [
+            "2.4"
+          ],
+          "acceptance_criteria": [
+            "Sync manager starts on layout mount",
+            "Sync manager stops on unmount",
+            "Background refresh works for all data types"
+          ],
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "phase-5",
+      "name": "Storage Utilities Migration",
+      "description": "Migrate storage utilities to work with TanStack DB collections",
+      "status": "pending",
+      "subtasks": [
+        {
+          "id": "5.1",
+          "title": "Migrate retention cleanup to collection-based",
+          "description": "Update cleanupOldPositions and cleanupOldTle to use collection delete operations",
+          "status": "pending",
+          "priority": "high",
+          "estimated_effort": "1 hour",
+          "files_to_create": [
+            "src/lib/iss/collections/cleanup.ts"
+          ],
+          "files_to_modify": [],
+          "dependencies": [
+            "1.2",
+            "1.4"
+          ],
+          "acceptance_criteria": [
+            "Cleanup uses collection delete methods",
+            "Respects retention policy constants",
+            "Runs periodically via scheduler"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "5.2",
+          "title": "Migrate gap detection to collection-based",
+          "description": "Update gap detection and filling to use collection queries",
+          "status": "pending",
+          "priority": "medium",
+          "estimated_effort": "1 hour",
+          "files_to_create": [
+            "src/lib/iss/collections/gap-filling.ts"
+          ],
+          "files_to_modify": [],
+          "dependencies": [
+            "1.2"
+          ],
+          "acceptance_criteria": [
+            "Gap detection queries collection",
+            "Gap filling inserts synthetic positions",
+            "Uses existing orbital.ts for calculations"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "5.3",
+          "title": "Migrate corruption detection to collection-based",
+          "description": "Update corruption detection to validate and clean collection data",
+          "status": "pending",
+          "priority": "medium",
+          "estimated_effort": "1 hour",
+          "files_to_create": [
+            "src/lib/iss/collections/validation.ts"
+          ],
+          "files_to_modify": [],
+          "dependencies": [
+            "1.2",
+            "1.3",
+            "1.4"
+          ],
+          "acceptance_criteria": [
+            "Validates data on read using Zod schemas",
+            "Removes corrupted records from collection",
+            "Triggers sync refresh after cleanup"
+          ],
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "phase-6",
+      "name": "Data Migration - Transfer Existing User Data",
+      "description": "Migrate existing IndexedDB data from Dexie to TanStack DB collections",
+      "status": "pending",
+      "subtasks": [
+        {
+          "id": "6.1",
+          "title": "Create data migration script",
+          "description": "Create one-time migration to transfer data from Dexie tables to TanStack DB collections",
+          "status": "pending",
+          "priority": "high",
+          "estimated_effort": "2 hours",
+          "files_to_create": [
+            "src/lib/iss/migrations/dexie-to-tanstack.ts"
+          ],
+          "files_to_modify": [],
+          "dependencies": [
+            "1.6"
+          ],
+          "acceptance_criteria": [
+            "Reads all data from Dexie tables",
+            "Inserts into TanStack DB collections",
+            "Handles migration state (run once)",
+            "Validates migrated data"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "6.2",
+          "title": "Integrate migration on app startup",
+          "description": "Run migration check on app initialization before collections are used",
+          "status": "pending",
+          "priority": "high",
+          "estimated_effort": "1 hour",
+          "files_to_modify": [
+            "src/routes/iss/-components/ISSLayout.tsx"
+          ],
+          "files_to_create": [],
+          "dependencies": [
+            "6.1"
+          ],
+          "acceptance_criteria": [
+            "Migration runs on first load after update",
+            "Shows migration progress if needed",
+            "Skips if already migrated",
+            "Handles migration errors gracefully"
+          ],
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "phase-7",
+      "name": "Cleanup - Remove Legacy Code",
+      "description": "Remove old Dexie code and TanStack Query ISS data fetching",
+      "status": "pending",
+      "subtasks": [
+        {
+          "id": "7.1",
+          "title": "Remove legacy Dexie database",
+          "description": "Remove src/lib/iss/db.ts after all consumers migrated",
+          "status": "pending",
+          "priority": "high",
+          "estimated_effort": "30 minutes",
+          "files_to_modify": [],
+          "files_to_create": [],
+          "files_to_delete": [
+            "src/lib/iss/db.ts"
+          ],
+          "dependencies": [
+            "4.1",
+            "4.2",
+            "4.3",
+            "4.4",
+            "4.5",
+            "4.6"
+          ],
+          "acceptance_criteria": [
+            "db.ts removed",
+            "No remaining imports of db.ts",
+            "App builds without errors"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "7.2",
+          "title": "Remove legacy storage utilities",
+          "description": "Remove src/lib/iss/storage.ts after utilities migrated",
+          "status": "pending",
+          "priority": "high",
+          "estimated_effort": "30 minutes",
+          "files_to_modify": [],
+          "files_to_create": [],
+          "files_to_delete": [
+            "src/lib/iss/storage.ts"
+          ],
+          "dependencies": [
+            "5.1",
+            "5.2",
+            "5.3",
+            "7.1"
+          ],
+          "acceptance_criteria": [
+            "storage.ts removed",
+            "No remaining imports",
+            "App builds without errors"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "7.3",
+          "title": "Remove legacy TanStack Query ISS queries",
+          "description": "Remove issQueries from src/lib/iss/queries.ts or repurpose for server functions",
+          "status": "pending",
+          "priority": "high",
+          "estimated_effort": "30 minutes",
+          "files_to_modify": [
+            "src/lib/iss/queries.ts"
+          ],
+          "files_to_create": [],
+          "dependencies": [
+            "4.1",
+            "4.2",
+            "4.3",
+            "4.4"
+          ],
+          "acceptance_criteria": [
+            "issQueries removed or converted to sync functions",
+            "No TanStack Query for ISS data fetching",
+            "App builds without errors"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "7.4",
+          "title": "Remove legacy hooks",
+          "description": "Remove old hooks from src/hooks/iss/useISSData.ts",
+          "status": "pending",
+          "priority": "high",
+          "estimated_effort": "30 minutes",
+          "files_to_modify": [],
+          "files_to_create": [],
+          "files_to_delete": [
+            "src/hooks/iss/useISSData.ts"
+          ],
+          "dependencies": [
+            "4.1",
+            "4.2",
+            "4.3",
+            "4.4",
+            "4.5"
+          ],
+          "acceptance_criteria": [
+            "Legacy useISSData.ts removed",
+            "All consumers use new DB hooks",
+            "App builds without errors"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "7.5",
+          "title": "Remove legacy briefing collection",
+          "description": "Remove localStorage-based briefing collection",
+          "status": "pending",
+          "priority": "medium",
+          "estimated_effort": "30 minutes",
+          "files_to_modify": [],
+          "files_to_create": [],
+          "files_to_delete": [
+            "src/lib/briefing/collection.ts"
+          ],
+          "dependencies": [
+            "4.5"
+          ],
+          "acceptance_criteria": [
+            "Legacy collection.ts removed",
+            "BriefingCard uses new hooks",
+            "App builds without errors"
+          ],
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "phase-8",
+      "name": "Testing & Documentation",
+      "description": "Verify migration and update developer documentation",
+      "status": "pending",
+      "subtasks": [
+        {
+          "id": "8.1",
+          "title": "Test offline persistence",
+          "description": "Verify data persists correctly and app works offline",
+          "status": "pending",
+          "priority": "high",
+          "estimated_effort": "1 hour",
+          "files_to_modify": [],
+          "files_to_create": [],
+          "dependencies": [
+            "7.1",
+            "7.2",
+            "7.3",
+            "7.4"
+          ],
+          "acceptance_criteria": [
+            "Data persists across browser sessions",
+            "App loads instantly with cached data",
+            "Offline mode shows cached data",
+            "Sync resumes when back online"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "8.2",
+          "title": "Test performance benchmarks",
+          "description": "Verify no regression in data loading performance",
+          "status": "pending",
+          "priority": "high",
+          "estimated_effort": "1 hour",
+          "files_to_modify": [],
+          "files_to_create": [],
+          "dependencies": [
+            "8.1"
+          ],
+          "acceptance_criteria": [
+            "Initial load <100ms with cached data",
+            "Position range queries <500ms for 1000+ records",
+            "No visible lag in UI updates",
+            "Memory usage within acceptable bounds"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "8.3",
+          "title": "Update developer documentation",
+          "description": "Document new data layer architecture and patterns",
+          "status": "pending",
+          "priority": "medium",
+          "estimated_effort": "2 hours",
+          "files_to_create": [
+            "docs/data-layer.md"
+          ],
+          "files_to_modify": [
+            "README.md"
+          ],
+          "dependencies": [
+            "8.1"
+          ],
+          "acceptance_criteria": [
+            "Documents TanStack DB collection setup",
+            "Documents sync manager usage",
+            "Documents live query hooks",
+            "Includes code examples"
+          ],
+          "notes": ""
+        }
+      ]
+    }
+  ],
+  "qa_signoff": {
+    "status": "pending",
+    "issues": "",
+    "tests_passed": ""
+  },
+  "metadata": {
+    "total_subtasks": 33,
+    "completed_subtasks": 0,
+    "estimated_total_effort": "28 hours",
+    "current_data_layer": {
+      "dexie_tables": [
+        "positions",
+        "crew",
+        "tle",
+        "events"
+      ],
+      "tanstack_query_hooks": [
+        "useISSPosition",
+        "useISSCrew",
+        "useISSTLE"
+      ],
+      "custom_hooks": [
+        "usePositionHistory",
+        "useGapFilling",
+        "useStorageCleanup"
+      ]
+    },
+    "target_data_layer": {
+      "collections": [
+        "positions",
+        "crew",
+        "tle",
+        "briefings"
+      ],
+      "sync_handlers": [
+        "position-sync",
+        "crew-sync",
+        "tle-sync"
+      ],
+      "live_query_hooks": [
+        "useISSPositionDB",
+        "useISSCrewDB",
+        "useISSTLEDB",
+        "useBriefingDB"
+      ]
+    }
+  },
+  "recoveryNote": "Task recovered from stuck state at 2026-01-03T02:50:34.858Z",
+  "last_updated": "2026-01-03T02:53:27.210964+00:00"
+}

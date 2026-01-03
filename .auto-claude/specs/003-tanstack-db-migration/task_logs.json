@@ -1,0 +1,421 @@
+{
+  "spec_id": "003-tanstack-db-migration",
+  "created_at": "2026-01-03T02:50:35.728447+00:00",
+  "updated_at": "2026-01-03T02:53:35.165072+00:00",
+  "phases": {
+    "planning": {
+      "phase": "planning",
+      "status": "pending",
+      "started_at": null,
+      "completed_at": null,
+      "entries": []
+    },
+    "coding": {
+      "phase": "coding",
+      "status": "active",
+      "started_at": "2026-01-03T02:50:35.729413+00:00",
+      "completed_at": null,
+      "entries": [
+        {
+          "timestamp": "2026-01-03T02:50:35.729430+00:00",
+          "type": "phase_start",
+          "content": "Continuing implementation...",
+          "phase": "coding"
+        },
+        {
+          "timestamp": "2026-01-03T02:50:42.581376+00:00",
+          "type": "text",
+          "content": "I'll start by reading the spec and implementation plan to understand the context, then perform the research using Context7.",
+          "phase": "coding",
+          "subtask_id": "1.1",
+          "session": 1
+        },
+        {
+          "timestamp": "2026-01-03T02:50:43.169432+00:00",
+          "type": "tool_start",
+          "content": "[Read] ...-claude/specs/003-tanstack-db-migration/spec.md",
+          "phase": "coding",
+          "tool_name": "Read",
+          "tool_input": "...-claude/specs/003-tanstack-db-migration/spec.md",
+          "subtask_id": "1.1",
+          "session": 1
+        },
+        {
+          "timestamp": "2026-01-03T02:50:43.629047+00:00",
+          "type": "tool_start",
+          "content": "[Read] ...-tanstack-db-migration/implementation_plan.json",
+          "phase": "coding",
+          "tool_name": "Read",
+          "tool_input": "...-tanstack-db-migration/implementation_plan.json",
+          "subtask_id": "1.1",
+          "session": 1
+        },
+        {
+          "timestamp": "2026-01-03T02:50:44.063217+00:00",
+          "type": "tool_start",
+          "content": "[Read] ...cs/003-tanstack-db-migration/build-progress.txt",
+          "phase": "coding",
+          "tool_name": "Read",
+          "tool_input": "...cs/003-tanstack-db-migration/build-progress.txt",
+          "subtask_id": "1.1",
+          "session": 1
+        },
+        {
+          "timestamp": "2026-01-03T02:50:44.083118+00:00",
+          "type": "tool_end",
+          "content": "[Read] Error: <tool_use_error>File does not exist.</tool_use_error>",
+          "phase": "coding",
+          "tool_name": "Read",
+          "subtask_id": "1.1",
+          "session": 1,
+          "detail": "<tool_use_error>File does not exist.</tool_use_error>",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T02:50:52.288035+00:00",
+          "type": "text",
+          "content": "Now let me research TanStack DB using Context7 documentation. I'll start by resolving the library ID and then query for the relevant patterns.",
+          "phase": "coding",
+          "subtask_id": "1.1",
+          "session": 1
+        },
+        {
+          "timestamp": "2026-01-03T02:50:53.453892+00:00",
+          "type": "tool_start",
+          "content": "[mcp__context7__resolve-library-id]",
+          "phase": "coding",
+          "tool_name": "mcp__context7__resolve-library-id",
+          "subtask_id": "1.1",
+          "session": 1
+        },
+        {
+          "timestamp": "2026-01-03T02:50:54.461524+00:00",
+          "type": "tool_end",
+          "content": "[mcp__context7__resolve-library-id] Done",
+          "phase": "coding",
+          "tool_name": "mcp__context7__resolve-library-id",
+          "subtask_id": "1.1",
+          "session": 1,
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T02:50:59.132440+00:00",
+          "type": "text",
+          "content": "Perfect! I found the TanStack DB documentation. Let me query for the collection creation patterns and live query hooks.",
+          "phase": "coding",
+          "subtask_id": "1.1",
+          "session": 1
+        },
+        {
+          "timestamp": "2026-01-03T02:51:00.615908+00:00",
+          "type": "tool_start",
+          "content": "[mcp__context7__query-docs]",
+          "phase": "coding",
+          "tool_name": "mcp__context7__query-docs",
+          "subtask_id": "1.1",
+          "session": 1
+        },
+        {
+          "timestamp": "2026-01-03T02:51:01.688998+00:00",
+          "type": "tool_start",
+          "content": "[mcp__context7__query-docs]",
+          "phase": "coding",
+          "tool_name": "mcp__context7__query-docs",
+          "subtask_id": "1.1",
+          "session": 1
+        },
+        {
+          "timestamp": "2026-01-03T02:51:01.706877+00:00",
+          "type": "tool_end",
+          "content": "[mcp__context7__query-docs] Error: Claude requested permissions to use mcp__context7__query-docs, but you haven't granted it yet.",
+          "phase": "coding",
+          "tool_name": "mcp__context7__query-docs",
+          "subtask_id": "1.1",
+          "session": 1,
+          "detail": "Claude requested permissions to use mcp__context7__query-docs, but you haven't granted it yet.",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T02:51:08.020066+00:00",
+          "type": "text",
+          "content": "I see Context7 requires permissions. Let me search the existing codebase for TanStack DB patterns and then supplement with web search.",
+          "phase": "coding",
+          "subtask_id": "1.1",
+          "session": 1
+        },
+        {
+          "timestamp": "2026-01-03T02:51:08.531389+00:00",
+          "type": "tool_start",
+          "content": "[Glob] pattern: **/*collection*.ts",
+          "phase": "coding",
+          "tool_name": "Glob",
+          "tool_input": "pattern: **/*collection*.ts",
+          "subtask_id": "1.1",
+          "session": 1
+        },
+        {
+          "timestamp": "2026-01-03T02:51:09.020433+00:00",
+          "type": "tool_start",
+          "content": "[Glob] pattern: **/db-collections/**/*.ts",
+          "phase": "coding",
+          "tool_name": "Glob",
+          "tool_input": "pattern: **/db-collections/**/*.ts",
+          "subtask_id": "1.1",
+          "session": 1
+        },
+        {
+          "timestamp": "2026-01-03T02:51:09.373532+00:00",
+          "type": "tool_start",
+          "content": "[Read] ./src/db-collections/index.ts",
+          "phase": "coding",
+          "tool_name": "Read",
+          "tool_input": "./src/db-collections/index.ts",
+          "subtask_id": "1.1",
+          "session": 1
+        },
+        {
+          "timestamp": "2026-01-03T02:51:09.394191+00:00",
+          "type": "tool_end",
+          "content": "[Read] Done",
+          "phase": "coding",
+          "tool_name": "Read",
+          "subtask_id": "1.1",
+          "session": 1,
+          "detail": "     1→/**\n     2→ * Database Collections Index\n     3→ *\n     4→ * This file previously contained demo TanStack DB collections.\n     5→ * Demo code has been removed as part of the ISS storage implementation.\n     6→ *\n     7→ * For ISS data persistence, see:\n     8→ * - src/lib/iss/db.ts - Dexie database setup\n     9→ * - src/lib/iss/storage.ts - Storage utilities\n    10→ */\n    11→\n    12→// Placeholder export to maintain module structure\n    13→export {};\n    14→\n\n<system-reminder>\nWhenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.\n</system-reminder>\n",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T02:51:13.731409+00:00",
+          "type": "tool_start",
+          "content": "[Read] ./src/lib/iss/db.ts",
+          "phase": "coding",
+          "tool_name": "Read",
+          "tool_input": "./src/lib/iss/db.ts",
+          "subtask_id": "1.1",
+          "session": 1
+        },
+        {
+          "timestamp": "2026-01-03T02:51:14.266242+00:00",
+          "type": "tool_start",
+          "content": "[Read] ./src/lib/briefing/collection.ts",
+          "phase": "coding",
+          "tool_name": "Read",
+          "tool_input": "./src/lib/briefing/collection.ts",
+          "subtask_id": "1.1",
+          "session": 1
+        },
+        {
+          "timestamp": "2026-01-03T02:51:15.086573+00:00",
+          "type": "tool_start",
+          "content": "[Grep] pattern: @tanstack/db",
+          "phase": "coding",
+          "tool_name": "Grep",
+          "tool_input": "pattern: @tanstack/db",
+          "subtask_id": "1.1",
+          "session": 1
+        },
+        {
+          "timestamp": "2026-01-03T02:51:15.109508+00:00",
+          "type": "tool_end",
+          "content": "[Grep] Done",
+          "phase": "coding",
+          "tool_name": "Grep",
+          "subtask_id": "1.1",
+          "session": 1,
+          "detail": "     1→/**\n     2→ * Dexie Database Setup for ISS Data Persistence\n     3→ *\n     4→ * Provides IndexedDB storage for ISS position, crew, and TLE data\n     5→ * with typed tables and helper functions for cache-first loading.\n     6→ */\n     7→\n     8→import Dexie, { type EntityTable } from \"dexie\";\n     9→import type { Astronaut, ISSPosition } from \"./types\";\n    10→\n    11→// =============================================================================\n    12→// EXTENDED TYPES FOR STORED DATA\n    13→// =============================================================================\n    14→\n    15→/**\n    16→ * Astronaut with fetch timestamp for cache freshness tracking\n    17→ */\n    18→export interface StoredAstronaut extends Astronaut {\n    19→\t/** Timestamp when record was fetched from API */\n    20→\tfetchedAt: number;\n    21→}\n    22→\n    23→/**\n    24→ * TLE record with fetch metadata\n    25→ */\n    26→export interface StoredTLE {\n    27→\t/** Unique identifier (tle-timestamp) */\n    28→\tid: string;\n    29→\t/** First TLE line */\n    30→\tline1: string;\n    31→\t/** Second TLE line */\n    32→\tline2: string;\n    33→\t/** Unix timestamp when TLE was fetched */\n    34→\tfetchedAt: number;\n    35→\t/** Source of TLE data */\n    36→\tsource: \"celestrak\" | \"ariss\" | \"fallback\";\n    37→}\n    38→\n    39→/**\n    40→ * Timeline event for future event association (schema foundation only)\n    41→ */\n    42→export interface TimelineEvent {\n    43→\t/** Unique identifier */\n    44→\tid: string;\n    45→\t/** Event type */\n    46→\ttype: \"launch\" | \"docking\" | \"eva\" | \"crew_change\" | \"custom\";\n    47→\t/** Unix timestamp of event */\n    48→\ttimestamp: number;\n    49→\t/** Event title */\n    50→\ttitle: string;\n    51→\t/** Optional description */\n    52→\tdescription?: string;\n    53→\t/** Links to ISSPosition.id at closest timestamp */\n    54→\tassociatedPositionId?: string;\n    55→\t/** When this event was created/imported */\n    56→\tcreatedAt: number;\n    57→}\n    58→\n    59→// =============================================================================\n    60→// DATABASE SETUP\n    61→// =============================================================================\n    62→\n    63→/**\n    64→ * Dexie database with typed tables for ISS data\n    65→ */\n    66→class EphemerisDatabase extends Dexie {\n    67→\tpositions!: EntityTable<ISSPosition, \"id\">;\n    68→\tcrew!: EntityTable<StoredAstronaut, \"id\">;\n    69→\ttle!: EntityTable<StoredTLE, \"id\">;\n    70→\tevents!: EntityTable<TimelineEvent, \"id\">;\n    71→\n    72→\tconstructor() {\n    73→\t\tsuper(\"ephemeris-iss\");\n    74→\n    75→\t\t// Schema version 1: Initial tables with indexes\n    76→\t\tthis.version(1).stores({\n    77→\t\t\tpositions: \"id, timestamp\", // Primary key: id, Index: timestamp for range queries\n    78→\t\t\tcrew: \"id, fetchedAt\", // Primary key: id, Index: fetchedAt\n    79→\t\t\ttle: \"id, fetchedAt\", // Primary key: id, Index: fetchedAt\n    80→\t\t\tevents: \"id, timestamp, type\", // Primary key: id, Indexes: timestamp, type\n    81→\t\t});\n    82→\t}\n    83→}\n    84→\n    85→// Singleton database instance (lazy initialization for Cloudflare Workers compatibility)\n    86→let _db: EphemerisDatabase | null = null;\n    87→\n    88→/**\n    89→ * Get the database instance (lazy initialization)\n    90→ * Safe to call in Cloudflare Workers - only initializes on client\n    91→ */\n    92→export function getDb(): EphemerisDatabase {\n    93→\tif (typeof window === \"undefined\") {\n    94→\t\tthrow new Error(\"Database can only be accessed in browser environment\");\n    95→\t}\n    96→\n    97→\tif (!_db) {\n    98→\t\t_db = new EphemerisDatabase();\n    99→\t}\n   100→\n   101→\treturn _db;\n   102→}\n   103→\n   104→// Export db as a getter that lazily initializes\n   105→export const db = {\n   106→\tget positions() {\n   107→\t\treturn getDb().positions;\n   108→\t},\n   109→\tget crew() {\n   110→\t\treturn getDb().crew;\n   111→\t},\n   112→\tget tle() {\n   113→\t\treturn getDb().tle;\n   114→\t},\n   115→\tget events() {\n   116→\t\treturn getDb().events;\n   117→\t},\n   118→};\n   119→\n   120→// =============================================================================\n   121→// STORAGE HELPER FUNCTIONS\n   122→// =============================================================================\n   123→\n   124→/**\n   125→ * Get the latest cached position\n   126→ * @returns Promise resolving to latest position or undefined if cache is empty\n   127→ */\n   128→export async function getCachedPosition(): Promise<ISSPosition | undefined> {\n   129→\tif (typeof window === \"undefined\") return undefined;\n   130→\treturn getDb().positions.orderBy(\"timestamp\").last();\n   131→}\n   132→\n   133→/**\n   134→ * Get all cached crew members\n   135→ * @returns Promise resolving to array of astronauts (empty if cache is empty)\n   136→ */\n   137→export async function getCachedCrew(): Promise<StoredAstronaut[]> {\n   138→\tif (typeof window === \"undefined\") return [];\n   139→\treturn getDb().crew.toArray();\n   140→}\n   141→\n   142→/**\n   143→ * Get the latest cached TLE record\n   144→ * @returns Promise resolving to latest TLE or undefined if cache is empty\n   145→ */\n   146→export async function getCachedTLE(): Promise<StoredTLE | undefined> {\n   147→\tif (typeof window === \"undefined\") return undefined;\n   148→\treturn getDb().tle.orderBy(\"fetchedAt\").last();\n   149→}\n   150→\n   151→/**\n   152→ * Get positions within a time range (for history/scrubbing)\n   153→ * @param startTimestamp - Start of range (Unix seconds)\n   154→ * @param endTimestamp - End of range (Unix seconds)\n   155→ * @returns Promise resolving to array of positions in range\n   156→ */\n   157→export async function getPositionsInRange(\n   158→\tstartTimestamp: number,\n   159→\tendTimestamp: number,\n   160→): Promise<ISSPosition[]> {\n   161→\tif (typeof window === \"undefined\") return [];\n   162→\treturn getDb()\n   163→\t\t.positions.where(\"timestamp\")\n   164→\t\t.between(startTimestamp, endTimestamp)\n   165→\t\t.toArray();\n   166→}\n   167→\n   168→/**\n   169→ * Store a position record (upsert by id)\n   170→ * @param position - Position to store\n   171→ */\n   172→export async function storePosition(position: ISSPosition): Promise<void> {\n   173→\tif (typeof window === \"undefined\") return;\n   174→\tawait getDb().positions.put(position);\n   175→}\n   176→\n   177→/**\n   178→ * Store crew data with fetch timestamp\n   179→ * @param crew - Array of astronauts to store\n   180→ */\n   181→export async function storeCrew(crew: Astronaut[]): Promise<void> {\n   182→\tif (typeof window === \"undefined\") return;\n   183→\tconst fetchedAt = Date.now();\n   184→\tconst storedCrew = crew.map((astronaut) => ({ ...astronaut, fetchedAt }));\n   185→\tawait getDb().crew.bulkPut(storedCrew);\n   186→}\n   187→\n   188→/**\n   189→ * Store TLE record\n   190→ * @param line1 - First TLE line\n   191→ * @param line2 - Second TLE line\n   192→ * @param source - Source of TLE data\n   193→ */\n   194→export async function storeTLE(\n   195→\tline1: string,\n   196→\tline2: string,\n   197→\tsource: StoredTLE[\"source\"] = \"celestrak\",\n   198→): Promise<void> {\n   199→\tif (typeof window === \"undefined\") return;\n   200→\tconst fetchedAt = Date.now();\n   201→\tawait getDb().tle.put({\n   202→\t\tid: `tle-${fetchedAt}`,\n   203→\t\tline1,\n   204→\t\tline2,\n   205→\t\tfetchedAt,\n   206→\t\tsource,\n   207→\t});\n   208→}\n   209→\n   210→// =============================================================================\n   211→// SCHEMA VERSION TRACKING\n   212→// =============================================================================\n   213→\n   214→/**\n   215→ * Current schema version for migration tracking\n   216→ */\n   217→export const CURRENT_SCHEMA_VERSION = 1;\n   218→\n   219→/**\n   220→ * Get the current database version\n   221→ */\n   222→export function getDatabaseVersion(): number {\n   223→\tif (typeof window === \"undefined\") return 0;\n   224→\treturn getDb().verno;\n   225→}\n   226→\n\n<system-reminder>\nWhenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.\n</system-reminder>\n",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T02:51:19.274319+00:00",
+          "type": "tool_start",
+          "content": "[Read] ./specs/001-iss-tracker-migration/research.md",
+          "phase": "coding",
+          "tool_name": "Read",
+          "tool_input": "./specs/001-iss-tracker-migration/research.md",
+          "subtask_id": "1.1",
+          "session": 1
+        },
+        {
+          "timestamp": "2026-01-03T02:51:19.805518+00:00",
+          "type": "tool_start",
+          "content": "[Read] ./specs/001-iss-tracker-migration/data-model.md",
+          "phase": "coding",
+          "tool_name": "Read",
+          "tool_input": "./specs/001-iss-tracker-migration/data-model.md",
+          "subtask_id": "1.1",
+          "session": 1
+        },
+        {
+          "timestamp": "2026-01-03T02:51:20.622530+00:00",
+          "type": "tool_start",
+          "content": "[Bash] cat package.json | grep -A 5 -B 5 \"@tanstack/db\"",
+          "phase": "coding",
+          "tool_name": "Bash",
+          "tool_input": "cat package.json | grep -A 5 -B 5 \"@tanstack/db\"",
+          "subtask_id": "1.1",
+          "session": 1
+        },
+        {
+          "timestamp": "2026-01-03T02:51:20.643480+00:00",
+          "type": "tool_end",
+          "content": "[Bash] Done",
+          "phase": "coding",
+          "tool_name": "Bash",
+          "subtask_id": "1.1",
+          "session": 1,
+          "detail": "     1→# Research: ISS Tracker Migration\n     2→\n     3→**Feature**: 001-iss-tracker-migration  \n     4→**Created**: December 13, 2025\n     5→\n     6→## Research Summary\n     7→\n     8→This document captures decisions made during the planning phase for migrating the ISS Tracker to ephemeris.\n     9→\n    10→---\n    11→\n    12→## 1. TanStack Start Routing Pattern\n    13→\n    14→**Decision**: Use file-based nested routes under `src/routes/iss/`\n    15→\n    16→**Rationale**: \n    17→- TanStack Start uses file-based routing where each file in `routes/` becomes a route\n    18→- Nested routes are achieved through folder structure (`iss/index.tsx`, `iss/map.tsx`, `iss/crew.tsx`)\n    19→- This matches the existing ephemeris pattern (see `routes/demo/` folder)\n    20→- Route layout can be shared via an `iss/_layout.tsx` or by wrapping in a common component\n    21→\n    22→**Alternatives Considered**:\n    23→- Single route with internal tabs: Rejected because spec requires distinct URLs (`/iss`, `/iss/map`, `/iss/crew`)\n    24→- Route group with `(iss)` folder: Not necessary; direct folder works\n    25→\n    26→---\n    27→\n    28→## 2. Tailwind v4 Compatibility\n    29→\n    30→**Decision**: Add ISS Matrix theme colors using CSS custom properties in `:root` and `@theme inline` blocks\n    31→\n    32→**Rationale**:\n    33→- Tailwind v4 uses `@theme inline` for custom theme values (seen in existing `styles.css`)\n    34→- Matrix theme requires custom colors: `--matrix-bg`, `--matrix-text`, `--matrix-dim`, `--matrix-alert`\n    35→- CSS animations (scanlines, CRT flicker, glitch) can be defined in `@keyframes` blocks\n    36→- Using CSS properties allows scoping the theme to the ISS section only\n    37→\n    38→**Implementation**:\n    39→```css\n    40→/* ISS Matrix Theme */\n    41→.iss-theme {\n    42→  --matrix-bg: #0a0a0a;\n    43→  --matrix-text: #00ff41;\n    44→  --matrix-dim: #004d14;\n    45→  --matrix-alert: #ff3333;\n    46→}\n    47→\n    48→@theme inline {\n    49→  --color-matrix-bg: var(--matrix-bg);\n    50→  --color-matrix-text: var(--matrix-text);\n    51→  --color-matrix-dim: var(--matrix-dim);\n    52→  --color-matrix-alert: var(--matrix-alert);\n    53→}\n    54→```\n    55→\n    56→**Alternatives Considered**:\n    57→- Separate CSS file for ISS: Rejected to maintain single source of truth for Tailwind config\n    58→- Inline styles: Rejected for maintainability\n    59→\n    60→---\n    61→\n    62→## 3. Component Migration Strategy\n    63→\n    64→**Decision**: Selective shadcn adoption - form inputs from shadcn, custom display components\n    65→\n    66→**Rationale**:\n    67→- Spec explicitly states: \"use shadcn for form inputs (Input, Button) with Matrix theme styling\"\n    68→- Display components (StatsPanel, MatrixText, crew cards) must be \"custom-built to preserve exact visual design\"\n    69→- The existing ISS Tracker components are well-structured and can be adapted directly\n    70→- MatrixText animation effect is unique and not available in shadcn\n    71→\n    72→**Components to Create**:\n    73→| Component | Source | Strategy |\n    74→|-----------|--------|----------|\n    75→| ISSLayout | New | Wrap routes with Matrix theme, header, footer |\n    76→| StatsPanel | Migrate | Direct port with Tailwind v4 classes |\n    77→| MatrixText | Migrate | Direct port (animation logic) |\n    78→| FlyoverControl | Migrate | Direct port, use shadcn Button for CTA |\n    79→| OrbitalSolver | Migrate | Direct port (modal with calculations) |\n    80→| CrewCard | Extract from Crew.tsx | Separate component for reuse |\n    81→\n    82→---\n    83→\n    84→## 4. Sentry Instrumentation Pattern\n    85→\n    86→**Decision**: Wrap external API calls in `Sentry.startSpan` as specified in `.cursorrules`\n    87→\n    88→**Rationale**:\n    89→- Ephemeris uses `@sentry/tanstackstart-react` (already configured in `router.tsx`)\n    90→- The `.cursorrules` file provides the exact pattern to follow\n    91→- Need to instrument: ISS position fetch, TLE fetch, crew data fetch\n    92→\n    93→**Implementation Pattern**:\n    94→```typescript\n    95→import * as Sentry from '@sentry/tanstackstart-react'\n    96→\n    97→export const fetchISSPosition = async (): Promise<ISSPosition> => {\n    98→  return Sentry.startSpan({ name: 'Fetching ISS Position' }, async () => {\n    99→    const response = await fetch(WTIA_API);\n   100→    // ... rest of implementation\n   101→  });\n   102→};\n   103→```\n   104→\n   105→---\n   106→\n   107→## 5. External Dependencies\n   108→\n   109→**Decision**: Add three.js, react-globe.gl, satellite.js as dependencies\n   110→\n   111→**Rationale**:\n   112→- These are already used in the source ISS Tracker project\n   113→- react-globe.gl requires three.js as a peer dependency\n   114→- satellite.js is needed for TLE parsing and orbital calculations\n   115→- All are mature, well-maintained libraries\n   116→\n   117→**Package Additions**:\n   118→```json\n   119→{\n   120→  \"dependencies\": {\n   121→    \"three\": \"0.170.0\",\n   122→    \"react-globe.gl\": \"^2.37.0\", \n   123→    \"satellite.js\": \"5.0.0\"\n   124→  }\n   125→}\n   126→```\n   127→\n   128→---\n   129→\n   130→## 6. Web Audio API Pattern\n   131→\n   132→**Decision**: Migrate TerminalAudio class with lazy initialization pattern\n   133→\n   134→**Rationale**:\n   135→- Web Audio API requires user gesture to initialize (browser security)\n   136→- The existing pattern handles this with `resume()` method on first interaction\n   137→- Mute state persisted to localStorage\n   138→- Sound effects enhance the Matrix terminal experience\n   139→\n   140→**Key Behaviors to Preserve**:\n   141→- Audio context created lazily on first init\n   142→- Startup sound plays on \"INITIALIZE_UPLINK\" click\n   143→- Hover/click sounds on interactive elements\n   144→- Data update sound when position refreshes\n   145→\n   146→---\n   147→\n   148→## 7. react-globe.gl Integration\n   149→\n   150→**Decision**: Use Globe component with custom point, ring, and path layers\n   151→\n   152→**Rationale**:\n   153→- react-globe.gl provides a React wrapper for three-globe\n   154→- It supports the required features: pointsData, ringsData, pathsData\n   155→- Performance is acceptable for real-time 5-second updates\n   156→- The library handles WebGL context and camera controls\n   157→\n   158→**Configuration Needed**:\n   159→- Globe background: `//unpkg.com/three-globe/example/img/night-sky.png`\n   160→- Earth texture: `//unpkg.com/three-globe/example/img/earth-night.jpg`\n   161→- Atmosphere color: Matrix green (#00FF41)\n   162→- Custom point styling for ISS marker and user location\n   163→\n   164→---\n   165→\n   166→## 8. Data Fetching with TanStack Query (TanStack DB Ready)\n   167→\n   168→**Decision**: Wrap ALL external API calls with TanStack Query; structure data for future `queryCollectionOptions` migration\n   169→\n   170→**Rationale**:\n   171→- TanStack Query is already configured in ephemeris (`@tanstack/react-query`)\n   172→- `@tanstack/query-db-collection` is already installed in ephemeris\n   173→- TanStack DB's `queryCollectionOptions` uses identical `queryKey` and `queryFn` interface\n   174→- Existing patterns in `src/db-collections/` and `src/hooks/demo.useChat.ts` demonstrate the target architecture\n   175→\n   176→**Critical Requirements for TanStack DB Compatibility**:\n   177→\n   178→1. **Every entity needs a unique `id` field** - Required for `getKey: (item) => item.id`\n   179→2. **Collection queries must return arrays** - TanStack DB collections expect `queryFn` to return `T[]`\n   180→3. **Singleton data (like current position) uses different pattern** - Not a collection, use `useLiveQuery` with single-item lookup\n   181→4. **Zod schemas for validation** - Match existing ephemeris pattern in `src/db-collections/index.ts`\n   182→\n   183→**Architecture for TanStack DB Readiness**:\n   184→\n   185→```typescript\n   186→// src/lib/iss/queries.ts\n   187→// Phase 1: TanStack Query only (current implementation)\n   188→\n   189→export const issQueries = {\n   190→  // COLLECTION: Returns array of positions (for history)\n   191→  positionHistory: () => ({\n   192→    queryKey: ['iss', 'positions'] as const,\n   193→    queryFn: fetchISSPositionHistory,  // Returns ISSPosition[]\n   194→    refetchInterval: 5000,\n   195→  }),\n   196→  \n   197→  // SINGLETON: Current position (latest only)\n   198→  currentPosition: () => ({\n   199→    queryKey: ['iss', 'position', 'current'] as const,\n   200→    queryFn: fetchISSPosition,  // Returns ISSPosition\n   201→    refetchInterval: 5000,\n   202→  }),\n   203→  \n   204→  // COLLECTION: TLE data with timestamps\n   205→  tle: () => ({\n   206→    queryKey: ['iss', 'tle'] as const,\n   207→    queryFn: fetchTLE,\n   208→    staleTime: 1000 * 60 * 60,\n   209→  }),\n   210→  \n   211→  // COLLECTION: Crew members\n   212→  crew: () => ({\n   213→    queryKey: ['iss', 'crew'] as const,\n   214→    queryFn: fetchCrewData,  // Returns Astronaut[]\n   215→    staleTime: 1000 * 60 * 60,\n   216→  }),\n   217→};\n   218→```\n   219→\n   220→```typescript\n   221→// Future Phase 2: TanStack DB migration\n   222→// src/db-collections/iss.ts\n   223→\n   224→import { createCollection } from '@tanstack/db'\n   225→import { queryCollectionOptions } from '@tanstack/query-db-collection'\n   226→import { z } from 'zod'\n   227→\n   228→const ISSPositionSchema = z.object({\n   229→  id: z.string(),  // Generated: `${timestamp}` or UUID\n   230→  latitude: z.number(),\n   231→  longitude: z.number(),\n   232→  timestamp: z.number(),\n   233→  altitude: z.number(),\n   234→  velocity: z.number(),\n   235→  visibility: z.string(),\n   236→})\n   237→\n   238→export const issPositionsCollection = createCollection(\n   239→  queryCollectionOptions({\n   240→    queryKey: ['iss', 'positions'],  // Same key as Phase 1!\n   241→    queryFn: fetchISSPositionHistory,\n   242→    queryClient,\n   243→    getKey: (position) => position.id,\n   244→    schema: ISSPositionSchema,\n   245→  })\n   246→)\n   247→\n   248→// Components stay the same - just swap useQuery for useLiveQuery\n   249→```\n   250→\n   251→**Query Configuration**:\n   252→| Query Key | Returns | Refetch | Future Collection |\n   253→|-----------|---------|---------|-------------------|\n   254→| `['iss', 'position', 'current']` | `ISSPosition` | 5s | Derived from `issPosition\n\n... [truncated - full output was 12605 chars]",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T02:51:26.126882+00:00",
+          "type": "tool_start",
+          "content": "[Bash] cat package.json | grep -i tanstack",
+          "phase": "coding",
+          "tool_name": "Bash",
+          "tool_input": "cat package.json | grep -i tanstack",
+          "subtask_id": "1.1",
+          "session": 1
+        },
+        {
+          "timestamp": "2026-01-03T02:51:27.040805+00:00",
+          "type": "tool_start",
+          "content": "[WebSearch]",
+          "phase": "coding",
+          "tool_name": "WebSearch",
+          "subtask_id": "1.1",
+          "session": 1
+        },
+        {
+          "timestamp": "2026-01-03T02:51:27.075182+00:00",
+          "type": "tool_end",
+          "content": "[WebSearch] Done",
+          "phase": "coding",
+          "tool_name": "WebSearch",
+          "subtask_id": "1.1",
+          "session": 1,
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T02:51:51.608056+00:00",
+          "type": "tool_start",
+          "content": "[WebFetch]",
+          "phase": "coding",
+          "tool_name": "WebFetch",
+          "subtask_id": "1.1",
+          "session": 1
+        },
+        {
+          "timestamp": "2026-01-03T02:51:52.713895+00:00",
+          "type": "tool_start",
+          "content": "[WebFetch]",
+          "phase": "coding",
+          "tool_name": "WebFetch",
+          "subtask_id": "1.1",
+          "session": 1
+        },
+        {
+          "timestamp": "2026-01-03T02:51:54.268831+00:00",
+          "type": "tool_start",
+          "content": "[WebFetch]",
+          "phase": "coding",
+          "tool_name": "WebFetch",
+          "subtask_id": "1.1",
+          "session": 1
+        },
+        {
+          "timestamp": "2026-01-03T02:52:00.317472+00:00",
+          "type": "tool_end",
+          "content": "[WebFetch] Done",
+          "phase": "coding",
+          "tool_name": "WebFetch",
+          "subtask_id": "1.1",
+          "session": 1,
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T02:52:09.160785+00:00",
+          "type": "text",
+          "content": "Now let me create comprehensive documentation for the research. I'll document all the patterns needed for the migration.",
+          "phase": "coding",
+          "subtask_id": "1.1",
+          "session": 1
+        },
+        {
+          "timestamp": "2026-01-03T02:53:21.075782+00:00",
+          "type": "tool_start",
+          "content": "[Write] ...ude/specs/003-tanstack-db-migration/research.md",
+          "phase": "coding",
+          "tool_name": "Write",
+          "tool_input": "...ude/specs/003-tanstack-db-migration/research.md",
+          "subtask_id": "1.1",
+          "session": 1
+        },
+        {
+          "timestamp": "2026-01-03T02:53:21.422830+00:00",
+          "type": "tool_end",
+          "content": "[Write] Done",
+          "phase": "coding",
+          "tool_name": "Write",
+          "subtask_id": "1.1",
+          "session": 1,
+          "detail": "File created successfully at: ./.auto-claude/specs/003-tanstack-db-migration/research.md",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T02:53:27.207269+00:00",
+          "type": "tool_start",
+          "content": "[mcp__auto-claude__update_subtask_status]",
+          "phase": "coding",
+          "tool_name": "mcp__auto-claude__update_subtask_status",
+          "subtask_id": "1.1",
+          "session": 1
+        },
+        {
+          "timestamp": "2026-01-03T02:53:27.226859+00:00",
+          "type": "tool_end",
+          "content": "[mcp__auto-claude__update_subtask_status] Done",
+          "phase": "coding",
+          "tool_name": "mcp__auto-claude__update_subtask_status",
+          "subtask_id": "1.1",
+          "session": 1,
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T02:53:30.744583+00:00",
+          "type": "text",
+          "content": "Now let me commit this research work:",
+          "phase": "coding",
+          "subtask_id": "1.1",
+          "session": 1
+        },
+        {
+          "timestamp": "2026-01-03T02:53:31.476442+00:00",
+          "type": "tool_start",
+          "content": "[Bash] git add .auto-claude/specs/003-tanstack-db-migr...",
+          "phase": "coding",
+          "tool_name": "Bash",
+          "tool_input": "git add .auto-claude/specs/003-tanstack-db-migr...",
+          "subtask_id": "1.1",
+          "session": 1
+        },
+        {
+          "timestamp": "2026-01-03T02:53:35.165028+00:00",
+          "type": "tool_start",
+          "content": "[Bash] git commit -m \"auto-claude: 1.1 - Research TanS...",
+          "phase": "coding",
+          "tool_name": "Bash",
+          "tool_input": "git commit -m \"auto-claude: 1.1 - Research TanS...",
+          "subtask_id": "1.1",
+          "session": 1
+        }
+      ]
+    },
+    "validation": {
+      "phase": "validation",
+      "status": "pending",
+      "started_at": null,
+      "completed_at": null,
+      "entries": []
+    }
+  }
+}

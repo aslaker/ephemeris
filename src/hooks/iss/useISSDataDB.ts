@@ -12,7 +12,8 @@
 
 import { useLiveQuery } from "@tanstack/react-db";
 import { positionsCollection } from "@/lib/iss/collections/positions";
-import type { ISSPosition } from "@/lib/iss/types";
+import { crewCollection } from "@/lib/iss/collections/crew";
+import type { ISSPosition, Astronaut } from "@/lib/iss/types";
 
 // =============================================================================
 // useISSPositionDB - Reactive position loading from collection
@@ -77,5 +78,66 @@ export function useISSPositionDB(): UseISSPositionResult {
 		isFetching: query.isLoading,
 		// Convert isError boolean to Error | null
 		error: query.isError ? new Error("Failed to query position collection") : null,
+	};
+}
+
+// =============================================================================
+// useISSCrewDB - Reactive crew loading from collection
+// =============================================================================
+
+export interface UseISSCrewResult {
+	/** Current crew data from collection */
+	data: Astronaut[];
+	/** Whether initial data is loading (collection not ready) */
+	isLoading: boolean;
+	/** Whether data came from cache (always true for DB collections) */
+	fromCache: boolean;
+	/** Whether a background fetch is in progress (same as isLoading for DB) */
+	isFetching: boolean;
+	/** Any error from the query */
+	error: Error | null;
+}
+
+/**
+ * Hook for ISS crew with reactive TanStack DB live query
+ *
+ * Queries all crew members from the crew collection and
+ * automatically updates when new crew data is synced.
+ *
+ * Features:
+ * - Reactive updates when collection changes (via sync handler)
+ * - Instant load from IndexedDB (no network delay)
+ * - Consistent interface with legacy useISSCrew hook
+ * - Type-safe with Zod schema validation
+ *
+ * @returns Array of current ISS crew members with loading/error states
+ *
+ * @example
+ * ```typescript
+ * function CrewList() {
+ *   const { data: crew, isLoading } = useISSCrewDB()
+ *
+ *   if (isLoading) return <div>Loading crew...</div>
+ *   if (crew.length === 0) return <div>No crew data</div>
+ *
+ *   return crew.map(astronaut => <CrewCard key={astronaut.id} astronaut={astronaut} />)
+ * }
+ * ```
+ */
+export function useISSCrewDB(): UseISSCrewResult {
+	// Query all crew members from collection (returns array by default)
+	const query = useLiveQuery((q) => q.from({ crew: crewCollection }));
+
+	return {
+		// Convert undefined to empty array for compatibility with legacy interface
+		data: (query.data ?? []) as Astronaut[],
+		// isLoading is true until first data is ready
+		isLoading: query.isLoading,
+		// DB collections always serve from cache (IndexedDB)
+		fromCache: true,
+		// For DB collections, isFetching is same as isLoading
+		isFetching: query.isLoading,
+		// Convert isError boolean to Error | null
+		error: query.isError ? new Error("Failed to query crew collection") : null,
 	};
 }

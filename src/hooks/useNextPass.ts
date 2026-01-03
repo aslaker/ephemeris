@@ -5,11 +5,10 @@
  * This hook encapsulates the pass prediction logic that was previously in ISSLayout.
  */
 
-import { useQuery } from "@tanstack/react-query";
 import { useStore } from "@tanstack/react-store";
 import { useEffect, useState } from "react";
+import { useISSTLEDB } from "@/hooks/iss/useISSDataDB";
 import { predictNextPass } from "@/lib/iss/orbital";
-import { issQueries } from "@/lib/iss/queries";
 import type { PassPrediction } from "@/lib/iss/types";
 import { locationStore } from "@/lib/location/store";
 
@@ -29,8 +28,8 @@ export function useNextPass() {
 	// Get coordinates from location store
 	const coordinates = useStore(locationStore, (s) => s.coordinates);
 
-	// Get TLE data from TanStack Query
-	const { data: tle } = useQuery(issQueries.tle());
+	// Get TLE data from TanStack DB collection
+	const { data: tle } = useISSTLEDB();
 
 	// Local state for prediction
 	const [nextPass, setNextPass] = useState<PassPrediction | null>(null);

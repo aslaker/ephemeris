@@ -1,7 +1,7 @@
 {
   "spec_id": "003-tanstack-db-migration",
   "created_at": "2026-01-03T02:50:35.728447+00:00",
-  "updated_at": "2026-01-03T03:59:54.784561+00:00",
+  "updated_at": "2026-01-03T04:03:21.894356+00:00",
   "phases": {
     "planning": {
       "phase": "planning",
@@ -11675,6 +11675,625 @@
           "tool_input": "git add -A && git commit -m \"auto-claude: 6.2 -...",
           "subtask_id": "6.2",
           "session": 26
+        },
+        {
+          "timestamp": "2026-01-03T03:59:55.880544+00:00",
+          "type": "tool_end",
+          "content": "[Bash] Done",
+          "phase": "coding",
+          "tool_name": "Bash",
+          "subtask_id": "6.2",
+          "session": 26,
+          "detail": "[auto-claude/003-tanstack-db-migration fb84109] auto-claude: 6.2 - Run migration check on app initialization before c\n 9 files changed, 1019 insertions(+), 20 deletions(-)\n create mode 100644 .auto-claude/specs/003-tanstack-db-migration/memory/session_insights/session_024.json\n create mode 100644 .auto-claude/specs/003-tanstack-db-migration/memory/session_insights/session_025.json",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T03:59:59.866338+00:00",
+          "type": "text",
+          "content": "Perfect! Now let me update the implementation plan to mark this subtask as completed:",
+          "phase": "coding",
+          "subtask_id": "6.2",
+          "session": 26
+        },
+        {
+          "timestamp": "2026-01-03T04:00:06.990485+00:00",
+          "type": "tool_start",
+          "content": "[mcp__auto-claude__update_subtask_status]",
+          "phase": "coding",
+          "tool_name": "mcp__auto-claude__update_subtask_status",
+          "subtask_id": "6.2",
+          "session": 26
+        },
+        {
+          "timestamp": "2026-01-03T04:00:07.014088+00:00",
+          "type": "tool_end",
+          "content": "[mcp__auto-claude__update_subtask_status] Done",
+          "phase": "coding",
+          "tool_name": "mcp__auto-claude__update_subtask_status",
+          "subtask_id": "6.2",
+          "session": 26,
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T04:00:17.863767+00:00",
+          "type": "text",
+          "content": "Excellent! I've successfully completed subtask 6.2. Here's what was implemented:\n\n## ✅ Subtask 6.2 - Migration Integration Complete\n\n### Implementation Summary\n\nI integrated the data migration script into the ISSLayout component to run automatically on app initialization before TanStack DB collections are used.\n\n### Key Changes to `ISSLayout.tsx`:\n\n1. **Migration State Management**\n   - Added `isMigrating` state for showing progress UI\n   - Added `migrationError` state for non-blocking error display\n\n2. **Migration Check Flow**\n   - On component mount, checks if migration has already completed using `isMigrationComplete()`\n   - If needed, shows loading screen and runs `runMigration()`\n   - Logs detailed migration results (positions, crew, TLE, briefings counts)\n   - Starts sync manager after migration completes (or if not needed)\n\n3. **User Experience**\n   - **Migration Progress**: Shows matrix-themed loading screen with \"INITIALIZING_DATA_LAYER\" message\n   - **Error Handling**: Non-blocking warning banner if migration fails (app continues normally)\n   - **Graceful Degradation**: Sync manager starts even if migration encounters errors\n\n4. **Acceptance Criteria Met**\n   - ✅ Migration runs on first load after update\n   - ✅ Shows migration progress if needed\n   - ✅ Skips if already migrated (localStorage state tracking)\n   - ✅ Handles migration errors gracefully (non-blocking)\n\n### Build Verification\n- TypeScript compilation: ✅ Passed\n- Production build: ✅ Succeeded\n- Git commit: `fb84109`\n\nThe migration will now run automatically for users upgrading to the new TanStack DB data layer, preserving their cached ISS position data, crew information, TLE data, and AI briefings from the legacy Dexie/localStorage storage.",
+          "phase": "coding",
+          "subtask_id": "6.2",
+          "session": 26
+        },
+        {
+          "timestamp": "2026-01-03T04:00:29.689149+00:00",
+          "type": "text",
+          "content": "I'll help you remove the legacy `src/lib/iss/db.ts` file after verifying all consumers have been migrated. Let me start by understanding the context and checking for any remaining references.",
+          "phase": "coding",
+          "subtask_id": "7.1",
+          "session": 27
+        },
+        {
+          "timestamp": "2026-01-03T04:00:30.254081+00:00",
+          "type": "tool_start",
+          "content": "[Read] ...-claude/specs/003-tanstack-db-migration/spec.md",
+          "phase": "coding",
+          "tool_name": "Read",
+          "tool_input": "...-claude/specs/003-tanstack-db-migration/spec.md",
+          "subtask_id": "7.1",
+          "session": 27
+        },
+        {
+          "timestamp": "2026-01-03T04:00:30.819607+00:00",
+          "type": "tool_start",
+          "content": "[Read] ...-tanstack-db-migration/implementation_plan.json",
+          "phase": "coding",
+          "tool_name": "Read",
+          "tool_input": "...-tanstack-db-migration/implementation_plan.json",
+          "subtask_id": "7.1",
+          "session": 27
+        },
+        {
+          "timestamp": "2026-01-03T04:00:31.233079+00:00",
+          "type": "tool_start",
+          "content": "[Read] ...cs/003-tanstack-db-migration/build-progress.txt",
+          "phase": "coding",
+          "tool_name": "Read",
+          "tool_input": "...cs/003-tanstack-db-migration/build-progress.txt",
+          "subtask_id": "7.1",
+          "session": 27
+        },
+        {
+          "timestamp": "2026-01-03T04:00:31.252738+00:00",
+          "type": "tool_end",
+          "content": "[Read] Done",
+          "phase": "coding",
+          "tool_name": "Read",
+          "subtask_id": "7.1",
+          "session": 27,
+          "detail": "     1→# TanStack DB Migration\n     2→\n     3→Migrate from the current TanStack Query + Dexie combination to unified TanStack DB collections for reactive, consistent data management. This simplifies the data layer and enables more powerful offline-first patterns.\n     4→\n     5→## Rationale\n     6→The current dual data layer creates complexity and potential consistency issues. TanStack DB provides a unified solution that's already partially integrated, reducing maintenance burden and enabling better offline support.\n     7→\n     8→## User Stories\n     9→- As a user, I want data to sync seamlessly between online and offline modes so that I can use the app anywhere\n    10→- As a developer, I want a unified data layer so that I don't need to maintain two separate caching systems\n    11→\n    12→## Acceptance Criteria\n    13→- [ ] All Dexie stores are migrated to TanStack DB collections\n    14→- [ ] React Query caches are replaced with TanStack DB live queries\n    15→- [ ] Offline data persistence works correctly after migration\n    16→- [ ] No regression in data loading performance\n    17→- [ ] Developer documentation updated for new data patterns\n    18→\n\n<system-reminder>\nWhenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.\n</system-reminder>\n",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T04:00:41.152054+00:00",
+          "type": "text",
+          "content": "I'll now remove the legacy `src/lib/iss/db.ts` file after verifying all consumers have been migrated. Let me check for any remaining references first.",
+          "phase": "coding",
+          "subtask_id": "7.1",
+          "session": 27
+        },
+        {
+          "timestamp": "2026-01-03T04:00:41.683237+00:00",
+          "type": "tool_start",
+          "content": "[Read] ./src/lib/iss/db.ts",
+          "phase": "coding",
+          "tool_name": "Read",
+          "tool_input": "./src/lib/iss/db.ts",
+          "subtask_id": "7.1",
+          "session": 27
+        },
+        {
+          "timestamp": "2026-01-03T04:00:43.548970+00:00",
+          "type": "tool_start",
+          "content": "[Grep] pattern: from ['\"]@/lib/iss/db['\"]|from ['\"].*lib/iss/db['\"]|import.*db.*from",
+          "phase": "coding",
+          "tool_name": "Grep",
+          "tool_input": "pattern: from ['\"]@/lib/iss/db['\"]|from ['\"].*lib/iss/db['\"]|import.*db.*from",
+          "subtask_id": "7.1",
+          "session": 27
+        },
+        {
+          "timestamp": "2026-01-03T04:00:43.576100+00:00",
+          "type": "tool_end",
+          "content": "[Grep] Done",
+          "phase": "coding",
+          "tool_name": "Grep",
+          "subtask_id": "7.1",
+          "session": 27,
+          "detail": "     1→/**\n     2→ * Dexie Database Setup for ISS Data Persistence\n     3→ *\n     4→ * Provides IndexedDB storage for ISS position, crew, and TLE data\n     5→ * with typed tables and helper functions for cache-first loading.\n     6→ */\n     7→\n     8→import Dexie, { type EntityTable } from \"dexie\";\n     9→import type { Astronaut, ISSPosition } from \"./types\";\n    10→\n    11→// =============================================================================\n    12→// EXTENDED TYPES FOR STORED DATA\n    13→// =============================================================================\n    14→\n    15→/**\n    16→ * Astronaut with fetch timestamp for cache freshness tracking\n    17→ */\n    18→export interface StoredAstronaut extends Astronaut {\n    19→\t/** Timestamp when record was fetched from API */\n    20→\tfetchedAt: number;\n    21→}\n    22→\n    23→/**\n    24→ * TLE record with fetch metadata\n    25→ */\n    26→export interface StoredTLE {\n    27→\t/** Unique identifier (tle-timestamp) */\n    28→\tid: string;\n    29→\t/** First TLE line */\n    30→\tline1: string;\n    31→\t/** Second TLE line */\n    32→\tline2: string;\n    33→\t/** Unix timestamp when TLE was fetched */\n    34→\tfetchedAt: number;\n    35→\t/** Source of TLE data */\n    36→\tsource: \"celestrak\" | \"ariss\" | \"fallback\";\n    37→}\n    38→\n    39→/**\n    40→ * Timeline event for future event association (schema foundation only)\n    41→ */\n    42→export interface TimelineEvent {\n    43→\t/** Unique identifier */\n    44→\tid: string;\n    45→\t/** Event type */\n    46→\ttype: \"launch\" | \"docking\" | \"eva\" | \"crew_change\" | \"custom\";\n    47→\t/** Unix timestamp of event */\n    48→\ttimestamp: number;\n    49→\t/** Event title */\n    50→\ttitle: string;\n    51→\t/** Optional description */\n    52→\tdescription?: string;\n    53→\t/** Links to ISSPosition.id at closest timestamp */\n    54→\tassociatedPositionId?: string;\n    55→\t/** When this event was created/imported */\n    56→\tcreatedAt: number;\n    57→}\n    58→\n    59→// =============================================================================\n    60→// DATABASE SETUP\n    61→// =============================================================================\n    62→\n    63→/**\n    64→ * Dexie database with typed tables for ISS data\n    65→ */\n    66→class EphemerisDatabase extends Dexie {\n    67→\tpositions!: EntityTable<ISSPosition, \"id\">;\n    68→\tcrew!: EntityTable<StoredAstronaut, \"id\">;\n    69→\ttle!: EntityTable<StoredTLE, \"id\">;\n    70→\tevents!: EntityTable<TimelineEvent, \"id\">;\n    71→\n    72→\tconstructor() {\n    73→\t\tsuper(\"ephemeris-iss\");\n    74→\n    75→\t\t// Schema version 1: Initial tables with indexes\n    76→\t\tthis.version(1).stores({\n    77→\t\t\tpositions: \"id, timestamp\", // Primary key: id, Index: timestamp for range queries\n    78→\t\t\tcrew: \"id, fetchedAt\", // Primary key: id, Index: fetchedAt\n    79→\t\t\ttle: \"id, fetchedAt\", // Primary key: id, Index: fetchedAt\n    80→\t\t\tevents: \"id, timestamp, type\", // Primary key: id, Indexes: timestamp, type\n    81→\t\t});\n    82→\t}\n    83→}\n    84→\n    85→// Singleton database instance (lazy initialization for Cloudflare Workers compatibility)\n    86→let _db: EphemerisDatabase | null = null;\n    87→\n    88→/**\n    89→ * Get the database instance (lazy initialization)\n    90→ * Safe to call in Cloudflare Workers - only initializes on client\n    91→ */\n    92→export function getDb(): EphemerisDatabase {\n    93→\tif (typeof window === \"undefined\") {\n    94→\t\tthrow new Error(\"Database can only be accessed in browser environment\");\n    95→\t}\n    96→\n    97→\tif (!_db) {\n    98→\t\t_db = new EphemerisDatabase();\n    99→\t}\n   100→\n   101→\treturn _db;\n   102→}\n   103→\n   104→// Export db as a getter that lazily initializes\n   105→export const db = {\n   106→\tget positions() {\n   107→\t\treturn getDb().positions;\n   108→\t},\n   109→\tget crew() {\n   110→\t\treturn getDb().crew;\n   111→\t},\n   112→\tget tle() {\n   113→\t\treturn getDb().tle;\n   114→\t},\n   115→\tget events() {\n   116→\t\treturn getDb().events;\n   117→\t},\n   118→};\n   119→\n   120→// =============================================================================\n   121→// STORAGE HELPER FUNCTIONS\n   122→// =============================================================================\n   123→\n   124→/**\n   125→ * Get the latest cached position\n   126→ * @returns Promise resolving to latest position or undefined if cache is empty\n   127→ */\n   128→export async function getCachedPosition(): Promise<ISSPosition | undefined> {\n   129→\tif (typeof window === \"undefined\") return undefined;\n   130→\treturn getDb().positions.orderBy(\"timestamp\").last();\n   131→}\n   132→\n   133→/**\n   134→ * Get all cached crew members\n   135→ * @returns Promise resolving to array of astronauts (empty if cache is empty)\n   136→ */\n   137→export async function getCachedCrew(): Promise<StoredAstronaut[]> {\n   138→\tif (typeof window === \"undefined\") return [];\n   139→\treturn getDb().crew.toArray();\n   140→}\n   141→\n   142→/**\n   143→ * Get the latest cached TLE record\n   144→ * @returns Promise resolving to latest TLE or undefined if cache is empty\n   145→ */\n   146→export async function getCachedTLE(): Promise<StoredTLE | undefined> {\n   147→\tif (typeof window === \"undefined\") return undefined;\n   148→\treturn getDb().tle.orderBy(\"fetchedAt\").last();\n   149→}\n   150→\n   151→/**\n   152→ * Get positions within a time range (for history/scrubbing)\n   153→ * @param startTimestamp - Start of range (Unix seconds)\n   154→ * @param endTimestamp - End of range (Unix seconds)\n   155→ * @returns Promise resolving to array of positions in range\n   156→ */\n   157→export async function getPositionsInRange(\n   158→\tstartTimestamp: number,\n   159→\tendTimestamp: number,\n   160→): Promise<ISSPosition[]> {\n   161→\tif (typeof window === \"undefined\") return [];\n   162→\treturn getDb()\n   163→\t\t.positions.where(\"timestamp\")\n   164→\t\t.between(startTimestamp, endTimestamp)\n   165→\t\t.toArray();\n   166→}\n   167→\n   168→/**\n   169→ * Store a position record (upsert by id)\n   170→ * @param position - Position to store\n   171→ */\n   172→export async function storePosition(position: ISSPosition): Promise<void> {\n   173→\tif (typeof window === \"undefined\") return;\n   174→\tawait getDb().positions.put(position);\n   175→}\n   176→\n   177→/**\n   178→ * Store crew data with fetch timestamp\n   179→ * @param crew - Array of astronauts to store\n   180→ */\n   181→export async function storeCrew(crew: Astronaut[]): Promise<void> {\n   182→\tif (typeof window === \"undefined\") return;\n   183→\tconst fetchedAt = Date.now();\n   184→\tconst storedCrew = crew.map((astronaut) => ({ ...astronaut, fetchedAt }));\n   185→\tawait getDb().crew.bulkPut(storedCrew);\n   186→}\n   187→\n   188→/**\n   189→ * Store TLE record\n   190→ * @param line1 - First TLE line\n   191→ * @param line2 - Second TLE line\n   192→ * @param source - Source of TLE data\n   193→ */\n   194→export async function storeTLE(\n   195→\tline1: string,\n   196→\tline2: string,\n   197→\tsource: StoredTLE[\"source\"] = \"celestrak\",\n   198→): Promise<void> {\n   199→\tif (typeof window === \"undefined\") return;\n   200→\tconst fetchedAt = Date.now();\n   201→\tawait getDb().tle.put({\n   202→\t\tid: `tle-${fetchedAt}`,\n   203→\t\tline1,\n   204→\t\tline2,\n   205→\t\tfetchedAt,\n   206→\t\tsource,\n   207→\t});\n   208→}\n   209→\n   210→// =============================================================================\n   211→// SCHEMA VERSION TRACKING\n   212→// =============================================================================\n   213→\n   214→/**\n   215→ * Current schema version for migration tracking\n   216→ */\n   217→export const CURRENT_SCHEMA_VERSION = 1;\n   218→\n   219→/**\n   220→ * Get the current database version\n   221→ */\n   222→export function getDatabaseVersion(): number {\n   223→\tif (typeof window === \"undefined\") return 0;\n   224→\treturn getDb().verno;\n   225→}\n   226→\n\n<system-reminder>\nWhenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.\n</system-reminder>\n",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T04:00:50.372911+00:00",
+          "type": "text",
+          "content": "Let me check if the file that imports from db.ts is still being used:",
+          "phase": "coding",
+          "subtask_id": "7.1",
+          "session": 27
+        },
+        {
+          "timestamp": "2026-01-03T04:00:52.119474+00:00",
+          "type": "tool_start",
+          "content": "[Grep] pattern: from ['\"]@/hooks/iss/useISSData['\"]|from ['\"].*hooks/iss/useISSData['\"]",
+          "phase": "coding",
+          "tool_name": "Grep",
+          "tool_input": "pattern: from ['\"]@/hooks/iss/useISSData['\"]|from ['\"].*hooks/iss/useISSData['\"]",
+          "subtask_id": "7.1",
+          "session": 27
+        },
+        {
+          "timestamp": "2026-01-03T04:00:52.716877+00:00",
+          "type": "tool_start",
+          "content": "[Read] ./src/hooks/iss/useISSData.ts",
+          "phase": "coding",
+          "tool_name": "Read",
+          "tool_input": "./src/hooks/iss/useISSData.ts",
+          "subtask_id": "7.1",
+          "session": 27
+        },
+        {
+          "timestamp": "2026-01-03T04:00:52.738383+00:00",
+          "type": "tool_end",
+          "content": "[Read] Done",
+          "phase": "coding",
+          "tool_name": "Read",
+          "subtask_id": "7.1",
+          "session": 27,
+          "detail": "     1→/**\n     2→ * ISS Data Hooks with Cache-First Loading\n     3→ *\n     4→ * These hooks provide instant app loads by:\n     5→ * 1. Loading cached data from IndexedDB immediately on mount\n     6→ * 2. Starting TanStack Query background refresh\n     7→ * 3. Seamlessly transitioning to fresh data when available\n     8→ */\n     9→\n    10→import { useQuery, useQueryClient } from \"@tanstack/react-query\";\n    11→import { useCallback, useEffect, useState } from \"react\";\n    12→import {\n    13→\tgetCachedCrew,\n    14→\tgetCachedPosition,\n    15→\tgetCachedTLE,\n    16→\tgetPositionsInRange,\n    17→\ttype StoredAstronaut,\n    18→\ttype StoredTLE,\n    19→} from \"@/lib/iss/db\";\n    20→import { issQueries } from \"@/lib/iss/queries\";\n    21→import {\n    22→\tdetectAndRemoveCorruption,\n    23→\tfillGapsInRange,\n    24→\tstartCleanupScheduler,\n    25→\tstopCleanupScheduler,\n    26→} from \"@/lib/iss/storage\";\n    27→import type { Astronaut, ISSPosition, TLEData } from \"@/lib/iss/types\";\n    28→\n    29→// =============================================================================\n    30→// useISSPosition - Cache-first position loading\n    31→// =============================================================================\n    32→\n    33→export interface UseISSPositionResult {\n    34→\t/** Current position data (cached or fresh) */\n    35→\tdata: ISSPosition | null;\n    36→\t/** Whether initial data is loading (no cache, waiting for network) */\n    37→\tisLoading: boolean;\n    38→\t/** Whether data came from cache (before network response) */\n    39→\tfromCache: boolean;\n    40→\t/** Whether a background fetch is in progress */\n    41→\tisFetching: boolean;\n    42→\t/** Any error from the query */\n    43→\terror: Error | null;\n    44→}\n    45→\n    46→/**\n    47→ * Hook for ISS position with cache-first loading pattern\n    48→ *\n    49→ * On mount:\n    50→ * 1. Immediately loads cached position from IndexedDB\n\n<system-reminder>\nWhenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.\n</system-reminder>\n",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T04:00:57.026456+00:00",
+          "type": "tool_start",
+          "content": "[Read] ./src/routes/iss/index.tsx",
+          "phase": "coding",
+          "tool_name": "Read",
+          "tool_input": "./src/routes/iss/index.tsx",
+          "subtask_id": "7.1",
+          "session": 27
+        },
+        {
+          "timestamp": "2026-01-03T04:00:57.053760+00:00",
+          "type": "tool_end",
+          "content": "[Read] Done",
+          "phase": "coding",
+          "tool_name": "Read",
+          "subtask_id": "7.1",
+          "session": 27,
+          "detail": "     1→import { createFileRoute } from \"@tanstack/react-router\";\n     2→import { Calculator, Minimize, RotateCw } from \"lucide-react\";\n     3→import { lazy, Suspense, useEffect, useMemo, useRef, useState } from \"react\";\n     4→import type { GlobeMethods } from \"react-globe.gl\";\n     5→import {\n     6→\tuseISSPosition,\n     7→\tuseISSTLE,\n     8→\tuseStorageCleanup,\n     9→\tuseWindowFocusRefetch,\n    10→} from \"@/hooks/iss/useISSData\";\n    11→import { useLocation } from \"@/hooks/useLocation\";\n    12→import { useNextPass } from \"@/hooks/useNextPass\";\n    13→import { terminalAudio } from \"@/lib/iss/audio\";\n    14→import { calculateOrbitPath } from \"@/lib/iss/orbital\";\n    15→import { FlyoverControl } from \"./-components/FlyoverControl\";\n    16→import { ISSLayout } from \"./-components/ISSLayout\";\n    17→import { OrbitalSolver } from \"./-components/OrbitalSolver\";\n    18→import { StatsPanel } from \"./-components/StatsPanel\";\n    19→\n    20→// Lazy load the Globe component (large bundle with three.js)\n    21→const Globe = lazy(() => import(\"react-globe.gl\"));\n    22→\n    23→export const Route = createFileRoute(\"/iss/\")({\n    24→\thead: () => ({\n    25→\t\tmeta: [\n    26→\t\t\t{\n    27→\t\t\t\ttitle: \"Live ISS Tracker - Ephemeris\",\n    28→\t\t\t},\n    29→\t\t\t{\n    30→\t\t\t\tname: \"description\",\n    31→\t\t\t\tcontent:\n    32→\t\t\t\t\t\"Real-time International Space Station tracking with 3D globe visualization, orbital paths, and live telemetry data.\",\n    33→\t\t\t},\n    34→\t\t\t{\n    35→\t\t\t\tproperty: \"og:title\",\n    36→\t\t\t\tcontent: \"Live ISS Tracker - Ephemeris\",\n    37→\t\t\t},\n    38→\t\t\t{\n    39→\t\t\t\tproperty: \"og:description\",\n    40→\t\t\t\tcontent:\n    41→\t\t\t\t\t\"Real-time International Space Station tracking with 3D globe visualization, orbital paths, and live telemetry data.\",\n    42→\t\t\t},\n    43→\t\t\t{\n    44→\t\t\t\tproperty: \"og:url\",\n    45→\t\t\t\tcontent: \"https://ephemeris.observer/iss\",\n    46→\t\t\t},\n    47→\t\t\t{\n    48→\t\t\t\tname: \"twitter:url\",\n    49→\t\t\t\tcontent: \"https://ephemeris.observer/iss\",\n    50→\t\t\t},\n    51→\t\t\t{\n    52→\t\t\t\tname: \"twitter:title\",\n    53→\t\t\t\tcontent: \"Live ISS Tracker - Ephemeris\",\n    54→\t\t\t},\n    55→\t\t\t{\n    56→\t\t\t\tname: \"twitter:description\",\n    57→\t\t\t\tcontent:\n    58→\t\t\t\t\t\"Real-time International Space Station tracking with 3D globe visualization, orbital paths, and live telemetry data.\",\n    59→\t\t\t},\n    60→\t\t],\n    61→\t\tlinks: [\n    62→\t\t\t{\n    63→\t\t\t\trel: \"canonical\",\n    64→\t\t\t\thref: \"https://ephemeris.observer/iss\",\n    65→\t\t\t},\n    66→\t\t],\n    67→\t}),\n    68→\tcomponent: ISSIndexPage,\n    69→});\n    70→\n    71→function ISSIndexPage() {\n    72→\tconst [isClient, setIsClient] = useState(false);\n    73→\n    74→\tuseEffect(() => {\n    75→\t\tsetIsClient(true);\n    76→\t}, []);\n    77→\n    78→\tif (!isClient) {\n    79→\t\treturn (\n    80→\t\t\t<ISSLayout>\n    81→\t\t\t\t<div className=\"w-full h-full flex items-center justify-center bg-black\">\n    82→\t\t\t\t\t<div className=\"text-matrix-text animate-pulse\">\n    83→\t\t\t\t\t\tINITIALIZING_RENDERER...\n    84→\t\t\t\t\t</div>\n    85→\t\t\t\t</div>\n    86→\t\t\t</ISSLayout>\n    87→\t\t);\n    88→\t}\n    89→\n    90→\treturn (\n    91→\t\t<ISSLayout>\n    92→\t\t\t<ISSTracker />\n    93→\t\t</ISSLayout>\n    94→\t);\n    95→}\n    96→\n    97→function ISSTracker() {\n    98→\tconst globeEl = useRef<GlobeMethods | undefined>(undefined);\n    99→\tconst containerRef = useRef<HTMLDivElement>(null);\n   100→\tconst [globeReady, setGlobeReady] = useState(false);\n   101→\tconst [dimensions, setDimensions] = useState({ width: 800, height: 600 });\n   102→\tconst [showOrbitalSolver, setShowOrbitalSolver] = useState(false);\n   103→\n   104→\t// Location from shared store and next pass prediction\n   105→\tconst { coordinates: userLocation } = useLocation();\n   106→\tconst { nextPass } = useNextPass();\n   107→\n   108→\t// Live ISS Position with cache-first loading\n   109→\tconst { data, isLoading, error, fromCache } = useISSPosition();\n   110→\tconst isError = !!error;\n   111→\n   112→\t// TLE Data for orbital path calculations with cache-first loading\n   113→\tconst { data: tleData } = useISSTLE();\n   114→\n   115→\t// Initialize storage cleanup scheduler and window focus refetch\n   116→\tuseStorageCleanup();\n   117→\tuseWindowFocusRefetch();\n   118→\n   119→\t// Handle window resize with delayed initial measurement\n   120→\tuseEffect(() => {\n   121→\t\tconst handleResize = () => {\n   122→\t\t\tif (containerRef.current) {\n   123→\t\t\t\tsetDimensions({\n   124→\t\t\t\t\twidth: containerRef.current.clientWidth,\n   125→\t\t\t\t\theight: containerRef.current.clientHeight,\n   126→\t\t\t\t});\n   127→\t\t\t}\n   128→\t\t};\n   129→\n   130→\t\t// Initial measurement\n   131→\t\thandleResize();\n   132→\n   133→\t\t// Delayed measurement to catch layout shifts\n   134→\t\tconst timeoutId = setTimeout(handleResize, 100);\n   135→\t\tconst timeoutId2 = setTimeout(handleResize, 500);\n   136→\n   137→\t\twindow.addEventListener(\"resize\", handleResize);\n   138→\t\treturn () => {\n   139→\t\t\twindow.removeEventListener(\"resize\", handleResize);\n   140→\t\t\tclearTimeout(timeoutId);\n   141→\t\t\tclearTimeout(timeoutId2);\n   142→\t\t};\n   143→\t}, []);\n   144→\n   145→\t// Center globe on ISS when data updates\n   146→\tuseEffect(() => {\n   147→\t\tif (\n   148→\t\t\tdata &&\n   149→\t\t\tglobeEl.current &&\n   150→\t\t\ttypeof data.latitude === \"number\" &&\n   151→\t\t\t!Number.isNaN(data.latitude) &&\n   152→\t\t\ttypeof data.longitude === \"number\" &&\n   153→\t\t\t!Number.isNaN(data.longitude)\n   154→\t\t) {\n   155→\t\t\tglobeEl.current.pointOfView(\n   156→\t\t\t\t{\n   157→\t\t\t\t\tlat: data.latitude,\n   158→\t\t\t\t\tlng: data.longitude,\n   159→\t\t\t\t\taltitude: 1.8,\n   160→\t\t\t\t},\n   161→\t\t\t\t1000,\n   162→\t\t\t);\n   163→\t\t}\n   164→\t}, [data]);\n   165→\n   166→\t// Calculate orbital paths from TLE data\n   167→\tconst { historyPath, predictedPath } = useMemo(() => {\n   168→\t\tif (!tleData || !Array.isArray(tleData) || tleData.length < 2) {\n   169→\t\t\treturn { historyPath: [], predictedPath: [] };\n   170→\t\t}\n   171→\n   172→\t\tconst hist = calculateOrbitPath(tleData[0], tleData[1], -45, 0);\n   173→\t\tconst pred = calculateOrbitPath(tleData[0], tleData[1], 0, 60);\n   174→\n   175→\t\treturn {\n   176→\t\t\thistoryPath: hist.length > 0 ? hist : [],\n   177→\t\t\tpredictedPath: pred.length > 0 ? pred : [],\n   178→\t\t};\n   179→\t}, [tleData]);\n   180→\n   181→\t// Consolidate paths for globe (including flyover arc if available)\n   182→\tconst globePathsData = useMemo(() => {\n   183→\t\tconst paths = [];\n   184→\t\tif (historyPath.length > 1) paths.push(historyPath);\n   185→\t\tif (predictedPath.length > 1) paths.push(predictedPath);\n   186→\n   187→\t\tif (nextPass?.path && nextPass.path.length > 1) {\n   188→\t\t\tpaths.push(nextPass.path);\n   189→\t\t}\n   190→\t\treturn paths;\n   191→\t}, [historyPath, predictedPath, nextPass]);\n   192→\n   193→\t// Points data: ISS + User Location\n   194→\tconst gData = useMemo(() => {\n   195→\t\tconst points = [];\n   196→\n   197→\t\t// ISS position\n   198→\t\tif (\n   199→\t\t\tdata &&\n   200→\t\t\ttypeof data.latitude === \"number\" &&\n   201→\t\t\t!Number.isNaN(data.latitude) &&\n   202→\t\t\ttypeof data.longitude === \"number\" &&\n   203→\t\t\t!Number.isNaN(data.longitude)\n   204→\t\t) {\n   205→\t\t\tpoints.push({\n   206→\t\t\t\tlat: data.latitude,\n   207→\t\t\t\tlng: data.longitude,\n   208→\t\t\t\talt: 0.1,\n   209→\t\t\t\tradius: 1.5,\n   210→\t\t\t\tcolor: \"#00FF41\",\n   211→\t\t\t\tlabel: \"ISS\",\n   212→\t\t\t});\n   213→\t\t}\n   214→\n   215→\t\t// User location\n   216→\t\tif (userLocation) {\n   217→\t\t\tpoints.push({\n   218→\t\t\t\tlat: userLocation.lat,\n   219→\t\t\t\tlng: userLocation.lng,\n   220→\t\t\t\talt: 0.02,\n   221→\t\t\t\tradius: 0.8,\n   222→\t\t\t\tcolor: \"#FFD700\",\n   223→\t\t\t\tlabel: \"USER\",\n   224→\t\t\t});\n   225→\t\t}\n   226→\n   227→\t\treturn points;\n   228→\t}, [data, userLocation]);\n   229→\n   230→\t// Rings data (pulsing markers)\n   231→\tconst ringsData = useMemo(() => {\n   232→\t\tconst rings = [];\n   233→\n   234→\t\tif (data && !Number.isNaN(data.latitude)) {\n   235→\t\t\trings.push({\n   236→\t\t\t\tlat: data.latitude,\n   237→\t\t\t\tlng: data.longitude,\n   238→\t\t\t\talt: 0.1,\n   239→\t\t\t\tmaxR: 8,\n   240→\t\t\t\tpropagationSpeed: 4,\n   241→\t\t\t\trepeatPeriod: 1000,\n   242→\t\t\t\tcolor: \"#00FF41\",\n   243→\t\t\t});\n   244→\t\t}\n   245→\n   246→\t\tif (userLocation) {\n   247→\t\t\trings.push({\n   248→\t\t\t\tlat: userLocation.lat,\n   249→\t\t\t\tlng: userLocation.lng,\n   250→\t\t\t\talt: 0.02,\n   251→\t\t\t\tmaxR: 5,\n   252→\t\t\t\tpropagationSpeed: 2,\n   253→\t\t\t\trepeatPeriod: 2000,\n   254→\t\t\t\tcolor: \"#FFD700\",\n   255→\t\t\t});\n   256→\t\t}\n   257→\n   258→\t\treturn rings;\n   259→\t}, [data, userLocation]);\n   260→\n   261→\tconst handleTrackISS = () => {\n   262→\t\tterminalAudio.playClick();\n   263→\t\tif (data && !Number.isNaN(data.latitude) && !Number.isNaN(data.longitude)) {\n   264→\t\t\tglobeEl.current?.pointOfView(\n   265→\t\t\t\t{ lat: data.latitude, lng: data.longitude, altitude: 1.8 },\n   266→\t\t\t\t1000,\n   267→\t\t\t);\n   268→\t\t}\n   269→\t};\n   270→\n   271→\tconst handleResetCamera = () => {\n   272→\t\tterminalAudio.playClick();\n   273→\t\tglobeEl.current?.pointOfView({ lat: 0, lng: 0, altitude: 2.5 }, 1000);\n   274→\t};\n   275→\n   276→\tconst handleToggleOrbitalSolver = () => {\n   277→\t\tterminalAudio.playClick();\n   278→\t\tsetShowOrbitalSolver(!showOrbitalSolver);\n   279→\t};\n   280→\n   281→\treturn (\n   282→\t\t<div className=\"flex flex-col md:flex-row h-full w-full relative\">\n   283→\t\t\t{/* Globe Container */}\n   284→\t\t\t<div\n   285→\t\t\t\tref={containerRef}\n   286→\t\t\t\tclassName=\"flex-1 relative bg-black overflow-hidden border-r border-matrix-dim\"\n   287→\t\t\t>\n   288→\t\t\t\t{/* HUD Controls */}\n   289→\t\t\t\t<div className=\"absolute top-4 left-4 z-10 flex gap-2\">\n   290→\t\t\t\t\t<button\n   291→\t\t\t\t\t\ttype=\"button\"\n   292→\t\t\t\t\t\tonClick={handleTrackISS}\n   293→\t\t\t\t\t\tonMouseEnter={() => terminalAudio.playHover()}\n   294→\t\t\t\t\t\tclassName=\"bg-matrix-dark/80 border border-matrix-dim text-matrix-text p-2 hover:bg-matrix-dim/20 transition group\"\n   295→\t\t\t\t\t\ttitle=\"Track ISS\"\n   296→\t\t\t\t\t>\n   297→\t\t\t\t\t\t<Minimize className=\"w-4 h-4 group-hover:scale-110 transition-transform\" />\n   298→\t\t\t\t\t</button>\n   299→\t\t\t\t\t<button\n   300→\t\t\t\t\t\ttype=\"button\"\n   301→\t\t\t\t\t\tonClick={handleResetCamera}\n   302→\t\t\t\t\t\tonMouseEnter={() => terminalAudio.playHover()}\n   303→\t\t\t\t\t\tclassName=\"bg-matrix-dark/80 border border-matrix-dim text-matrix-text p-2 hover:bg-matrix-dim/20 transition group\"\n   304→\t\t\t\t\t\ttitle=\"Reset Camera\"\n   305→\t\t\t\t\t>\n   306→\t\t\t\t\t\t<RotateCw className=\"w-4 h-4 group-hover:rotate-180 transition-transform duration-500\" />\n   307→\t\t\t\t\t<\n\n... [truncated - full output was 15715 chars]",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T04:01:07.821211+00:00",
+          "type": "text",
+          "content": "I found that `src/routes/iss/index.tsx` is still using legacy hooks from `useISSData.ts`. I need to migrate this file first before removing `db.ts`. Let me update index.tsx to use the new DB hooks:",
+          "phase": "coding",
+          "subtask_id": "7.1",
+          "session": 27
+        },
+        {
+          "timestamp": "2026-01-03T04:01:09.795370+00:00",
+          "type": "tool_start",
+          "content": "[Edit] ./src/routes/iss/index.tsx",
+          "phase": "coding",
+          "tool_name": "Edit",
+          "tool_input": "./src/routes/iss/index.tsx",
+          "subtask_id": "7.1",
+          "session": 27
+        },
+        {
+          "timestamp": "2026-01-03T04:01:13.670985+00:00",
+          "type": "tool_start",
+          "content": "[Edit] ./src/routes/iss/index.tsx",
+          "phase": "coding",
+          "tool_name": "Edit",
+          "tool_input": "./src/routes/iss/index.tsx",
+          "subtask_id": "7.1",
+          "session": 27
+        },
+        {
+          "timestamp": "2026-01-03T04:01:13.689078+00:00",
+          "type": "tool_end",
+          "content": "[Edit] Done",
+          "phase": "coding",
+          "tool_name": "Edit",
+          "subtask_id": "7.1",
+          "session": 27,
+          "detail": "The file ./src/routes/iss/index.tsx has been updated. Here's the result of running `cat -n` on a snippet of the edited file:\n     1→import { createFileRoute } from \"@tanstack/react-router\";\n     2→import { Calculator, Minimize, RotateCw } from \"lucide-react\";\n     3→import { lazy, Suspense, useEffect, useMemo, useRef, useState } from \"react\";\n     4→import type { GlobeMethods } from \"react-globe.gl\";\n     5→import { useISSPositionDB, useISSTLEDB } from \"@/hooks/iss/useISSDataDB\";\n     6→import { useLocation } from \"@/hooks/useLocation\";\n     7→import { useNextPass } from \"@/hooks/useNextPass\";\n     8→import { terminalAudio } from \"@/lib/iss/audio\";\n     9→import { calculateOrbitPath } from \"@/lib/iss/orbital\";",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T04:01:18.761890+00:00",
+          "type": "text",
+          "content": "Now let me verify that no files import from `db.ts` anymore and run a build test:",
+          "phase": "coding",
+          "subtask_id": "7.1",
+          "session": 27
+        },
+        {
+          "timestamp": "2026-01-03T04:01:20.432951+00:00",
+          "type": "tool_start",
+          "content": "[Grep] pattern: from ['\"]@/lib/iss/db['\"]|from ['\"].*lib/iss/db['\"]",
+          "phase": "coding",
+          "tool_name": "Grep",
+          "tool_input": "pattern: from ['\"]@/lib/iss/db['\"]|from ['\"].*lib/iss/db['\"]",
+          "subtask_id": "7.1",
+          "session": 27
+        },
+        {
+          "timestamp": "2026-01-03T04:01:21.228450+00:00",
+          "type": "tool_start",
+          "content": "[Bash] npm run build",
+          "phase": "coding",
+          "tool_name": "Bash",
+          "tool_input": "npm run build",
+          "subtask_id": "7.1",
+          "session": 27
+        },
+        {
+          "timestamp": "2026-01-03T04:01:21.593243+00:00",
+          "type": "tool_end",
+          "content": "[Bash] Done",
+          "phase": "coding",
+          "tool_name": "Bash",
+          "subtask_id": "7.1",
+          "session": 27,
+          "detail": "Found 1 file\nsrc/hooks/iss/useISSData.ts",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T04:01:41.302632+00:00",
+          "type": "text",
+          "content": "Perfect! The build succeeded. The only remaining reference to `db.ts` is in the legacy `useISSData.ts` file, which will be removed in a later subtask (7.4). Since all consumers have been migrated away from that file, it's now safe to remove `db.ts`. Let me remove it:",
+          "phase": "coding",
+          "subtask_id": "7.1",
+          "session": 27
+        },
+        {
+          "timestamp": "2026-01-03T04:01:42.162342+00:00",
+          "type": "tool_start",
+          "content": "[Bash] rm ./src/lib/iss/db.ts",
+          "phase": "coding",
+          "tool_name": "Bash",
+          "tool_input": "rm ./src/lib/iss/db.ts",
+          "subtask_id": "7.1",
+          "session": 27
+        },
+        {
+          "timestamp": "2026-01-03T04:01:42.981937+00:00",
+          "type": "tool_start",
+          "content": "[Bash] npm run build",
+          "phase": "coding",
+          "tool_name": "Bash",
+          "tool_input": "npm run build",
+          "subtask_id": "7.1",
+          "session": 27
+        },
+        {
+          "timestamp": "2026-01-03T04:01:43.733759+00:00",
+          "type": "tool_end",
+          "content": "[Bash] Done",
+          "phase": "coding",
+          "tool_name": "Bash",
+          "subtask_id": "7.1",
+          "session": 27,
+          "detail": "",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T04:01:51.772326+00:00",
+          "type": "text",
+          "content": "I found that `src/lib/iss/queries.ts` also imports from `db.ts`. Let me check what it's using:",
+          "phase": "coding",
+          "subtask_id": "7.1",
+          "session": 27
+        },
+        {
+          "timestamp": "2026-01-03T04:01:52.076641+00:00",
+          "type": "tool_start",
+          "content": "[Read] ./src/lib/iss/queries.ts",
+          "phase": "coding",
+          "tool_name": "Read",
+          "tool_input": "./src/lib/iss/queries.ts",
+          "subtask_id": "7.1",
+          "session": 27
+        },
+        {
+          "timestamp": "2026-01-03T04:01:52.125711+00:00",
+          "type": "tool_end",
+          "content": "[Read] Done",
+          "phase": "coding",
+          "tool_name": "Read",
+          "subtask_id": "7.1",
+          "session": 27,
+          "detail": "     1→/**\n     2→ * TanStack Query Factory for ISS Data\n     3→ *\n     4→ * Query keys and structure designed for future TanStack DB migration.\n     5→ * All entities have `id` fields compatible with `getKey: (item) => item.id`.\n     6→ *\n     7→ * Side effects persist data to IndexedDB via Dexie for cache-first loading.\n     8→ */\n     9→\n    10→import * as Sentry from \"@sentry/tanstackstart-react\";\n    11→import { queryOptions } from \"@tanstack/react-query\";\n    12→import { fetchCrewData, fetchISSPosition, fetchTLE } from \"./api\";\n    13→import { storeCrew, storePosition, storeTLE } from \"./db\";\n    14→\n    15→/**\n    16→ * ISS Query factory\n    17→ * Follows TanStack Query best practices with query factory pattern.\n    18→ * Each queryFn includes a side effect to persist data to IndexedDB.\n    19→ */\n    20→export const issQueries = {\n    21→\t/**\n    22→\t * Current ISS position - refetches every 5 seconds\n    23→\t * Side effect: persists to IndexedDB for instant app loads\n    24→\t */\n    25→\tcurrentPosition: () =>\n    26→\t\tqueryOptions({\n    27→\t\t\tqueryKey: [\"iss\", \"position\", \"current\"] as const,\n    28→\t\t\tqueryFn: async () => {\n    29→\t\t\t\tconst position = await fetchISSPosition();\n    30→\n    31→\t\t\t\t// Side effect: persist to IndexedDB (fire and forget, don't block)\n    32→\t\t\t\tif (typeof window !== \"undefined\") {\n    33→\t\t\t\t\tstorePosition(position).catch((err) => {\n    34→\t\t\t\t\t\tconsole.warn(\"[ISS Queries] Failed to persist position:\", err);\n    35→\t\t\t\t\t});\n    36→\t\t\t\t}\n    37→\n    38→\t\t\t\treturn position;\n    39→\t\t\t},\n    40→\t\t\trefetchInterval: 5000,\n    41→\t\t\tstaleTime: 0,\n    42→\t\t\t// Retry failed background refreshes\n    43→\t\t\tretry: 3,\n    44→\t\t\tretryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),\n    45→\t\t}),\n    46→\n    47→\t/**\n    48→\t * TLE orbital data - cached for 1 hour\n    49→\t * Side effect: persists to IndexedDB\n    50→\t */\n    51→\ttle: () =>\n    52→\t\tqueryOptions({\n    53→\t\t\tqueryKey: [\"iss\", \"tle\"] as const,\n    54→\t\t\tqueryFn: async () => {\n    55→\t\t\t\tconst tle = await fetchTLE();\n    56→\n    57→\t\t\t\t// Side effect: persist to IndexedDB\n    58→\t\t\t\tif (typeof window !== \"undefined\") {\n    59→\t\t\t\t\tstoreTLE(tle[0], tle[1], \"celestrak\").catch((err) => {\n    60→\t\t\t\t\t\tconsole.warn(\"[ISS Queries] Failed to persist TLE:\", err);\n    61→\t\t\t\t\t});\n    62→\t\t\t\t}\n    63→\n    64→\t\t\t\treturn tle;\n    65→\t\t\t},\n    66→\t\t\tstaleTime: 1000 * 60 * 60, // 1 hour\n    67→\t\t\tretry: 3,\n    68→\t\t}),\n    69→\n    70→\t/**\n    71→\t * ISS crew manifest - cached for 1 hour\n    72→\t * Returns Astronaut[] for TanStack DB collection compatibility\n    73→\t * Side effect: persists to IndexedDB\n    74→\t */\n    75→\tcrew: () =>\n    76→\t\tqueryOptions({\n    77→\t\t\tqueryKey: [\"iss\", \"crew\"] as const,\n    78→\t\t\tqueryFn: async () => {\n    79→\t\t\t\tconst crew = await Sentry.startSpan(\n    80→\t\t\t\t\t{ name: \"Background crew refresh\" },\n    81→\t\t\t\t\tasync () => fetchCrewData(),\n    82→\t\t\t\t);\n    83→\n    84→\t\t\t\t// Side effect: persist to IndexedDB with fetch timestamp\n    85→\t\t\t\tif (typeof window !== \"undefined\") {\n    86→\t\t\t\t\tstoreCrew(crew).catch((err) => {\n    87→\t\t\t\t\t\tconsole.warn(\"[ISS Queries] Failed to persist crew:\", err);\n    88→\t\t\t\t\t});\n    89→\t\t\t\t}\n    90→\n    91→\t\t\t\treturn crew;\n    92→\t\t\t},\n    93→\t\t\tstaleTime: 1000 * 60 * 60, // 1 hour\n    94→\t\t\tretry: 3,\n    95→\t\t}),\n    96→};\n    97→\n\n<system-reminder>\nWhenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.\n</system-reminder>\n",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T04:01:59.003681+00:00",
+          "type": "tool_start",
+          "content": "[Grep] pattern: issQueries|from ['\"]@/lib/iss/queries['\"]|from ['\"].*lib/iss/queries['\"]",
+          "phase": "coding",
+          "tool_name": "Grep",
+          "tool_input": "pattern: issQueries|from ['\"]@/lib/iss/queries['\"]|from ['\"].*lib/iss/queries['\"]",
+          "subtask_id": "7.1",
+          "session": 27
+        },
+        {
+          "timestamp": "2026-01-03T04:01:59.353510+00:00",
+          "type": "tool_end",
+          "content": "[Grep] Done",
+          "phase": "coding",
+          "tool_name": "Grep",
+          "subtask_id": "7.1",
+          "session": 27,
+          "detail": "Found 4 files\nsrc/lib/iss/queries.ts\nsrc/hooks/useNextPass.ts\nsrc/hooks/iss/useISSData.ts\nspecs/001-iss-tracker-migration/contracts/api-interfaces.ts",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T04:02:03.356707+00:00",
+          "type": "tool_start",
+          "content": "[Grep] pattern: issQueries",
+          "phase": "coding",
+          "tool_name": "Grep",
+          "tool_input": "pattern: issQueries",
+          "subtask_id": "7.1",
+          "session": 27
+        },
+        {
+          "timestamp": "2026-01-03T04:02:03.896600+00:00",
+          "type": "tool_end",
+          "content": "[Grep] Done",
+          "phase": "coding",
+          "tool_name": "Grep",
+          "subtask_id": "7.1",
+          "session": 27,
+          "detail": "12:import { issQueries } from \"@/lib/iss/queries\";\n33:\tconst { data: tle } = useQuery(issQueries.tle());",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T04:02:08.062031+00:00",
+          "type": "tool_start",
+          "content": "[Read] ./src/hooks/useNextPass.ts",
+          "phase": "coding",
+          "tool_name": "Read",
+          "tool_input": "./src/hooks/useNextPass.ts",
+          "subtask_id": "7.1",
+          "session": 27
+        },
+        {
+          "timestamp": "2026-01-03T04:02:08.079704+00:00",
+          "type": "tool_end",
+          "content": "[Read] Done",
+          "phase": "coding",
+          "tool_name": "Read",
+          "subtask_id": "7.1",
+          "session": 27,
+          "detail": "     1→/**\n     2→ * useNextPass Hook\n     3→ *\n     4→ * Derives the next ISS pass prediction from the location store and TLE data.\n     5→ * This hook encapsulates the pass prediction logic that was previously in ISSLayout.\n     6→ */\n     7→\n     8→import { useQuery } from \"@tanstack/react-query\";\n     9→import { useStore } from \"@tanstack/react-store\";\n    10→import { useEffect, useState } from \"react\";\n    11→import { predictNextPass } from \"@/lib/iss/orbital\";\n    12→import { issQueries } from \"@/lib/iss/queries\";\n    13→import type { PassPrediction } from \"@/lib/iss/types\";\n    14→import { locationStore } from \"@/lib/location/store\";\n    15→\n    16→// =============================================================================\n    17→// HOOK\n    18→// =============================================================================\n    19→\n    20→/**\n    21→ * useNextPass - Compute next ISS pass for current location\n    22→ *\n    23→ * @returns Object containing:\n    24→ * - nextPass: PassPrediction or null\n    25→ * - isPredicting: Boolean indicating calculation in progress\n    26→ * - hasLocation: Boolean indicating if location is available\n    27→ */\n    28→export function useNextPass() {\n    29→\t// Get coordinates from location store\n    30→\tconst coordinates = useStore(locationStore, (s) => s.coordinates);\n    31→\n    32→\t// Get TLE data from TanStack Query\n    33→\tconst { data: tle } = useQuery(issQueries.tle());\n    34→\n    35→\t// Local state for prediction\n    36→\tconst [nextPass, setNextPass] = useState<PassPrediction | null>(null);\n    37→\tconst [isPredicting, setIsPredicting] = useState(false);\n    38→\n    39→\t// Recalculate pass when location or TLE changes\n    40→\tuseEffect(() => {\n    41→\t\tif (!coordinates || !tle || tle.length !== 2) {\n    42→\t\t\tsetNextPass(null);\n    43→\t\t\treturn;\n    44→\t\t}\n    45→\n    46→\t\tsetIsPredicting(true);\n    47→\n    48→\t\t// Use setTimeout to debounce and avoid blocking UI\n    49→\t\tconst timeoutId = setTimeout(() => {\n    50→\t\t\ttry {\n    51→\t\t\t\tconst pass = predictNextPass(tle[0], tle[1], coordinates);\n    52→\t\t\t\tsetNextPass(pass);\n    53→\t\t\t} catch (e) {\n    54→\t\t\t\tconsole.error(\"Pass prediction failed:\", e);\n    55→\t\t\t\tsetNextPass(null);\n    56→\t\t\t} finally {\n    57→\t\t\t\tsetIsPredicting(false);\n    58→\t\t\t}\n    59→\t\t}, 500);\n    60→\n    61→\t\treturn () => clearTimeout(timeoutId);\n    62→\t}, [coordinates, tle]);\n    63→\n    64→\treturn {\n    65→\t\tnextPass,\n    66→\t\tisPredicting,\n    67→\t\thasLocation: coordinates !== null,\n    68→\t};\n    69→}\n    70→\n\n<system-reminder>\nWhenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.\n</system-reminder>\n",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T04:02:12.638157+00:00",
+          "type": "text",
+          "content": "Let me migrate `useNextPass.ts` to use the new DB hook:",
+          "phase": "coding",
+          "subtask_id": "7.1",
+          "session": 27
+        },
+        {
+          "timestamp": "2026-01-03T04:02:15.110285+00:00",
+          "type": "tool_start",
+          "content": "[Edit] ./src/hooks/useNextPass.ts",
+          "phase": "coding",
+          "tool_name": "Edit",
+          "tool_input": "./src/hooks/useNextPass.ts",
+          "subtask_id": "7.1",
+          "session": 27
+        },
+        {
+          "timestamp": "2026-01-03T04:02:16.727081+00:00",
+          "type": "tool_start",
+          "content": "[Edit] ./src/hooks/useNextPass.ts",
+          "phase": "coding",
+          "tool_name": "Edit",
+          "tool_input": "./src/hooks/useNextPass.ts",
+          "subtask_id": "7.1",
+          "session": 27
+        },
+        {
+          "timestamp": "2026-01-03T04:02:16.744163+00:00",
+          "type": "tool_end",
+          "content": "[Edit] Done",
+          "phase": "coding",
+          "tool_name": "Edit",
+          "subtask_id": "7.1",
+          "session": 27,
+          "detail": "The file ./src/hooks/useNextPass.ts has been updated. Here's the result of running `cat -n` on a snippet of the edited file:\n     4→ * Derives the next ISS pass prediction from the location store and TLE data.\n     5→ * This hook encapsulates the pass prediction logic that was previously in ISSLayout.\n     6→ */\n     7→\n     8→import { useStore } from \"@tanstack/react-store\";\n     9→import { useEffect, useState } from \"react\";\n    10→import { useISSTLEDB } from \"@/hooks/iss/useISSDataDB\";\n    11→import { predictNextPass } from \"@/lib/iss/orbital\";\n    12→import type { PassPrediction } from \"@/lib/iss/types\";\n    13→import { locationStore } from \"@/lib/location/store\";\n    14→\n    15→// =============================================================================\n    16→// HOOK\n    17→// =============================================================================",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T04:02:22.324951+00:00",
+          "type": "tool_start",
+          "content": "[Grep] pattern: issQueries",
+          "phase": "coding",
+          "tool_name": "Grep",
+          "tool_input": "pattern: issQueries",
+          "subtask_id": "7.1",
+          "session": 27
+        },
+        {
+          "timestamp": "2026-01-03T04:02:22.686982+00:00",
+          "type": "tool_end",
+          "content": "[Grep] Done",
+          "phase": "coding",
+          "tool_name": "Grep",
+          "subtask_id": "7.1",
+          "session": 27,
+          "detail": "Found 2 files\nsrc/lib/iss/queries.ts\nsrc/hooks/iss/useISSData.ts",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T04:02:30.637492+00:00",
+          "type": "text",
+          "content": "Now let me remove the `db.ts` imports from `queries.ts` since it's no longer needed:",
+          "phase": "coding",
+          "subtask_id": "7.1",
+          "session": 27
+        },
+        {
+          "timestamp": "2026-01-03T04:02:33.687162+00:00",
+          "type": "tool_start",
+          "content": "[Edit] ./src/lib/iss/queries.ts",
+          "phase": "coding",
+          "tool_name": "Edit",
+          "tool_input": "./src/lib/iss/queries.ts",
+          "subtask_id": "7.1",
+          "session": 27
+        },
+        {
+          "timestamp": "2026-01-03T04:02:37.323390+00:00",
+          "type": "tool_start",
+          "content": "[Edit] ./src/lib/iss/queries.ts",
+          "phase": "coding",
+          "tool_name": "Edit",
+          "tool_input": "./src/lib/iss/queries.ts",
+          "subtask_id": "7.1",
+          "session": 27
+        },
+        {
+          "timestamp": "2026-01-03T04:02:39.309723+00:00",
+          "type": "tool_start",
+          "content": "[Edit] ./src/lib/iss/queries.ts",
+          "phase": "coding",
+          "tool_name": "Edit",
+          "tool_input": "./src/lib/iss/queries.ts",
+          "subtask_id": "7.1",
+          "session": 27
+        },
+        {
+          "timestamp": "2026-01-03T04:02:41.868232+00:00",
+          "type": "tool_start",
+          "content": "[Edit] ./src/lib/iss/queries.ts",
+          "phase": "coding",
+          "tool_name": "Edit",
+          "tool_input": "./src/lib/iss/queries.ts",
+          "subtask_id": "7.1",
+          "session": 27
+        },
+        {
+          "timestamp": "2026-01-03T04:02:41.887223+00:00",
+          "type": "tool_end",
+          "content": "[Edit] Done",
+          "phase": "coding",
+          "tool_name": "Edit",
+          "subtask_id": "7.1",
+          "session": 27,
+          "detail": "The file ./src/lib/iss/queries.ts has been updated. Here's the result of running `cat -n` on a snippet of the edited file:\n     6→ *\n     7→ * Side effects persist data to IndexedDB via Dexie for cache-first loading.\n     8→ */\n     9→\n    10→import * as Sentry from \"@sentry/tanstackstart-react\";\n    11→import { queryOptions } from \"@tanstack/react-query\";\n    12→import { fetchCrewData, fetchISSPosition, fetchTLE } from \"./api\";\n    13→\n    14→/**\n    15→ * ISS Query factory\n    16→ * Follows TanStack Query best practices with query factory pattern.",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T04:02:45.190801+00:00",
+          "type": "text",
+          "content": "Now let me verify the build succeeds:",
+          "phase": "coding",
+          "subtask_id": "7.1",
+          "session": 27
+        },
+        {
+          "timestamp": "2026-01-03T04:02:46.200895+00:00",
+          "type": "tool_start",
+          "content": "[Bash] npm run build",
+          "phase": "coding",
+          "tool_name": "Bash",
+          "tool_input": "npm run build",
+          "subtask_id": "7.1",
+          "session": 27
+        },
+        {
+          "timestamp": "2026-01-03T04:02:57.696004+00:00",
+          "type": "tool_end",
+          "content": "[Bash] Done",
+          "phase": "coding",
+          "tool_name": "Bash",
+          "subtask_id": "7.1",
+          "session": 27,
+          "detail": "> build\n> vite build\n\nvite v7.2.7 building client environment for production...\ntransforming...\n\n[@tanstack/devtools-vite] Removed devtools code from: /src/routes/__root.tsx\n\n✓ 3866 modules transformed.\nrendering chunks...\ncomputing gzip size...\ndist/client/assets/styles-AlegWWW3.css            62.44 kB │ gzip:  11.26 kB\ndist/client/assets/x-svuWU93y.js                   0.16 kB │ gzip:   0.15 kB\ndist/client/assets/clock-B_9nQFNR.js               0.17 kB │ gzip:   0.16 kB\ndist/client/assets/zap-C1spBV-B.js                 0.26 kB │ gzip:   0.21 kB\ndist/client/assets/useNextPass-CbJ_WLgF.js         0.54 kB │ gzip:   0.38 kB\ndist/client/assets/refresh-cw-M-siz_4g.js          0.63 kB │ gzip:   0.39 kB\ndist/client/assets/MatrixText-K7pQEdKA.js          1.31 kB │ gzip:   0.80 kB\ndist/client/assets/audio-C3nLunmN.js               4.13 kB │ gzip:   1.45 kB\ndist/client/assets/index-BIt9W3Fd.js               5.71 kB │ gzip:   1.52 kB\ndist/client/assets/map-bA0BP8IO.js                14.81 kB │ gzip:   3.61 kB\ndist/client/assets/StatsPanel-DNKJ6NlL.js         24.73 kB │ gzip:   5.14 kB\ndist/client/assets/copilot-DPd_06_f.js            26.82 kB │ gzip:   6.68 kB\ndist/client/assets/crew-C2Q_Ux3T.js               29.86 kB │ gzip:   5.75 kB\ndist/client/assets/index-N8U7N0q-.js              31.28 kB │ gzip:   6.82 kB\ndist/client/assets/orbital-BvgN6Y4h.js            32.43 kB │ gzip:  14.75 kB\ndist/client/assets/passes-5oIyEyOS.js            134.28 kB │ gzip:  29.28 kB\ndist/client/assets/ISSLayout-B8C9PLD7.js         477.42 kB │ gzip: 143.89 kB\ndist/client/assets/main-Bk3Amq9C.js              633.14 kB │ gzip: 195.99 kB\ndist/client/assets/react-globe.gl-DpzRfQyZ.js  1,726.64 kB │ gzip: 489.84 kB\n✓ built in 5.22s\nvite v7.2.7 building ssr environment for production...\ntransforming...\n\n[@tanstack/devtools-vite] Removed devtools code from: /src/routes/__root.tsx\n\n✓ 4144 modules transformed.\nrendering chunks...\nUsing vars defined in .env.local\ndist/server/.dev.vars                                          0.41 kB\ndist/server/wrangler.json                                      1.42 kB\ndist/server/.vite/manifest.json                               10.49 kB\ndist/server/assets/styles-AlegWWW3.css                        62.44 kB\ndist/server/assets/start-HYkvq4Ni.js                           0.06 kB\ndist/server/index.js                                           0.24 kB\ndist/server/assets/x-TH3u7lLA.js                               0.24 kB\ndist/server/assets/clock-C1kOLQdo.js                           0.27 kB\ndist/server/assets/zap-C2NTI41M.js                             0.38 kB\ndist/server/assets/refresh-cw-Bzx66mvF.js                      0.95 kB\ndist/server/assets/useNextPass-4dR483ta.js                     1.20 kB\ndist/server/assets/api-DqaxxvKG.js                             1.28 kB\ndist/server/assets/MatrixText-CewdjVsz.js                      1.65 kB\ndist/server/assets/sentry-init-6qmoN0Jv.js                     2.06 kB\ndist/server/assets/_tanstack-start-manifest_v-DW2YhkUo.js      2.79 kB\ndist/server/assets/prompt-CCxaFUGD.js                          4.58 kB\ndist/server/assets/audio-BbKstFG0.js                           6.77 kB\ndist/server/assets/index-9a6PqW-v.js                           7.48 kB\ndist/server/assets/weather-DL6nWtBZ.js                         9.27 kB\ndist/server/assets/agent-6yNKwu70.js                           9.39 kB\ndist/server/assets/ai-client-Byj_ERlm.js                      10.48 kB\ndist/server/assets/api-CHP5BXJH.js                            11.09 kB\ndist/server/assets/useLocation-Dqs7u2nY.js                    12.45 kB\ndist/server/assets/map-BaBo-E3V.js                            18.60 kB\ndist/server/assets/types-Bk0PzbwE.js                          27.86 kB\ndist/server/assets/StatsPanel-m69TcNLS.js                     31.65 kB\ndist/server/assets/index-D8paJMGJ.js                          38.01 kB\ndist/server/assets/crew-BB6VX-YC.js                           38.05 kB\ndist/server/assets/copilot-CqryoicS.js                        40.01 kB\ndist/server/assets/orbital-M04eNiZc.js                        60.47 kB\ndist/server/assets/passes-B9pyR3DM.js                        256.91 kB\ndist/server/assets/utils-w57R7eoK.js                         344.99 kB\ndist/server/assets/coerce-CXBCr0Zt.js                        430.51 kB\ndist/server/assets/router-BIHPBrIM.js                        923.50 kB\ndist/server/assets/ISSLayout-DLKRvoy5.js                     970.49 kB\ndist/server/assets/worker-entry-Bpp8D1Uj.js                1,152.00 kB\ndist/server/assets/react-globe.gl-CkQrDKen.js              3,302.43 kB\n✓ built in 4.67s\n\n(!) Some chunks are larger than 500 kB after minification. Consider:\n- Using dynamic import() to code-split the application\n- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks\n- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T04:03:01.268493+00:00",
+          "type": "text",
+          "content": "Excellent! The build succeeded. Let me verify no files import from `db.ts` anymore:",
+          "phase": "coding",
+          "subtask_id": "7.1",
+          "session": 27
+        },
+        {
+          "timestamp": "2026-01-03T04:03:02.996891+00:00",
+          "type": "tool_start",
+          "content": "[Grep] pattern: from ['\"]@/lib/iss/db['\"]|from ['\"].*lib/iss/db['\"]",
+          "phase": "coding",
+          "tool_name": "Grep",
+          "tool_input": "pattern: from ['\"]@/lib/iss/db['\"]|from ['\"].*lib/iss/db['\"]",
+          "subtask_id": "7.1",
+          "session": 27
+        },
+        {
+          "timestamp": "2026-01-03T04:03:03.390278+00:00",
+          "type": "tool_end",
+          "content": "[Grep] Done",
+          "phase": "coding",
+          "tool_name": "Grep",
+          "subtask_id": "7.1",
+          "session": 27,
+          "detail": "Found 1 file\nsrc/hooks/iss/useISSData.ts",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T04:03:09.929546+00:00",
+          "type": "tool_start",
+          "content": "[Grep] pattern: from ['\"]@/hooks/iss/useISSData['\"]|from ['\"].*hooks/iss/useISSData['\"]",
+          "phase": "coding",
+          "tool_name": "Grep",
+          "tool_input": "pattern: from ['\"]@/hooks/iss/useISSData['\"]|from ['\"].*hooks/iss/useISSData['\"]",
+          "subtask_id": "7.1",
+          "session": 27
+        },
+        {
+          "timestamp": "2026-01-03T04:03:10.271207+00:00",
+          "type": "tool_end",
+          "content": "[Grep] Done",
+          "phase": "coding",
+          "tool_name": "Grep",
+          "subtask_id": "7.1",
+          "session": 27,
+          "detail": "No files found",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T04:03:16.547427+00:00",
+          "type": "text",
+          "content": "Perfect! No active code imports from `useISSData.ts` anymore. The legacy file will be removed in subtask 7.4. Now let me commit these changes:",
+          "phase": "coding",
+          "subtask_id": "7.1",
+          "session": 27
+        },
+        {
+          "timestamp": "2026-01-03T04:03:21.894329+00:00",
+          "type": "tool_start",
+          "content": "[Bash] git add -A && git commit -m \"auto-claude: 7.1 -...",
+          "phase": "coding",
+          "tool_name": "Bash",
+          "tool_input": "git add -A && git commit -m \"auto-claude: 7.1 -...",
+          "subtask_id": "7.1",
+          "session": 27
         }
       ]
     },

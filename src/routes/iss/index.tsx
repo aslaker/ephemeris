@@ -2,12 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Calculator, Minimize, RotateCw } from "lucide-react";
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import type { GlobeMethods } from "react-globe.gl";
-import {
-	useISSPosition,
-	useISSTLE,
-	useStorageCleanup,
-	useWindowFocusRefetch,
-} from "@/hooks/iss/useISSData";
+import { useISSPositionDB, useISSTLEDB } from "@/hooks/iss/useISSDataDB";
 import { useLocation } from "@/hooks/useLocation";
 import { useNextPass } from "@/hooks/useNextPass";
 import { terminalAudio } from "@/lib/iss/audio";
@@ -105,16 +100,12 @@ function ISSTracker() {
 	const { coordinates: userLocation } = useLocation();
 	const { nextPass } = useNextPass();
 
-	// Live ISS Position with cache-first loading
-	const { data, isLoading, error, fromCache } = useISSPosition();
+	// Live ISS Position from TanStack DB collection
+	const { data, isLoading, error, fromCache } = useISSPositionDB();
 	const isError = !!error;
 
-	// TLE Data for orbital path calculations with cache-first loading
-	const { data: tleData } = useISSTLE();
-
-	// Initialize storage cleanup scheduler and window focus refetch
-	useStorageCleanup();
-	useWindowFocusRefetch();
+	// TLE Data for orbital path calculations from TanStack DB collection
+	const { data: tleData } = useISSTLEDB();
 
 	// Handle window resize with delayed initial measurement
 	useEffect(() => {

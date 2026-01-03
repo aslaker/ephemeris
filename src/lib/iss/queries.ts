@@ -10,7 +10,6 @@
 import * as Sentry from "@sentry/tanstackstart-react";
 import { queryOptions } from "@tanstack/react-query";
 import { fetchCrewData, fetchISSPosition, fetchTLE } from "./api";
-import { storeCrew, storePosition, storeTLE } from "./db";
 
 /**
  * ISS Query factory
@@ -27,14 +26,7 @@ export const issQueries = {
 			queryKey: ["iss", "position", "current"] as const,
 			queryFn: async () => {
 				const position = await fetchISSPosition();
-
-				// Side effect: persist to IndexedDB (fire and forget, don't block)
-				if (typeof window !== "undefined") {
-					storePosition(position).catch((err) => {
-						console.warn("[ISS Queries] Failed to persist position:", err);
-					});
-				}
-
+				// Note: Persistence now handled by TanStack DB sync handlers
 				return position;
 			},
 			refetchInterval: 5000,
@@ -53,14 +45,7 @@ export const issQueries = {
 			queryKey: ["iss", "tle"] as const,
 			queryFn: async () => {
 				const tle = await fetchTLE();
-
-				// Side effect: persist to IndexedDB
-				if (typeof window !== "undefined") {
-					storeTLE(tle[0], tle[1], "celestrak").catch((err) => {
-						console.warn("[ISS Queries] Failed to persist TLE:", err);
-					});
-				}
-
+				// Note: Persistence now handled by TanStack DB sync handlers
 				return tle;
 			},
 			staleTime: 1000 * 60 * 60, // 1 hour
@@ -80,14 +65,7 @@ export const issQueries = {
 					{ name: "Background crew refresh" },
 					async () => fetchCrewData(),
 				);
-
-				// Side effect: persist to IndexedDB with fetch timestamp
-				if (typeof window !== "undefined") {
-					storeCrew(crew).catch((err) => {
-						console.warn("[ISS Queries] Failed to persist crew:", err);
-					});
-				}
-
+				// Note: Persistence now handled by TanStack DB sync handlers
 				return crew;
 			},
 			staleTime: 1000 * 60 * 60, // 1 hour

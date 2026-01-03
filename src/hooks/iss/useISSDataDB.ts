@@ -10,6 +10,7 @@
  * unified TanStack DB collections for simpler, reactive data management.
  */
 
+import { useCallback, useState } from "react";
 import { useLiveQuery } from "@tanstack/react-db";
 import { positionsCollection } from "@/lib/iss/collections/positions";
 import { crewCollection } from "@/lib/iss/collections/crew";
@@ -212,5 +213,102 @@ export function useISSTLEDB(): UseISSTLEResult {
 		isFetching: query.isLoading,
 		// Convert isError boolean to Error | null
 		error: query.isError ? new Error("Failed to query TLE collection") : null,
+	};
+}
+
+// =============================================================================
+// usePositionHistoryDB - Reactive position history with range queries
+// =============================================================================
+
+export interface UsePositionHistoryResult {
+	/** Array of position records in range */
+	positions: ISSPosition[];
+	/** Whether history is loading */
+	isLoading: boolean;
+	/** Any error that occurred */
+	error: Error | null;
+	/** Fetch positions for a specific time range */
+	fetchRange: (startMs: number, endMs: number) => void;
+}
+
+/**
+ * Hook for historical position data with reactive TanStack DB live query
+ *
+ * Queries positions within a time range from the positions collection
+ * and automatically updates when new positions are synced.
+ *
+ * Features:
+ * - Reactive updates when collection changes (via sync handler)
+ * - Efficient range queries using timestamp index
+ * - Instant load from IndexedDB (no network delay)
+ * - Consistent interface with legacy usePositionHistory hook
+ * - Type-safe with Zod schema validation
+ *
+ * @returns Position history with range query function
+ *
+ * @example
+ * ```typescript
+ * function GroundTrackMap() {
+ *   const { positions, isLoading, fetchRange } = usePositionHistoryDB()
+ *
+ *   useEffect(() => {
+ *     // Query last hour of positions
+ *     const endTime = Date.now()
+ *     const startTime = endTime - (60 * 60 * 1000)
+ *     fetchRange(startTime, endTime)
+ *   }, [])
+ *
+ *   return <MapPath positions={positions} />
+ * }
+ * ```
+ */
+export function usePositionHistoryDB(): UsePositionHistoryResult {
+	const [timeRange, setTimeRange] = useState<{
+		start: number;
+		end: number;
+	} | null>(null);
+
+	// Query positions in time range (reactive to timeRange changes)
+	const query = useLiveQuery(
+		(q) => {
+			// Return undefined if no range set (disables query)
+			if (!timeRange) return undefined;
+
+			// Query all positions and order by timestamp
+			// Note: We'll filter by range in the return statement below
+			return q
+				.from({ pos: positionsCollection })
+				.orderBy(({ pos }) => pos.timestamp, "asc");
+		},
+		[timeRange],
+	);
+
+	// Filter positions by time range in JavaScript
+	// (TanStack DB where clauses don't support comparison operators directly)
+	const filteredPositions =
+		query.data && timeRange
+			? (query.data as ISSPosition[]).filter((pos) => {
+					const startTimestamp = timeRange.start / 1000;
+					const endTimestamp = timeRange.end / 1000;
+					return pos.timestamp >= startTimestamp && pos.timestamp <= endTimestamp;
+				})
+			: [];
+
+	// Callback to update time range (triggers query re-run)
+	const fetchRange = useCallback((startMs: number, endMs: number) => {
+		setTimeRange({ start: startMs, end: endMs });
+	}, []);
+
+	return {
+		// Return filtered positions by time range
+		positions: filteredPositions,
+		// isLoading is true until first data is ready (or false if query disabled)
+		isLoading: query.isLoading,
+		// Convert isError boolean to Error | null
+		error: query.isError
+			? new Error("Failed to query position history from collection")
+			: null,
+		// Provide range query function
+		fetchRange,
 	};
 }

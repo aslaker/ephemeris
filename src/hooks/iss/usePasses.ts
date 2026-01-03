@@ -1,15 +1,15 @@
 /**
  * usePasses Hook
  *
- * TanStack Query hook for fetching multiple ISS pass predictions.
+ * Hook for fetching multiple ISS pass predictions using TLE from DB collection.
  */
 
 import { useQuery } from "@tanstack/react-query";
 import { useStore } from "@tanstack/react-store";
 import { type PredictPassesOptions, predictPasses } from "@/lib/iss/orbital";
-import { issQueries } from "@/lib/iss/queries";
 import type { PassPrediction } from "@/lib/iss/types";
 import { locationStore } from "@/lib/location/store";
+import { useISSTLEDB } from "@/hooks/iss/useISSDataDB";
 
 // =============================================================================
 // TYPES
@@ -36,8 +36,8 @@ export function usePasses(options: UsePassesOptions = {}) {
 	// Get coordinates from location store
 	const coordinates = useStore(locationStore, (s) => s.coordinates);
 
-	// Get TLE data
-	const { data: tle, isLoading: tleLoading } = useQuery(issQueries.tle());
+	// Get TLE data from DB collection
+	const { data: tle, isLoading: tleLoading } = useISSTLEDB();
 
 	// Compute passes when we have both location and TLE
 	const query = useQuery({

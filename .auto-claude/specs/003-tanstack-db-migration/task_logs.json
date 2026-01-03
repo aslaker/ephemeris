@@ -1,7 +1,7 @@
 {
   "spec_id": "003-tanstack-db-migration",
   "created_at": "2026-01-03T02:50:35.728447+00:00",
-  "updated_at": "2026-01-03T03:51:48.799921+00:00",
+  "updated_at": "2026-01-03T03:52:17.279154+00:00",
   "phases": {
     "planning": {
       "phase": "planning",
@@ -10408,6 +10408,130 @@
           "phase": "coding",
           "tool_name": "Bash",
           "tool_input": "git commit -m \"auto-claude: 5.2 - Update gap de...",
+          "subtask_id": "5.2",
+          "session": 23
+        },
+        {
+          "timestamp": "2026-01-03T03:51:49.736846+00:00",
+          "type": "tool_end",
+          "content": "[Bash] Done",
+          "phase": "coding",
+          "tool_name": "Bash",
+          "subtask_id": "5.2",
+          "session": 23,
+          "detail": "",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T03:51:55.044694+00:00",
+          "type": "text",
+          "content": "Now let me update the implementation plan to mark this subtask as completed:",
+          "phase": "coding",
+          "subtask_id": "5.2",
+          "session": 23
+        },
+        {
+          "timestamp": "2026-01-03T03:52:02.475148+00:00",
+          "type": "tool_start",
+          "content": "[mcp__auto-claude__update_subtask_status]",
+          "phase": "coding",
+          "tool_name": "mcp__auto-claude__update_subtask_status",
+          "subtask_id": "5.2",
+          "session": 23
+        },
+        {
+          "timestamp": "2026-01-03T03:52:02.503762+00:00",
+          "type": "tool_end",
+          "content": "[mcp__auto-claude__update_subtask_status] Done",
+          "phase": "coding",
+          "tool_name": "mcp__auto-claude__update_subtask_status",
+          "subtask_id": "5.2",
+          "session": 23,
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T03:52:06.089021+00:00",
+          "type": "text",
+          "content": "Perfect! Let me verify the implementation by reading the created file:",
+          "phase": "coding",
+          "subtask_id": "5.2",
+          "session": 23
+        },
+        {
+          "timestamp": "2026-01-03T03:52:06.648197+00:00",
+          "type": "tool_start",
+          "content": "[Read] ./src/lib/iss/collections/gap-filling.ts",
+          "phase": "coding",
+          "tool_name": "Read",
+          "tool_input": "./src/lib/iss/collections/gap-filling.ts",
+          "subtask_id": "5.2",
+          "session": 23
+        },
+        {
+          "timestamp": "2026-01-03T03:52:06.667017+00:00",
+          "type": "tool_end",
+          "content": "[Read] Done",
+          "phase": "coding",
+          "tool_name": "Read",
+          "subtask_id": "5.2",
+          "session": 23,
+          "detail": "     1→/**\n     2→ * Gap Detection and Filling Utilities\n     3→ *\n     4→ * Provides gap detection and synthetic position generation for TanStack DB collections.\n     5→ * Uses orbital calculations from satellite.js to fill large gaps in position history.\n     6→ */\n     7→\n     8→import { positionsCollection } from \"./positions\";\n     9→import { calculateOrbitPath } from \"../orbital\";\n    10→import type { ISSPosition, TLEData } from \"../types\";\n    11→\n    12→// =============================================================================\n    13→// GAP FILLING CONFIGURATION\n    14→// =============================================================================\n    15→\n    16→/**\n    17→ * Configuration for gap filling behavior\n    18→ */\n    19→export const GAP_FILLING_CONFIG = {\n    20→\t/** Threshold in hours for switching to orbital calculations */\n    21→\torbitalThresholdHours: 24,\n    22→\t/** Step size in seconds for synthetic positions */\n    23→\tsyntheticStepSeconds: 300, // 5 minutes\n    24→\t/** Maximum gap size to fill (hours) */\n    25→\tmaxGapHours: 168, // 1 week\n    26→} as const;\n    27→\n    28→// =============================================================================\n    29→// GAP DETECTION TYPES\n    30→// =============================================================================\n    31→\n    32→/**\n    33→ * Information about a gap in position data\n    34→ */\n    35→export interface GapInfo {\n    36→\t/** Start of gap (Unix seconds) */\n    37→\tstartTimestamp: number;\n    38→\t/** End of gap (Unix seconds) */\n    39→\tendTimestamp: number;\n    40→\t/** Gap duration in hours */\n    41→\tdurationHours: number;\n    42→\t/** Whether orbital calculations should be used */\n    43→\tuseOrbitalCalculation: boolean;\n    44→}\n    45→\n    46→// =============================================================================\n    47→// GAP DETECTION FUNCTIONS\n    48→// =============================================================================\n    49→\n    50→/**\n    51→ * Detect gaps in position history\n    52→ *\n    53→ * Analyzes an array of positions (must be sorted by timestamp) and identifies\n    54→ * gaps larger than the expected interval threshold.\n    55→ *\n    56→ * @param positions - Array of stored positions (must be sorted by timestamp)\n    57→ * @param expectedIntervalSeconds - Expected interval between positions (default: 5)\n    58→ * @returns Array of detected gaps with metadata\n    59→ */\n    60→export function detectGaps(\n    61→\tpositions: ISSPosition[],\n    62→\texpectedIntervalSeconds = 5,\n    63→): GapInfo[] {\n    64→\tif (positions.length < 2) return [];\n    65→\n    66→\tconst gaps: GapInfo[] = [];\n    67→\tconst gapThreshold = expectedIntervalSeconds * 3; // Allow 3x expected interval before considering it a gap\n    68→\n    69→\tfor (let i = 1; i < positions.length; i++) {\n    70→\t\tconst gap = positions[i].timestamp - positions[i - 1].timestamp;\n    71→\n    72→\t\tif (gap > gapThreshold) {\n    73→\t\t\tconst durationHours = gap / 3600;\n    74→\t\t\tgaps.push({\n    75→\t\t\t\tstartTimestamp: positions[i - 1].timestamp,\n    76→\t\t\t\tendTimestamp: positions[i].timestamp,\n    77→\t\t\t\tdurationHours,\n    78→\t\t\t\tuseOrbitalCalculation: shouldUseOrbitalCalculation(durationHours),\n    79→\t\t\t});\n    80→\t\t}\n    81→\t}\n    82→\n    83→\treturn gaps;\n    84→}\n    85→\n    86→/**\n    87→ * Check if gap should use orbital calculations vs interpolation\n    88→ *\n    89→ * Small gaps can use linear interpolation, but large gaps require\n    90→ * orbital propagation for accuracy.\n    91→ *\n    92→ * @param durationHours - Gap duration in hours\n    93→ * @returns True if orbital calculations should be used\n    94→ */\n    95→export function shouldUseOrbitalCalculation(durationHours: number): boolean {\n    96→\treturn durationHours > GAP_FILLING_CONFIG.orbitalThresholdHours;\n    97→}\n    98→\n    99→// =============================================================================\n   100→// GAP FILLING FUNCTIONS\n   101→// =============================================================================\n   102→\n   103→/**\n   104→ * Fill a gap using orbital calculations\n   105→ *\n   106→ * Uses satellite.js to propagate TLE data and generate synthetic positions\n   107→ * at regular intervals within the gap.\n   108→ *\n   109→ * @param gap - Gap information\n   110→ * @param tle - TLE data for orbital calculations\n   111→ * @returns Array of synthetic position records\n   112→ */\n   113→export function fillGapWithOrbital(gap: GapInfo, tle: TLEData): ISSPosition[] {\n   114→\tif (gap.durationHours > GAP_FILLING_CONFIG.maxGapHours) {\n   115→\t\tconsole.warn(\n   116→\t\t\t\"[GapFilling] Gap too large to fill:\",\n   117→\t\t\tgap.durationHours,\n   118→\t\t\t\"hours\",\n   119→\t\t);\n   120→\t\treturn [];\n   121→\t}\n   122→\n   123→\tconst [line1, line2] = tle;\n   124→\tconst startMins = Math.ceil(\n   125→\t\t(gap.startTimestamp * 1000 - Date.now()) / (1000 * 60),\n   126→\t);\n   127→\tconst endMins = Math.floor(\n   128→\t\t(gap.endTimestamp * 1000 - Date.now()) / (1000 * 60),\n   129→\t);\n   130→\tconst stepMins = GAP_FILLING_CONFIG.syntheticStepSeconds / 60;\n   131→\n   132→\tconst orbitalPoints = calculateOrbitPath(\n   133→\t\tline1,\n   134→\t\tline2,\n   135→\t\tstartMins,\n   136→\t\tendMins,\n   137→\t\tstepMins,\n   138→\t);\n   139→\n   140→\treturn orbitalPoints.map((point, idx) => ({\n   141→\t\tid: `synthetic-${gap.startTimestamp + idx * GAP_FILLING_CONFIG.syntheticStepSeconds}`,\n   142→\t\tlatitude: point.lat,\n   143→\t\tlongitude: point.lng,\n   144→\t\taltitude: point.alt,\n   145→\t\ttimestamp:\n   146→\t\t\tgap.startTimestamp + idx * GAP_FILLING_CONFIG.syntheticStepSeconds,\n   147→\t\tvelocity: 27600, // Average ISS velocity\n   148→\t\tvisibility: \"synthetic\",\n   149→\t}));\n   150→}\n   151→\n   152→/**\n   153→ * Fill gaps in position history using available TLE data\n   154→ *\n   155→ * Queries positions from collection, detects gaps, generates synthetic positions\n   156→ * using orbital calculations, and inserts them back into the collection.\n   157→ *\n   158→ * @param startTimestamp - Start of range to check (Unix seconds)\n   159→ * @param endTimestamp - End of range to check (Unix seconds)\n   160→ * @param tle - TLE data for orbital calculations\n   161→ * @returns Number of synthetic positions added\n   162→ */\n   163→export async function fillGapsInRange(\n   164→\tstartTimestamp: number,\n   165→\tendTimestamp: number,\n   166→\ttle: TLEData,\n   167→): Promise<number> {\n   168→\tif (typeof window === \"undefined\") return 0;\n   169→\n   170→\t// Get Dexie table for efficient range query\n   171→\tconst table = positionsCollection.utils.getTable();\n   172→\n   173→\t// Query positions in range\n   174→\tconst positions = await table\n   175→\t\t.where(\"timestamp\")\n   176→\t\t.between(startTimestamp, endTimestamp)\n   177→\t\t.toArray();\n   178→\n   179→\t// Sort by timestamp\n   180→\tpositions.sort((a, b) => a.timestamp - b.timestamp);\n   181→\n   182→\tconst gaps = detectGaps(positions);\n   183→\tconst largeGaps = gaps.filter((g) => g.useOrbitalCalculation);\n   184→\n   185→\tlet totalAdded = 0;\n   186→\n   187→\tfor (const gap of largeGaps) {\n   188→\t\tconst syntheticPositions = fillGapWithOrbital(gap, tle);\n   189→\t\tif (syntheticPositions.length > 0) {\n   190→\t\t\t// Use Dexie bulkPut for efficient batch insertion\n   191→\t\t\tawait table.bulkPut(syntheticPositions);\n   192→\t\t\ttotalAdded += syntheticPositions.length;\n   193→\t\t}\n   194→\t}\n   195→\n   196→\treturn totalAdded;\n   197→}\n   198→\n\n<system-reminder>\nWhenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.\n</system-reminder>\n",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T03:52:10.002736+00:00",
+          "type": "text",
+          "content": "Let me verify the git status to ensure everything is committed:",
+          "phase": "coding",
+          "subtask_id": "5.2",
+          "session": 23
+        },
+        {
+          "timestamp": "2026-01-03T03:52:10.691235+00:00",
+          "type": "tool_start",
+          "content": "[Bash] git status",
+          "phase": "coding",
+          "tool_name": "Bash",
+          "tool_input": "git status",
+          "subtask_id": "5.2",
+          "session": 23
+        },
+        {
+          "timestamp": "2026-01-03T03:52:11.203259+00:00",
+          "type": "tool_start",
+          "content": "[Bash] git log --oneline -1",
+          "phase": "coding",
+          "tool_name": "Bash",
+          "tool_input": "git log --oneline -1",
+          "subtask_id": "5.2",
+          "session": 23
+        },
+        {
+          "timestamp": "2026-01-03T03:52:11.260445+00:00",
+          "type": "tool_end",
+          "content": "[Bash] Done",
+          "phase": "coding",
+          "tool_name": "Bash",
+          "subtask_id": "5.2",
+          "session": 23,
+          "detail": "82882cf auto-claude: 5.2 - Update gap detection and filling to use collection queries",
+          "collapsed": true
+        },
+        {
+          "timestamp": "2026-01-03T03:52:16.040258+00:00",
+          "type": "text",
+          "content": "I need to commit the updated implementation plan:",
+          "phase": "coding",
+          "subtask_id": "5.2",
+          "session": 23
+        },
+        {
+          "timestamp": "2026-01-03T03:52:17.279123+00:00",
+          "type": "tool_start",
+          "content": "[Bash] git add .auto-claude/specs/003-tanstack-db-migr...",
+          "phase": "coding",
+          "tool_name": "Bash",
+          "tool_input": "git add .auto-claude/specs/003-tanstack-db-migr...",
           "subtask_id": "5.2",
           "session": 23
         }

@@ -8,7 +8,7 @@
 import { tleCollection } from "@/lib/iss/collections/tle";
 import { generateEntityId } from "@/lib/iss/types";
 import type { SyncResult } from "./types";
-import { createSyncSuccess, createSyncError } from "./types";
+import { createSyncError, createSyncSuccess } from "./types";
 
 // =============================================================================
 // SYNC CONFIGURATION
@@ -150,9 +150,7 @@ const fetchTLEWithSource = async (): Promise<{
 	}
 
 	// Use hardcoded fallback
-	console.warn(
-		"[TLE] Using hardcoded fallback TLE - API sources unavailable",
-	);
+	console.warn("[TLE] Using hardcoded fallback TLE - API sources unavailable");
 
 	// Check TLE age and warn if stale
 	const ageInDays = getTLEAge(FALLBACK_TLE.line1);

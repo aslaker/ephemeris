@@ -8,7 +8,7 @@
 import { fetchCrewData } from "@/lib/iss/api";
 import { crewCollection } from "@/lib/iss/collections/crew";
 import type { SyncResult } from "./types";
-import { createSyncSuccess, createSyncError } from "./types";
+import { createSyncError, createSyncSuccess } from "./types";
 
 // =============================================================================
 // SYNC CONFIGURATION

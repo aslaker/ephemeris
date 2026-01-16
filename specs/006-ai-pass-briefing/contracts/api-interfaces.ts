@@ -449,7 +449,3 @@ export function getBrightnessDescription(magnitude: number): string {
 	if (magnitude <= -1) return "Moderately bright - visible in suburbs";
 	return "Visible in dark skies";
 }
-
-
-
-

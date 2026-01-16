@@ -128,7 +128,7 @@ describe.skip("chatCompletion", () => {
 		it("should return error when AI binding is undefined", async () => {
 			mockEnv = { AI: undefined };
 
-			const result = await handlerFn!({
+			const result = await handlerFn?.({
 				data: createTestRequest(),
 			});
 
@@ -152,7 +152,7 @@ describe.skip("chatCompletion", () => {
 		it("should return error when AI binding is null", async () => {
 			mockEnv = { AI: null };
 
-			const result = await handlerFn!({
+			const result = await handlerFn?.({
 				data: createTestRequest(),
 			});
 
@@ -169,7 +169,7 @@ describe.skip("chatCompletion", () => {
 		it("should add breadcrumb when AI binding is missing", async () => {
 			mockEnv = { AI: undefined };
 
-			await handlerFn!({
+			await handlerFn?.({
 				data: createTestRequest(),
 			});
 
@@ -193,7 +193,7 @@ describe.skip("chatCompletion", () => {
 				},
 			});
 
-			const result = await handlerFn!({
+			const result = await handlerFn?.({
 				data: createTestRequest(),
 			});
 
@@ -218,7 +218,7 @@ describe.skip("chatCompletion", () => {
 		it("should return rate limit error when AI service is rate limited", async () => {
 			mockRunWithTools.mockRejectedValue(new Error("rate limit exceeded"));
 
-			const result = await handlerFn!({
+			const result = await handlerFn?.({
 				data: createTestRequest(),
 			});
 
@@ -241,7 +241,7 @@ describe.skip("chatCompletion", () => {
 		it("should return model error when AI model fails", async () => {
 			mockRunWithTools.mockRejectedValue(new Error("model inference failed"));
 
-			const result = await handlerFn!({
+			const result = await handlerFn?.({
 				data: createTestRequest(),
 			});
 
@@ -263,7 +263,7 @@ describe.skip("chatCompletion", () => {
 		it("should return generic AI error for unknown AI failures", async () => {
 			mockRunWithTools.mockRejectedValue(new Error("Something went wrong"));
 
-			const result = await handlerFn!({
+			const result = await handlerFn?.({
 				data: createTestRequest(),
 			});
 
@@ -289,7 +289,7 @@ describe.skip("chatCompletion", () => {
 				response: "Here is your ISS pass information.",
 			});
 
-			const result = await handlerFn!({
+			const result = await handlerFn?.({
 				data: createTestRequest(),
 			});
 
@@ -307,7 +307,7 @@ describe.skip("chatCompletion", () => {
 		it("should extract response from string format", async () => {
 			mockRunWithTools.mockResolvedValue("Direct string response");
 
-			const result = await handlerFn!({
+			const result = await handlerFn?.({
 				data: createTestRequest(),
 			});
 
@@ -325,7 +325,7 @@ describe.skip("chatCompletion", () => {
 		it("should handle null response gracefully", async () => {
 			mockRunWithTools.mockResolvedValue(null);
 
-			const result = await handlerFn!({
+			const result = await handlerFn?.({
 				data: createTestRequest(),
 			});
 
@@ -350,7 +350,7 @@ describe.skip("chatCompletion", () => {
 		it("should handle undefined response gracefully", async () => {
 			mockRunWithTools.mockResolvedValue(undefined);
 
-			const result = await handlerFn!({
+			const result = await handlerFn?.({
 				data: createTestRequest(),
 			});
 
@@ -369,7 +369,7 @@ describe.skip("chatCompletion", () => {
 		it("should handle empty object response gracefully", async () => {
 			mockRunWithTools.mockResolvedValue({});
 
-			const result = await handlerFn!({
+			const result = await handlerFn?.({
 				data: createTestRequest(),
 			});
 
@@ -394,7 +394,7 @@ describe.skip("chatCompletion", () => {
 				},
 			});
 
-			const result = await handlerFn!({
+			const result = await handlerFn?.({
 				data: createTestRequest(),
 			});
 
@@ -418,7 +418,7 @@ describe.skip("chatCompletion", () => {
 				throw new Error("Failed to access binding in production");
 			});
 
-			const result = await handlerFn!({
+			const result = await handlerFn?.({
 				data: createTestRequest(),
 			});
 
@@ -434,7 +434,7 @@ describe.skip("chatCompletion", () => {
 				throw err;
 			});
 
-			const result = await handlerFn!({
+			const result = await handlerFn?.({
 				data: createTestRequest(),
 			});
 
@@ -449,7 +449,7 @@ describe.skip("chatCompletion", () => {
 				response: "The ISS is currently over the Pacific Ocean.",
 			});
 
-			const result = await handlerFn!({
+			const result = await handlerFn?.({
 				data: createTestRequest(),
 			});
 
@@ -469,7 +469,7 @@ describe.skip("chatCompletion", () => {
 				response: "Success response",
 			});
 
-			await handlerFn!({
+			await handlerFn?.({
 				data: createTestRequest(),
 			});
 
@@ -491,7 +491,7 @@ describe.skip("chatCompletion", () => {
 				},
 			});
 
-			await handlerFn!({ data: request });
+			await handlerFn?.({ data: request });
 
 			expect(mockRunWithTools).toHaveBeenCalledWith(
 				expect.anything(),
@@ -525,7 +525,7 @@ describe.skip("chatCompletion", () => {
 				location: { lat: 45.5, lng: -122.6 },
 			});
 
-			await handlerFn!({ data: request });
+			await handlerFn?.({ data: request });
 
 			expect(Sentry.addBreadcrumb).toHaveBeenCalledWith(
 				expect.objectContaining({
@@ -542,7 +542,7 @@ describe.skip("chatCompletion", () => {
 		});
 
 		it("should add breadcrumb before calling runWithTools", async () => {
-			await handlerFn!({
+			await handlerFn?.({
 				data: createTestRequest(),
 			});
 
@@ -588,7 +588,7 @@ describe.skip("Tool function error handling", () => {
 			return { response: "Test" };
 		});
 
-		await handlerFn!({
+		await handlerFn?.({
 			data: createTestRequest(),
 		});
 
@@ -607,7 +607,7 @@ describe.skip("Tool function error handling", () => {
 			return { response: "Test" };
 		});
 
-		await handlerFn!({
+		await handlerFn?.({
 			data: createTestRequest({ location }),
 		});
 
@@ -635,13 +635,14 @@ describe.skip("Tool function error handling", () => {
 			return { response: "Test" };
 		});
 
-		await handlerFn!({
+		await handlerFn?.({
 			data: createTestRequest({ location: null }),
 		});
 
 		const userLocationTool = capturedTools.find(
 			(t) => t.name === "get_user_location",
 		);
+		expect(userLocationTool).toBeDefined();
 		const result = JSON.parse(await userLocationTool!.function());
 
 		expect(result).toEqual({

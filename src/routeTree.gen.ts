@@ -8,192 +8,164 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from "./routes/__root";
-import { Route as IndexRouteImport } from "./routes/index";
-import { Route as IssCopilotRouteImport } from "./routes/iss/copilot";
-import { Route as IssCrewRouteImport } from "./routes/iss/crew";
-import { Route as IssIndexRouteImport } from "./routes/iss/index";
-import { Route as IssMapRouteImport } from "./routes/iss/map";
-import { Route as IssPassesRouteImport } from "./routes/iss/passes";
-import { Route as McpRouteImport } from "./routes/mcp";
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as IssIndexRouteImport } from './routes/iss/index'
+import { Route as IssPassesRouteImport } from './routes/iss/passes'
+import { Route as IssMapRouteImport } from './routes/iss/map'
+import { Route as IssCrewRouteImport } from './routes/iss/crew'
+import { Route as IssCopilotRouteImport } from './routes/iss/copilot'
 
-const McpRoute = McpRouteImport.update({
-	id: "/mcp",
-	path: "/mcp",
-	getParentRoute: () => rootRouteImport,
-} as any);
 const IndexRoute = IndexRouteImport.update({
-	id: "/",
-	path: "/",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IssIndexRoute = IssIndexRouteImport.update({
-	id: "/iss/",
-	path: "/iss/",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/iss/',
+  path: '/iss/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IssPassesRoute = IssPassesRouteImport.update({
-	id: "/iss/passes",
-	path: "/iss/passes",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/iss/passes',
+  path: '/iss/passes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IssMapRoute = IssMapRouteImport.update({
-	id: "/iss/map",
-	path: "/iss/map",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/iss/map',
+  path: '/iss/map',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IssCrewRoute = IssCrewRouteImport.update({
-	id: "/iss/crew",
-	path: "/iss/crew",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/iss/crew',
+  path: '/iss/crew',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IssCopilotRoute = IssCopilotRouteImport.update({
-	id: "/iss/copilot",
-	path: "/iss/copilot",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/iss/copilot',
+  path: '/iss/copilot',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
-	"/": typeof IndexRoute;
-	"/mcp": typeof McpRoute;
-	"/iss/copilot": typeof IssCopilotRoute;
-	"/iss/crew": typeof IssCrewRoute;
-	"/iss/map": typeof IssMapRoute;
-	"/iss/passes": typeof IssPassesRoute;
-	"/iss": typeof IssIndexRoute;
+  '/': typeof IndexRoute
+  '/iss/copilot': typeof IssCopilotRoute
+  '/iss/crew': typeof IssCrewRoute
+  '/iss/map': typeof IssMapRoute
+  '/iss/passes': typeof IssPassesRoute
+  '/iss': typeof IssIndexRoute
 }
 export interface FileRoutesByTo {
-	"/": typeof IndexRoute;
-	"/mcp": typeof McpRoute;
-	"/iss/copilot": typeof IssCopilotRoute;
-	"/iss/crew": typeof IssCrewRoute;
-	"/iss/map": typeof IssMapRoute;
-	"/iss/passes": typeof IssPassesRoute;
-	"/iss": typeof IssIndexRoute;
+  '/': typeof IndexRoute
+  '/iss/copilot': typeof IssCopilotRoute
+  '/iss/crew': typeof IssCrewRoute
+  '/iss/map': typeof IssMapRoute
+  '/iss/passes': typeof IssPassesRoute
+  '/iss': typeof IssIndexRoute
 }
 export interface FileRoutesById {
-	__root__: typeof rootRouteImport;
-	"/": typeof IndexRoute;
-	"/mcp": typeof McpRoute;
-	"/iss/copilot": typeof IssCopilotRoute;
-	"/iss/crew": typeof IssCrewRoute;
-	"/iss/map": typeof IssMapRoute;
-	"/iss/passes": typeof IssPassesRoute;
-	"/iss/": typeof IssIndexRoute;
+  __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/iss/copilot': typeof IssCopilotRoute
+  '/iss/crew': typeof IssCrewRoute
+  '/iss/map': typeof IssMapRoute
+  '/iss/passes': typeof IssPassesRoute
+  '/iss/': typeof IssIndexRoute
 }
 export interface FileRouteTypes {
-	fileRoutesByFullPath: FileRoutesByFullPath;
-	fullPaths:
-		| "/"
-		| "/mcp"
-		| "/iss/copilot"
-		| "/iss/crew"
-		| "/iss/map"
-		| "/iss/passes"
-		| "/iss";
-	fileRoutesByTo: FileRoutesByTo;
-	to:
-		| "/"
-		| "/mcp"
-		| "/iss/copilot"
-		| "/iss/crew"
-		| "/iss/map"
-		| "/iss/passes"
-		| "/iss";
-	id:
-		| "__root__"
-		| "/"
-		| "/mcp"
-		| "/iss/copilot"
-		| "/iss/crew"
-		| "/iss/map"
-		| "/iss/passes"
-		| "/iss/";
-	fileRoutesById: FileRoutesById;
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths:
+    | '/'
+    | '/iss/copilot'
+    | '/iss/crew'
+    | '/iss/map'
+    | '/iss/passes'
+    | '/iss'
+  fileRoutesByTo: FileRoutesByTo
+  to: '/' | '/iss/copilot' | '/iss/crew' | '/iss/map' | '/iss/passes' | '/iss'
+  id:
+    | '__root__'
+    | '/'
+    | '/iss/copilot'
+    | '/iss/crew'
+    | '/iss/map'
+    | '/iss/passes'
+    | '/iss/'
+  fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-	IndexRoute: typeof IndexRoute;
-	McpRoute: typeof McpRoute;
-	IssCopilotRoute: typeof IssCopilotRoute;
-	IssCrewRoute: typeof IssCrewRoute;
-	IssMapRoute: typeof IssMapRoute;
-	IssPassesRoute: typeof IssPassesRoute;
-	IssIndexRoute: typeof IssIndexRoute;
+  IndexRoute: typeof IndexRoute
+  IssCopilotRoute: typeof IssCopilotRoute
+  IssCrewRoute: typeof IssCrewRoute
+  IssMapRoute: typeof IssMapRoute
+  IssPassesRoute: typeof IssPassesRoute
+  IssIndexRoute: typeof IssIndexRoute
 }
 
-declare module "@tanstack/react-router" {
-	interface FileRoutesByPath {
-		"/mcp": {
-			id: "/mcp";
-			path: "/mcp";
-			fullPath: "/mcp";
-			preLoaderRoute: typeof McpRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/": {
-			id: "/";
-			path: "/";
-			fullPath: "/";
-			preLoaderRoute: typeof IndexRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/iss/": {
-			id: "/iss/";
-			path: "/iss";
-			fullPath: "/iss";
-			preLoaderRoute: typeof IssIndexRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/iss/passes": {
-			id: "/iss/passes";
-			path: "/iss/passes";
-			fullPath: "/iss/passes";
-			preLoaderRoute: typeof IssPassesRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/iss/map": {
-			id: "/iss/map";
-			path: "/iss/map";
-			fullPath: "/iss/map";
-			preLoaderRoute: typeof IssMapRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/iss/crew": {
-			id: "/iss/crew";
-			path: "/iss/crew";
-			fullPath: "/iss/crew";
-			preLoaderRoute: typeof IssCrewRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/iss/copilot": {
-			id: "/iss/copilot";
-			path: "/iss/copilot";
-			fullPath: "/iss/copilot";
-			preLoaderRoute: typeof IssCopilotRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-	}
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/iss/': {
+      id: '/iss/'
+      path: '/iss'
+      fullPath: '/iss'
+      preLoaderRoute: typeof IssIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/iss/passes': {
+      id: '/iss/passes'
+      path: '/iss/passes'
+      fullPath: '/iss/passes'
+      preLoaderRoute: typeof IssPassesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/iss/map': {
+      id: '/iss/map'
+      path: '/iss/map'
+      fullPath: '/iss/map'
+      preLoaderRoute: typeof IssMapRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/iss/crew': {
+      id: '/iss/crew'
+      path: '/iss/crew'
+      fullPath: '/iss/crew'
+      preLoaderRoute: typeof IssCrewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/iss/copilot': {
+      id: '/iss/copilot'
+      path: '/iss/copilot'
+      fullPath: '/iss/copilot'
+      preLoaderRoute: typeof IssCopilotRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+  }
 }
 
 const rootRouteChildren: RootRouteChildren = {
-	IndexRoute: IndexRoute,
-	McpRoute: McpRoute,
-	IssCopilotRoute: IssCopilotRoute,
-	IssCrewRoute: IssCrewRoute,
-	IssMapRoute: IssMapRoute,
-	IssPassesRoute: IssPassesRoute,
-	IssIndexRoute: IssIndexRoute,
-};
+  IndexRoute: IndexRoute,
+  IssCopilotRoute: IssCopilotRoute,
+  IssCrewRoute: IssCrewRoute,
+  IssMapRoute: IssMapRoute,
+  IssPassesRoute: IssPassesRoute,
+  IssIndexRoute: IssIndexRoute,
+}
 export const routeTree = rootRouteImport
-	._addFileChildren(rootRouteChildren)
-	._addFileTypes<FileRouteTypes>();
+  ._addFileChildren(rootRouteChildren)
+  ._addFileTypes<FileRouteTypes>()
 
-import type { createStart } from "@tanstack/react-start";
-import type { getRouter } from "./router.tsx";
-
-declare module "@tanstack/react-start" {
-	interface Register {
-		ssr: true;
-		router: Awaited<ReturnType<typeof getRouter>>;
-	}
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
 }

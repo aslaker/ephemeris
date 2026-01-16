@@ -1,33 +1,33 @@
 {
-  "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "ephemeris",
-  "account_id": "fd0959ad036db90872d816e677309cbe",
-  "compatibility_date": "2025-12-10",
-  "compatibility_flags": ["nodejs_compat"],
-  "main": "src/server-entry.ts",
-  "observability": {
-    "enabled": true
-  },
-  "ai": {
-    "binding": "AI",
-    "remote": true
-  },
-  "durable_objects": {
-    "bindings": [
-      {
-        "name": "CopilotAgent",
-        "class_name": "CopilotAgent"
-      }
-    ]
-  },
-  "migrations": [
-    {
-      "tag": "v1",
-      "new_sqlite_classes": ["CopilotAgent"]
-    }
-  ],
-  "routes": [
-    { "pattern": "ephemeris.observer", "custom_domain": true },
-    { "pattern": "www.ephemeris.observer", "custom_domain": true }
-  ]
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "ephemeris",
+	"account_id": "fd0959ad036db90872d816e677309cbe",
+	"compatibility_date": "2025-12-10",
+	"compatibility_flags": ["nodejs_compat"],
+	"main": "src/server-entry.ts",
+	"observability": {
+		"enabled": true
+	},
+	"ai": {
+		"binding": "AI",
+		"remote": true
+	},
+	"durable_objects": {
+		"bindings": [
+			{
+				"name": "CopilotAgent",
+				"class_name": "CopilotAgent"
+			}
+		]
+	},
+	"migrations": [
+		{
+			"tag": "v1",
+			"new_sqlite_classes": ["CopilotAgent"]
+		}
+	],
+	"routes": [
+		{ "pattern": "ephemeris.observer", "custom_domain": true },
+		{ "pattern": "www.ephemeris.observer", "custom_domain": true }
+	]
 }

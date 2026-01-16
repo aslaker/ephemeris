@@ -131,12 +131,19 @@ export function fillGapWithOrbital(gap: GapInfo, tle: TLEData): ISSPosition[] {
 
 	// Batch calculate all orbital positions for the gap in a single call
 	// This is much more efficient than calling calculateOrbitPath once per timestamp
-	const orbitalPoints = calculateOrbitPath(line1, line2, startOffsetMins, endOffsetMins, stepMins);
+	const orbitalPoints = calculateOrbitPath(
+		line1,
+		line2,
+		startOffsetMins,
+		endOffsetMins,
+		stepMins,
+	);
 
 	// Map orbital points to synthetic positions with correct timestamps
 	const syntheticPositions: ISSPosition[] = orbitalPoints.map((point, idx) => {
 		// Calculate the exact timestamp for this orbital point
-		const timestamp = gap.startTimestamp + idx * GAP_FILLING_CONFIG.syntheticStepSeconds;
+		const timestamp =
+			gap.startTimestamp + idx * GAP_FILLING_CONFIG.syntheticStepSeconds;
 
 		return {
 			id: `synthetic-${timestamp}`,

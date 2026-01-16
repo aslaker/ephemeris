@@ -8,7 +8,7 @@
 import { fetchISSPosition } from "@/lib/iss/api";
 import { positionsCollection } from "@/lib/iss/collections/positions";
 import type { SyncResult } from "./types";
-import { createSyncSuccess, createSyncError } from "./types";
+import { createSyncError, createSyncSuccess } from "./types";
 
 // =============================================================================
 // SYNC CONFIGURATION

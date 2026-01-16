@@ -11,7 +11,7 @@
  */
 
 import { useLiveQuery } from "@tanstack/react-db";
-import { useCallback, useState, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { crewCollection } from "@/lib/iss/collections/crew";
 import { positionsCollection } from "@/lib/iss/collections/positions";
 import { tleCollection } from "@/lib/iss/collections/tle";

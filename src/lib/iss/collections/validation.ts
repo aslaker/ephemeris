@@ -5,7 +5,7 @@
  * Uses Zod schemas to validate data integrity and remove corrupted records.
  */
 
-import { z } from "zod";
+import type { z } from "zod";
 import { briefingsCollection } from "../../briefing/collections";
 import { PassBriefingSchema } from "../../briefing/types";
 import type { ISSPosition } from "../types";
@@ -168,7 +168,11 @@ export async function detectAndRemoveCorruption(): Promise<CorruptionResult> {
 		.limit(100)
 		.toArray();
 	// Deduplicate positions in case table has fewer than 200 records
-	const positionsToCheck = [...new Map([...firstPositions, ...lastPositions].map(p => [p.id, p])).values()];
+	const positionsToCheck = [
+		...new Map(
+			[...firstPositions, ...lastPositions].map((p) => [p.id, p]),
+		).values(),
+	];
 
 	const invalidPositionIds: string[] = [];
 	for (const pos of positionsToCheck) {

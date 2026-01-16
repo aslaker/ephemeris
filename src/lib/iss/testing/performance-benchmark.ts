@@ -302,7 +302,7 @@ async function analyzeStorage(): Promise<void> {
 	}
 
 	// Check storage quota
-	if (navigator.storage && navigator.storage.estimate) {
+	if (navigator.storage?.estimate) {
 		const estimate = await navigator.storage.estimate();
 		const usageInMB = ((estimate.usage ?? 0) / 1024 / 1024).toFixed(2);
 		const quotaInMB = ((estimate.quota ?? 0) / 1024 / 1024).toFixed(2);

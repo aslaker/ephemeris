@@ -187,7 +187,7 @@ export const chatCompletion = createServerFn({ method: "POST" })
 							msg.role
 					) {
 						consolidatedMessages[consolidatedMessages.length - 1].content +=
-							"\n" + msg.content;
+							`\n${msg.content}`;
 					} else {
 						consolidatedMessages.push(msg);
 					}
@@ -205,7 +205,7 @@ export const chatCompletion = createServerFn({ method: "POST" })
 					messages[messages.length - 2].role === "user"
 				) {
 					const lastUserMsg = messages.pop()!;
-					messages[messages.length - 1].content += "\n" + lastUserMsg.content;
+					messages[messages.length - 1].content += `\n${lastUserMsg.content}`;
 				}
 
 				// Define tools using imported tool definitions

@@ -85,6 +85,7 @@
     "wrangler": "^4.56.0"
   },
   "overrides": {
-    "@tanstack/db": "0.5.12"
+    "@tanstack/db": "0.5.12",
+    "dexie": "4.2.1"
   }
 }

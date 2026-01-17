@@ -330,6 +330,22 @@ code {
 	animation: spin-slow 8s linear infinite;
 }
 
+/* Hopping dots animation for loading indicators */
+@keyframes hopping-dots {
+	0%,
+	80%,
+	100% {
+		transform: translateY(0);
+	}
+	40% {
+		transform: translateY(-6px);
+	}
+}
+
+.animate-hopping-dot {
+	animation: hopping-dots 1.2s ease-in-out infinite;
+}
+
 /* Custom scrollbar for ISS theme */
 .iss-theme .custom-scrollbar::-webkit-scrollbar {
 	width: 8px;

@@ -62,12 +62,15 @@ export interface UseISSPositionResult {
  */
 export function useISSPositionDB(): UseISSPositionResult {
 	// Query latest position from collection (ordered by timestamp descending)
-	const query = useLiveQuery((q) =>
-		q
+	// Guard against SSR (IndexedDB not available) and null collection
+	const query = useLiveQuery((q) => {
+		if (typeof window === "undefined" || !positionsCollection) return undefined;
+
+		return q
 			.from({ pos: positionsCollection })
 			.orderBy(({ pos }) => pos.timestamp, "desc")
-			.findOne(),
-	);
+			.findOne();
+	}, []);
 
 	return {
 		// Convert undefined to null for compatibility with legacy interface
@@ -130,7 +133,12 @@ export interface UseISSCrewResult {
  */
 export function useISSCrewDB(): UseISSCrewResult {
 	// Query all crew members from collection (returns array by default)
-	const query = useLiveQuery((q) => q.from({ crew: crewCollection }));
+	// Guard against SSR (IndexedDB not available) and null collection
+	const query = useLiveQuery((q) => {
+		if (typeof window === "undefined" || !crewCollection) return undefined;
+
+		return q.from({ crew: crewCollection });
+	}, []);
 
 	return {
 		// Convert undefined to empty array for compatibility with legacy interface
@@ -192,12 +200,15 @@ export interface UseISSTLEResult {
  */
 export function useISSTLEDB(): UseISSTLEResult {
 	// Query latest TLE from collection (ordered by fetchedAt descending)
-	const query = useLiveQuery((q) =>
-		q
+	// Guard against SSR (IndexedDB not available) and null collection
+	const query = useLiveQuery((q) => {
+		if (typeof window === "undefined" || !tleCollection) return undefined;
+
+		return q
 			.from({ tle: tleCollection })
 			.orderBy(({ tle }) => tle.fetchedAt, "desc")
-			.findOne(),
-	);
+			.findOne();
+	}, []);
 
 	// Convert StoredTLE to TLEData format ([line1, line2])
 	const tleData: TLEData | null = query.data
@@ -276,7 +287,7 @@ export function usePositionHistoryDB(): UsePositionHistoryResult {
 
 	// Query positions in time range using Dexie's efficient indexed range query
 	useEffect(() => {
-		if (!timeRange) {
+		if (!timeRange || !positionsCollection) {
 			setPositions([]);
 			return;
 		}

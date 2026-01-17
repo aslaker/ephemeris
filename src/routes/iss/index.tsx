@@ -16,6 +16,8 @@ import { StatsPanel } from "./-components/StatsPanel";
 const Globe = lazy(() => import("react-globe.gl"));
 
 export const Route = createFileRoute("/iss/")({
+	// Disable SSR - this page uses TanStack DB which requires IndexedDB (browser-only)
+	ssr: false,
 	head: () => ({
 		meta: [
 			{

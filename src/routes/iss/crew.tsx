@@ -4,6 +4,8 @@ import { CrewCard } from "./-components/CrewCard";
 import { ISSLayout } from "./-components/ISSLayout";
 
 export const Route = createFileRoute("/iss/crew")({
+	// Disable SSR - this page uses TanStack DB which requires IndexedDB (browser-only)
+	ssr: false,
 	head: () => ({
 		meta: [
 			{

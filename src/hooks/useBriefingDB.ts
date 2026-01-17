@@ -11,6 +11,7 @@
  * unified TanStack DB collections for persistent, reactive data management.
  */
 
+import { eq } from "@tanstack/db";
 import { useLiveQuery } from "@tanstack/react-db";
 import { useCallback } from "react";
 import { briefingsCollection } from "@/lib/briefing/collections";
@@ -66,12 +67,13 @@ export function useBriefingByPassIdDB(
 	// Query briefing by passId from collection (returns undefined if not found)
 	const query = useLiveQuery(
 		(q) => {
-			// Disable query if no passId provided
-			if (!passId) return undefined;
+			// Disable query during SSR (IndexedDB not available), if no passId, or if collection not ready
+			if (typeof window === "undefined" || !passId || !briefingsCollection)
+				return undefined;
 
 			return q
 				.from({ briefing: briefingsCollection })
-				.where(({ briefing }) => briefing.passId === passId)
+				.where(({ briefing }) => eq(briefing.passId, passId))
 				.findOne();
 		},
 		[passId],
@@ -146,8 +148,9 @@ export function useBriefingByTimeDB(
 	// Query all briefings and filter by time in JavaScript
 	const query = useLiveQuery(
 		(q) => {
-			// Disable query if no startTime provided
-			if (!startTime) return undefined;
+			// Disable query during SSR (IndexedDB not available), if no startTime, or if collection not ready
+			if (typeof window === "undefined" || !startTime || !briefingsCollection)
+				return undefined;
 
 			return q.from({ briefing: briefingsCollection });
 		},
@@ -232,11 +235,14 @@ export interface UseAllBriefingsResult {
  */
 export function useAllBriefingsDB(): UseAllBriefingsResult {
 	// Query all briefings from collection (ordered by generatedAt descending)
-	const query = useLiveQuery((q) =>
-		q
+	// Guard against SSR (IndexedDB not available) and null collection
+	const query = useLiveQuery((q) => {
+		if (typeof window === "undefined" || !briefingsCollection) return undefined;
+
+		return q
 			.from({ briefing: briefingsCollection })
-			.orderBy(({ briefing }) => briefing.generatedAt, "desc"),
-	);
+			.orderBy(({ briefing }) => briefing.generatedAt, "desc");
+	}, []);
 
 	return {
 		// Convert undefined to empty array for compatibility with legacy interface
@@ -297,6 +303,11 @@ export async function upsertBriefingDB(
 	briefing: PassBriefing,
 ): Promise<MutationResult> {
 	try {
+		// Guard against null collection (SSR or not initialized)
+		if (!briefingsCollection) {
+			return { success: false, error: "Collection not available" };
+		}
+
 		// Insert or update briefing in collection
 		// The collection's getKey function returns briefing.passId, so this will
 		// automatically update existing briefings or insert new ones
@@ -341,6 +352,11 @@ export async function deleteBriefingDB(
 	passId: string,
 ): Promise<MutationResult> {
 	try {
+		// Guard against null collection (SSR or not initialized)
+		if (!briefingsCollection) {
+			return { success: false, error: "Collection not available" };
+		}
+
 		// Delete briefing from collection by passId
 		await briefingsCollection.delete(passId);
 
@@ -380,6 +396,11 @@ export async function deleteBriefingDB(
  */
 export async function clearBriefingsDB(): Promise<MutationResult> {
 	try {
+		// Guard against null collection (SSR or not initialized)
+		if (!briefingsCollection) {
+			return { success: false, error: "Collection not available" };
+		}
+
 		// Get all briefings to find their IDs
 		const table = briefingsCollection.utils.getTable();
 		const allRecords = await table.toArray();
@@ -432,6 +453,11 @@ export async function bulkInsertBriefingsDB(
 	briefings: PassBriefing[],
 ): Promise<MutationResult> {
 	try {
+		// Guard against null collection (SSR or not initialized)
+		if (!briefingsCollection) {
+			return { success: false, error: "Collection not available" };
+		}
+
 		// Use utils.bulkInsertLocally for efficient batch insert
 		await briefingsCollection.utils.bulkInsertLocally(briefings);
 

@@ -49,6 +49,10 @@ type CrewSyncResult = SyncResult<CrewSyncData>;
  */
 export async function syncCrew(): Promise<CrewSyncResult> {
 	try {
+		if (!crewCollection) {
+			return createSyncError(new Error("Crew collection not available"));
+		}
+
 		const crew = await fetchCrewData();
 		const fetchedAt = Date.now();
 

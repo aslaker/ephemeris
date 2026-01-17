@@ -222,7 +222,7 @@ async function migratePositions(
 		}
 
 		// Bulk insert into TanStack DB collection
-		if (validPositions.length > 0) {
+		if (validPositions.length > 0 && positionsCollection) {
 			const table = positionsCollection.utils.getTable();
 			await table.bulkPut(validPositions);
 			result.inserted = validPositions.length;
@@ -275,7 +275,7 @@ async function migrateCrew(
 		}
 
 		// Bulk insert into TanStack DB collection
-		if (validCrew.length > 0) {
+		if (validCrew.length > 0 && crewCollection) {
 			const table = crewCollection.utils.getTable();
 			await table.bulkPut(validCrew);
 			result.inserted = validCrew.length;
@@ -326,7 +326,7 @@ async function migrateTLE(
 		}
 
 		// Bulk insert into TanStack DB collection
-		if (validTle.length > 0) {
+		if (validTle.length > 0 && tleCollection) {
 			const table = tleCollection.utils.getTable();
 			await table.bulkPut(validTle);
 			result.inserted = validTle.length;
@@ -391,7 +391,7 @@ async function migrateBriefings(): Promise<MigrationDataResult> {
 		}
 
 		// Bulk insert into TanStack DB collection
-		if (validBriefings.length > 0) {
+		if (validBriefings.length > 0 && briefingsCollection) {
 			const table = briefingsCollection.utils.getTable();
 			await table.bulkPut(validBriefings);
 			result.inserted = validBriefings.length;

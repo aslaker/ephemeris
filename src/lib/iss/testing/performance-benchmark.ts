@@ -56,6 +56,15 @@ const TARGETS = {
  * Benchmark: Count query performance
  */
 async function benchmarkCountQuery(): Promise<BenchmarkResult> {
+	if (!positionsCollection) {
+		return {
+			name: "Position count query",
+			duration: 0,
+			target: TARGETS.COUNT_QUERY,
+			status: "fail",
+			details: "Collection not available",
+		};
+	}
 	const table = positionsCollection.utils.getTable();
 
 	const start = performance.now();
@@ -75,6 +84,15 @@ async function benchmarkCountQuery(): Promise<BenchmarkResult> {
  * Benchmark: Latest position query
  */
 async function benchmarkLatestQuery(): Promise<BenchmarkResult> {
+	if (!positionsCollection) {
+		return {
+			name: "Latest position query",
+			duration: 0,
+			target: TARGETS.LATEST_QUERY,
+			status: "fail",
+			details: "Collection not available",
+		};
+	}
 	const table = positionsCollection.utils.getTable();
 
 	const start = performance.now();
@@ -96,6 +114,15 @@ async function benchmarkLatestQuery(): Promise<BenchmarkResult> {
  * Benchmark: Small range query (100 records)
  */
 async function benchmarkSmallRange(): Promise<BenchmarkResult> {
+	if (!positionsCollection) {
+		return {
+			name: "Small range query (100 positions)",
+			duration: 0,
+			target: TARGETS.SMALL_RANGE,
+			status: "fail",
+			details: "Collection not available",
+		};
+	}
 	const table = positionsCollection.utils.getTable();
 
 	const start = performance.now();
@@ -119,6 +146,15 @@ async function benchmarkSmallRange(): Promise<BenchmarkResult> {
  * Benchmark: Large range query (1000 records)
  */
 async function benchmarkLargeRange(): Promise<BenchmarkResult> {
+	if (!positionsCollection) {
+		return {
+			name: "Large range query (1000 positions)",
+			duration: 0,
+			target: TARGETS.LARGE_RANGE,
+			status: "fail",
+			details: "Collection not available",
+		};
+	}
 	const table = positionsCollection.utils.getTable();
 	const totalCount = await table.count();
 
@@ -158,6 +194,15 @@ async function benchmarkLargeRange(): Promise<BenchmarkResult> {
  * Benchmark: Time-based range query (1 hour)
  */
 async function benchmarkTimeRange(): Promise<BenchmarkResult> {
+	if (!positionsCollection) {
+		return {
+			name: "Time-based range query (1 hour)",
+			duration: 0,
+			target: 200,
+			status: "fail",
+			details: "Collection not available",
+		};
+	}
 	const table = positionsCollection.utils.getTable();
 	const now = Date.now() / 1000;
 	const oneHourAgo = now - 60 * 60;
@@ -182,6 +227,15 @@ async function benchmarkTimeRange(): Promise<BenchmarkResult> {
  * Benchmark: Crew query
  */
 async function benchmarkCrewQuery(): Promise<BenchmarkResult> {
+	if (!crewCollection) {
+		return {
+			name: "Crew query (all astronauts)",
+			duration: 0,
+			target: TARGETS.SINGLE_QUERY,
+			status: "fail",
+			details: "Collection not available",
+		};
+	}
 	const table = crewCollection.utils.getTable();
 
 	const start = performance.now();
@@ -201,6 +255,15 @@ async function benchmarkCrewQuery(): Promise<BenchmarkResult> {
  * Benchmark: TLE query
  */
 async function benchmarkTLEQuery(): Promise<BenchmarkResult> {
+	if (!tleCollection) {
+		return {
+			name: "TLE query (latest)",
+			duration: 0,
+			target: 5,
+			status: "fail",
+			details: "Collection not available",
+		};
+	}
 	const table = tleCollection.utils.getTable();
 
 	const start = performance.now();
@@ -220,6 +283,15 @@ async function benchmarkTLEQuery(): Promise<BenchmarkResult> {
  * Benchmark: Briefings query
  */
 async function benchmarkBriefingsQuery(): Promise<BenchmarkResult> {
+	if (!briefingsCollection) {
+		return {
+			name: "Briefings query (all)",
+			duration: 0,
+			target: TARGETS.SINGLE_QUERY,
+			status: "fail",
+			details: "Collection not available",
+		};
+	}
 	const table = briefingsCollection.utils.getTable();
 
 	const start = performance.now();
@@ -239,6 +311,15 @@ async function benchmarkBriefingsQuery(): Promise<BenchmarkResult> {
  * Benchmark: Concurrent queries
  */
 async function benchmarkConcurrentQueries(): Promise<BenchmarkResult> {
+	if (!positionsCollection || !crewCollection || !tleCollection) {
+		return {
+			name: "Concurrent queries (4 simultaneous)",
+			duration: 0,
+			target: TARGETS.CONCURRENT_QUERIES,
+			status: "fail",
+			details: "Collections not available",
+		};
+	}
 	const posTable = positionsCollection.utils.getTable();
 	const crewTable = crewCollection.utils.getTable();
 	const tleTable = tleCollection.utils.getTable();
@@ -271,6 +352,16 @@ async function benchmarkConcurrentQueries(): Promise<BenchmarkResult> {
 async function analyzeStorage(): Promise<void> {
 	console.log("\n📊 Storage Analysis");
 	console.log("==================\n");
+
+	if (
+		!positionsCollection ||
+		!crewCollection ||
+		!tleCollection ||
+		!briefingsCollection
+	) {
+		console.log("⚠️  Collections not available - skipping storage analysis\n");
+		return;
+	}
 
 	const posTable = positionsCollection.utils.getTable();
 	const crewTable = crewCollection.utils.getTable();

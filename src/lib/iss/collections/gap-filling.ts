@@ -175,7 +175,7 @@ export async function fillGapsInRange(
 	endTimestamp: number,
 	tle: TLEData,
 ): Promise<number> {
-	if (typeof window === "undefined") return 0;
+	if (typeof window === "undefined" || !positionsCollection) return 0;
 
 	// Get Dexie table for efficient range query
 	const table = positionsCollection.utils.getTable();

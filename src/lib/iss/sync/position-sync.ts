@@ -49,6 +49,10 @@ type PositionSyncResult = SyncResult<PositionSyncData>;
  */
 export async function syncPosition(): Promise<PositionSyncResult> {
 	try {
+		if (!positionsCollection) {
+			return createSyncError(new Error("Positions collection not available"));
+		}
+
 		const position = await fetchISSPosition();
 
 		// Insert into collection (triggers useLiveQuery updates)

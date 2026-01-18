@@ -16,6 +16,8 @@ import { PassesList } from "./-components/PassesList";
 // =============================================================================
 
 export const Route = createFileRoute("/iss/passes")({
+	// Disable SSR - this page uses TanStack DB which requires IndexedDB (browser-only)
+	ssr: false,
 	component: PassesPage,
 });
 

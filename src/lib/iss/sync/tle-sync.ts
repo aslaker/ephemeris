@@ -178,6 +178,10 @@ const fetchTLEWithSource = async (): Promise<{
  */
 export async function syncTLE(): Promise<TLESyncResult> {
 	try {
+		if (!tleCollection) {
+			return createSyncError(new Error("TLE collection not available"));
+		}
+
 		const { line1, line2, source } = await fetchTLEWithSource();
 		const fetchedAt = Date.now();
 

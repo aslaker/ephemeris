@@ -12,6 +12,8 @@ const MAP_IMAGE_URL =
 	"https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg";
 
 export const Route = createFileRoute("/iss/map")({
+	// Disable SSR - this page uses TanStack DB which requires IndexedDB (browser-only)
+	ssr: false,
 	head: () => ({
 		meta: [
 			{

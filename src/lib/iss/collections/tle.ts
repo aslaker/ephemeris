@@ -3,6 +3,9 @@
  *
  * TanStack DB collection for TLE (Two-Line Element) orbital data with Dexie adapter for IndexedDB persistence.
  * Provides reactive queries and automatic cross-tab synchronization.
+ *
+ * NOTE: Collection is only created in the browser (where IndexedDB is available).
+ * On the server, the collection is null - hooks must guard against this.
  */
 
 import { createCollection } from "@tanstack/react-db";
@@ -37,7 +40,7 @@ export const StoredTLESchema = z.object({
  * TanStack DB collection for TLE data with Dexie persistence
  *
  * Features:
- * - Lazy initialization for Cloudflare Workers compatibility
+ * - Browser-only initialization (IndexedDB not available on server)
  * - IndexedDB persistence via Dexie adapter
  * - Automatic schema validation with Zod
  * - Reactive queries with useLiveQuery
@@ -48,13 +51,19 @@ export const StoredTLESchema = z.object({
  * - Table: "tle"
  * - Primary key: id (tle-timestamp format)
  * - Index: fetchedAt (for cache freshness tracking)
+ *
+ * NOTE: This is null on the server. Hooks using this collection must check
+ * for null or use `typeof window === "undefined"` guard before accessing.
  */
-export const tleCollection = createCollection(
-	dexieCollectionOptions({
-		id: "tle",
-		schema: StoredTLESchema,
-		getKey: (item) => item.id,
-		dbName: "ephemeris-iss",
-		tableName: "tle",
-	}),
-);
+export const tleCollection =
+	typeof window !== "undefined"
+		? createCollection(
+				dexieCollectionOptions({
+					id: "tle",
+					schema: StoredTLESchema,
+					getKey: (item) => item.id,
+					dbName: "ephemeris-iss",
+					tableName: "tle",
+				}),
+			)
+		: null;

@@ -129,7 +129,7 @@ export function CopilotPanel() {
 			)}
 
 			{/* Message List */}
-			<MessageList messages={messages} />
+			<MessageList messages={messages} isLoading={isLoading} />
 
 			{/* Chat Input */}
 			<ChatInput onSend={handleSend} disabled={isLoading} />

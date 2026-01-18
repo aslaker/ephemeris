@@ -48,7 +48,7 @@ export const TLE_RETENTION = {
  * @returns Number of records deleted
  */
 export async function cleanupOldPositions(): Promise<number> {
-	if (typeof window === "undefined") return 0;
+	if (typeof window === "undefined" || !positionsCollection) return 0;
 
 	const cutoffTimestamp =
 		Date.now() / 1000 - POSITION_RETENTION.maxAgeDays * 86400;
@@ -80,7 +80,7 @@ export async function cleanupOldPositions(): Promise<number> {
  * @returns Number of records deleted
  */
 export async function cleanupOldTle(): Promise<number> {
-	if (typeof window === "undefined") return 0;
+	if (typeof window === "undefined" || !tleCollection) return 0;
 
 	// Get Dexie table for efficient query
 	const table = tleCollection.utils.getTable();

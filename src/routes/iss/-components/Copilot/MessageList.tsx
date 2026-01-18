@@ -8,21 +8,23 @@
 import { useEffect, useRef } from "react";
 import type { Message } from "@/lib/copilot/types";
 import { MessageBubble } from "./MessageBubble";
+import { ThinkingIndicator } from "./ThinkingIndicator";
 
 interface MessageListProps {
 	messages: Message[];
+	isLoading?: boolean;
 }
 
-export function MessageList({ messages }: MessageListProps) {
+export function MessageList({ messages, isLoading }: MessageListProps) {
 	const scrollRef = useRef<HTMLDivElement>(null);
 
-	// Auto-scroll to bottom when new messages arrive
-	// biome-ignore lint/correctness/useExhaustiveDependencies: Need to scroll when messages change
+	// Auto-scroll to bottom when new messages arrive or loading state changes
+	// biome-ignore lint/correctness/useExhaustiveDependencies: Need to scroll when messages or loading change
 	useEffect(() => {
 		if (scrollRef.current) {
 			scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
 		}
-	}, [messages]);
+	}, [messages, isLoading]);
 
 	if (messages.length === 0) {
 		return (
@@ -43,6 +45,7 @@ export function MessageList({ messages }: MessageListProps) {
 			{messages.map((message) => (
 				<MessageBubble key={message.id} message={message} />
 			))}
+			{isLoading && <ThinkingIndicator />}
 		</div>
 	);
 }

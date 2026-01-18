@@ -139,7 +139,13 @@ export interface CorruptionResult {
  * @returns Corruption detection result with removed counts and refetch flag
  */
 export async function detectAndRemoveCorruption(): Promise<CorruptionResult> {
-	if (typeof window === "undefined") {
+	if (
+		typeof window === "undefined" ||
+		!positionsCollection ||
+		!crewCollection ||
+		!tleCollection ||
+		!briefingsCollection
+	) {
 		return {
 			positionsRemoved: 0,
 			crewRemoved: 0,

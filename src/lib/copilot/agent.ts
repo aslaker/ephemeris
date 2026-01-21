@@ -9,7 +9,7 @@
 import { env } from "cloudflare:workers";
 import * as Sentry from "@sentry/tanstackstart-react";
 import { createServerFn } from "@tanstack/react-start";
-import { generateText, streamText, stepCountIs } from "ai";
+import { generateText, stepCountIs, streamText } from "ai";
 import { createWorkersAI } from "workers-ai-provider";
 import { AI_CONFIG } from "../ai/config";
 import { ensureSentryInitialized } from "../briefing/sentry-init";

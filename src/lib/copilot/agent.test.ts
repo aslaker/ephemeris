@@ -617,7 +617,7 @@ describe.skip("Tool function error handling", () => {
 		);
 		expect(userLocationTool).toBeDefined();
 
-		const result = JSON.parse(await userLocationTool!.function());
+		const result = JSON.parse(await userLocationTool?.function());
 		expect(result).toEqual({
 			available: true,
 			coordinates: { lat: 45.5, lng: -122.6 },
@@ -643,7 +643,7 @@ describe.skip("Tool function error handling", () => {
 			(t) => t.name === "get_user_location",
 		);
 		expect(userLocationTool).toBeDefined();
-		const result = JSON.parse(await userLocationTool!.function());
+		const result = JSON.parse(await userLocationTool?.function());
 
 		expect(result).toEqual({
 			available: false,

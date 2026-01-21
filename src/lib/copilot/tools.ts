@@ -25,6 +25,68 @@ import type {
 import { sanitizeForLogging } from "./utils";
 
 // =============================================================================
+// CACHING INFRASTRUCTURE
+// =============================================================================
+
+// ISS Position cache (60 second TTL - position updates frequently but 60s is acceptable for chat)
+let issPositionCache: {
+	data: ISSPositionResult | null;
+	timestamp: number;
+} = { data: null, timestamp: 0 };
+const ISS_POSITION_CACHE_TTL_MS = 60 * 1000; // 60 seconds
+
+// TLE cache (24 hour TTL - orbital elements rarely change)
+let tleCache: {
+	data: [string, string] | null;
+	timestamp: number;
+} = { data: null, timestamp: 0 };
+const TLE_CACHE_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
+
+/**
+ * Get cached ISS position or fetch fresh data
+ */
+async function getCachedISSPosition(): Promise<ISSPositionResult> {
+	const now = Date.now();
+	if (
+		issPositionCache.data &&
+		now - issPositionCache.timestamp < ISS_POSITION_CACHE_TTL_MS
+	) {
+		console.log("[Copilot Tools] ISS position cache HIT");
+		return issPositionCache.data;
+	}
+
+	console.log("[Copilot Tools] ISS position cache MISS - fetching fresh data");
+	const position = await fetchISSPosition();
+	const result: ISSPositionResult = {
+		latitude: position.latitude,
+		longitude: position.longitude,
+		altitude: position.altitude,
+		velocity: position.velocity,
+		visibility: position.visibility,
+		timestamp: position.timestamp * 1000,
+	};
+
+	issPositionCache = { data: result, timestamp: now };
+	return result;
+}
+
+/**
+ * Get cached TLE data or fetch fresh data
+ */
+async function getCachedTLE(): Promise<[string, string]> {
+	const now = Date.now();
+	if (tleCache.data && now - tleCache.timestamp < TLE_CACHE_TTL_MS) {
+		console.log("[Copilot Tools] TLE cache HIT");
+		return tleCache.data;
+	}
+
+	console.log("[Copilot Tools] TLE cache MISS - fetching fresh data");
+	const tle = await fetchTLE();
+	tleCache = { data: tle, timestamp: now };
+	return tle;
+}
+
+// =============================================================================
 // TOOL DEFINITIONS (AI SDK format)
 // =============================================================================
 
@@ -37,15 +99,7 @@ export const getISSPositionTool = tool({
 	inputSchema: z.object({}),
 	execute: async () => {
 		return Sentry.startSpan({ name: "Tool: get_iss_position" }, async () => {
-			const position = await fetchISSPosition();
-			return {
-				latitude: position.latitude,
-				longitude: position.longitude,
-				altitude: position.altitude,
-				velocity: position.velocity,
-				visibility: position.visibility,
-				timestamp: position.timestamp * 1000,
-			};
+			return getCachedISSPosition();
 		});
 	},
 });
@@ -90,7 +144,7 @@ export const getUpcomingPassesTool = tool({
 				days = 7,
 				maxPasses = 5,
 			} = sanitizeData(params, "ai_prompt");
-			const tle = await fetchTLE();
+			const tle = await getCachedTLE();
 			const passes = predictPasses(
 				tle[0],
 				tle[1],
@@ -295,20 +349,11 @@ export async function executeTool(
 // =============================================================================
 
 /**
- * Get current ISS position
+ * Get current ISS position (uses cache for performance)
  */
 async function executeGetISSPosition(): Promise<ISSPositionResult> {
 	return Sentry.startSpan({ name: "Tool: get_iss_position" }, async () => {
-		const position = await fetchISSPosition();
-
-		return {
-			latitude: position.latitude,
-			longitude: position.longitude,
-			altitude: position.altitude,
-			velocity: position.velocity,
-			visibility: position.visibility,
-			timestamp: position.timestamp * 1000, // Convert to milliseconds
-		};
+		return getCachedISSPosition();
 	});
 }
 

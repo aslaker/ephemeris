@@ -9,7 +9,8 @@ import { useStore } from "@tanstack/react-store";
 import { useCallback, useState } from "react";
 import { useLocation } from "@/hooks/useLocation";
 import { useNextPass } from "@/hooks/useNextPass";
-import { chatCompletion } from "@/lib/copilot/agent";
+import { AI_CONFIG } from "@/lib/ai/config";
+import { chatCompletion, streamChatCompletion } from "@/lib/copilot/agent";
 import {
 	conversationActions,
 	conversationStore,
@@ -26,11 +27,6 @@ export function CopilotPanel() {
 	const isLoading = useStore(conversationStore, (s) => s.isLoading);
 	const { coordinates } = useLocation();
 	const { nextPass } = useNextPass();
-
-	// Clear conversation when unmounting (session-scoped)
-	// useEffect(() => {
-	// 	return () => conversationActions.clearConversation();
-	// }, []);
 
 	const [currentToolCalls, setCurrentToolCalls] = useState<
 		Array<{ id: string; name: string; status: "pending" | "success" | "error" }>
@@ -52,32 +48,97 @@ export function CopilotPanel() {
 						? { lat: coordinates.lat, lng: coordinates.lng }
 						: undefined;
 
-					const response = (await chatCompletion({
-						data: {
-							message: text,
-							conversationContext: {
-								messages: context,
-							},
-							location,
-						},
-					})) as ChatResponse;
+					const requestData = {
+						message: text,
+						conversationContext: { messages: context },
+						location,
+					};
 
-					if (response.status === "success" && response.message) {
-						conversationActions.addAssistantMessage(response.message);
-					} else if (response.error) {
-						// Add error message
-						const errorMessage: Message = {
-							id: crypto.randomUUID(),
-							role: "assistant",
-							content: `Error: ${response.error.message}`,
-							timestamp: Date.now(),
-							error: {
-								code: response.error.code,
-								message: response.error.message,
-								retryable: response.error.code === "AI_UNAVAILABLE",
-							},
-						};
-						conversationActions.addAssistantMessage(errorMessage);
+					// Use streaming if enabled
+					if (AI_CONFIG.features.streamingEnabled) {
+						try {
+							// Get async iterable from streaming server function
+							const stream = await streamChatCompletion({
+								data: requestData,
+							});
+
+							let fullContent = "";
+							let messageId: string | null = null;
+
+							// Consume the async generator
+							for await (const chunk of stream as AsyncIterable<{
+								text?: string;
+								error?: string;
+							}>) {
+								if (chunk.error) {
+									throw new Error(chunk.error);
+								}
+								if (chunk.text) {
+									fullContent += chunk.text;
+
+									if (!messageId) {
+										// Create message on first chunk
+										messageId =
+											conversationActions.addStreamingAssistantMessage();
+									}
+
+									// Update the message content progressively
+									conversationActions.updateAssistantMessage(
+										messageId,
+										fullContent,
+									);
+								}
+							}
+
+							// Handle case where no content was received
+							if (!messageId) {
+								messageId = conversationActions.addStreamingAssistantMessage();
+								conversationActions.updateAssistantMessage(
+									messageId,
+									"No response received.",
+								);
+							}
+						} catch (streamError) {
+							const err =
+								streamError instanceof Error
+									? streamError
+									: new Error(String(streamError));
+							// Add error message
+							const errorMessage: Message = {
+								id: crypto.randomUUID(),
+								role: "assistant",
+								content: `Error: ${err.message}`,
+								timestamp: Date.now(),
+								error: {
+									code: "UNKNOWN_ERROR",
+									message: err.message,
+									retryable: true,
+								},
+							};
+							conversationActions.addAssistantMessage(errorMessage);
+						}
+					} else {
+						// Non-streaming fallback
+						const response = (await chatCompletion({
+							data: requestData,
+						})) as ChatResponse;
+
+						if (response.status === "success" && response.message) {
+							conversationActions.addAssistantMessage(response.message);
+						} else if (response.error) {
+							const errorMessage: Message = {
+								id: crypto.randomUUID(),
+								role: "assistant",
+								content: `Error: ${response.error.message}`,
+								timestamp: Date.now(),
+								error: {
+									code: response.error.code,
+									message: response.error.message,
+									retryable: response.error.code === "AI_UNAVAILABLE",
+								},
+							};
+							conversationActions.addAssistantMessage(errorMessage);
+						}
 					}
 				});
 			} catch (error) {

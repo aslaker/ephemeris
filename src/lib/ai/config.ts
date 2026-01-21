@@ -18,7 +18,7 @@ export const AI_CONFIG: AIConfig = {
 		backoffMultiplier: 2,
 	},
 	features: {
-		streamingEnabled: false,
+		streamingEnabled: true,
 		verboseInstrumentation: true,
 	},
 };

@@ -30,8 +30,10 @@ export function MessageBubble({ message }: MessageBubbleProps) {
 			>
 				{/* Message Content */}
 				<div className="text-sm whitespace-pre-wrap break-words">
-					{message.content}
-					{isStreaming && (
+					{message.content || (
+						<span className="text-matrix-dim italic">Thinking...</span>
+					)}
+					{isStreaming && message.content && (
 						<span className="inline-block w-2 h-4 bg-matrix-text ml-1 animate-pulse" />
 					)}
 				</div>
@@ -75,13 +77,15 @@ export function MessageBubble({ message }: MessageBubbleProps) {
 					</div>
 				)}
 
-				{/* Timestamp */}
-				<div className="mt-1 text-xs text-matrix-dim opacity-50">
-					{new Date(message.timestamp).toLocaleTimeString("en-US", {
-						hour: "numeric",
-						minute: "2-digit",
-					})}
-				</div>
+				{/* Timestamp - hide for empty streaming messages */}
+				{message.content && (
+					<div className="mt-1 text-xs text-matrix-dim opacity-50">
+						{new Date(message.timestamp).toLocaleTimeString("en-US", {
+							hour: "numeric",
+							minute: "2-digit",
+						})}
+					</div>
+				)}
 			</div>
 		</div>
 	);

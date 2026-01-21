@@ -164,6 +164,63 @@ export const conversationActions = {
 	},
 
 	/**
+	 * Add a placeholder assistant message for streaming
+	 * Returns the message ID for subsequent updates
+	 */
+	addStreamingAssistantMessage(): string {
+		const messageId = `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+		const message: Message = {
+			id: messageId,
+			role: "assistant",
+			content: "",
+			timestamp: Date.now(),
+		};
+
+		conversationStore.setState((prev) => {
+			if (!prev.conversation) {
+				const conversation: Conversation = {
+					id: `conv_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+					messages: [message],
+					createdAt: Date.now(),
+					lastActivityAt: Date.now(),
+				};
+				return { ...prev, conversation };
+			}
+
+			return {
+				...prev,
+				conversation: {
+					...prev.conversation,
+					messages: [...prev.conversation.messages, message],
+					lastActivityAt: Date.now(),
+				},
+			};
+		});
+
+		return messageId;
+	},
+
+	/**
+	 * Update an existing assistant message content (for streaming)
+	 */
+	updateAssistantMessage(id: string, content: string): void {
+		conversationStore.setState((prev) => {
+			if (!prev.conversation) return prev;
+
+			return {
+				...prev,
+				conversation: {
+					...prev.conversation,
+					messages: prev.conversation.messages.map((m) =>
+						m.id === id ? { ...m, content } : m,
+					),
+					lastActivityAt: Date.now(),
+				},
+			};
+		});
+	},
+
+	/**
 	 * Clear conversation
 	 */
 	clearConversation(): void {

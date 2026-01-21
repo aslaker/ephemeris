@@ -9,7 +9,7 @@
 import { env } from "cloudflare:workers";
 import * as Sentry from "@sentry/tanstackstart-react";
 import { createServerFn } from "@tanstack/react-start";
-import { generateText, stepCountIs } from "ai";
+import { generateText, streamText, stepCountIs } from "ai";
 import { createWorkersAI } from "workers-ai-provider";
 import { AI_CONFIG } from "../ai/config";
 import { ensureSentryInitialized } from "../briefing/sentry-init";
@@ -402,4 +402,100 @@ export const chatCompletion = createServerFn({ method: "POST" })
 				};
 			}
 		});
+	});
+
+// =============================================================================
+// STREAMING SERVER FUNCTION
+// =============================================================================
+
+/**
+ * Streaming chat completion server function
+ * Uses async generator to stream text chunks via TanStack Start's RPC layer
+ */
+export const streamChatCompletion = createServerFn({ method: "POST" })
+	.inputValidator(ChatRequestSchema)
+	.handler(async function* ({ data }) {
+		ensureSentryInitialized();
+
+		// Get AI binding
+		let ai: typeof env.AI;
+		try {
+			ai = env.AI;
+		} catch {
+			yield { error: "AI service not configured" };
+			return;
+		}
+
+		if (!ai) {
+			yield { error: "AI binding not available" };
+			return;
+		}
+
+		// Build messages array
+		const contextMessages = (data.conversationContext?.messages ?? [])
+			.filter((m) => !m.content.startsWith("Error:"))
+			.map((m) => ({
+				role: m.role as "user" | "assistant" | "system",
+				content: m.content,
+			}));
+
+		// Consolidate consecutive messages of the same role
+		const consolidatedMessages: Array<{
+			role: "user" | "assistant" | "system";
+			content: string;
+		}> = [];
+		for (const msg of contextMessages) {
+			if (
+				consolidatedMessages.length > 0 &&
+				consolidatedMessages[consolidatedMessages.length - 1].role === msg.role
+			) {
+				consolidatedMessages[consolidatedMessages.length - 1].content +=
+					`\n${msg.content}`;
+			} else {
+				consolidatedMessages.push(msg);
+			}
+		}
+
+		const messages = [
+			{ role: "system" as const, content: COPILOT_SYSTEM_PROMPT },
+			...consolidatedMessages,
+			{ role: "user" as const, content: data.message },
+		];
+
+		// Consolidate if last two are user messages
+		if (messages.length >= 2 && messages[messages.length - 2].role === "user") {
+			const lastUserMsg = messages.pop()!;
+			messages[messages.length - 1].content += `\n${lastUserMsg.content}`;
+		}
+
+		// Initialize provider and tools
+		const workersai = createWorkersAI({ binding: ai });
+		const tools = {
+			get_iss_position: getISSPositionTool,
+			get_upcoming_passes: getUpcomingPassesTool,
+			get_pass_weather: getPassWeatherTool,
+			get_user_location: createGetUserLocationTool(data.location),
+			search_knowledge_base: searchKnowledgeBaseTool,
+		};
+
+		try {
+			// Create streaming result
+			const result = streamText({
+				model: workersai(AI_CONFIG.modelId as any),
+				messages: messages as any,
+				tools,
+				stopWhen: stepCountIs(AI_CONFIG.maxIterations),
+			});
+
+			// Yield each text chunk as it arrives
+			for await (const chunk of result.textStream) {
+				yield { text: chunk };
+			}
+		} catch (error) {
+			const err = error instanceof Error ? error : new Error(String(error));
+			Sentry.captureException(err, {
+				tags: { copilot: "streaming_error" },
+			});
+			yield { error: err.message };
+		}
 	});
